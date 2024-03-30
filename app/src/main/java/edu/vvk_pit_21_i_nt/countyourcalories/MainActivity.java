@@ -20,12 +20,12 @@ public class MainActivity extends AppCompatActivity {
     EditText inputText;
     final String[] genderList = {"Vyras", "Moteris"};
     final String[] mainGoal = {"Auginti masę", "Numesti svorio", "Išlaikyti svorį"};
-    final String[] activityDesc = {"0-1", "1-3", "3-5", "6-7", "2 k./d."};
+    final String[] activityDesc = {"0-1", "2-3", "4-5", "6-7", "2 k./d."};
     final String[] questions = {"Identifikuokite save", "Pasirinkite savo tikslą", "Treniruočių skaičius","Įveskite savo amžių", "Įveskite savo svorį", "Įveskite savo ūgį (CM)"};
 
     String gender;
-    int goal, age, height;
-    float activityLevel, weight;
+    int goal, age, height, targetKcal, difference;
+    float activityLevel, weight, bmr;
 
     int preMenuStage = 0;
 
@@ -53,12 +53,15 @@ public class MainActivity extends AppCompatActivity {
                     switch (goalString) {
                         case "Auginti masę":
                             goal = 0;
+                            difference = 300;
                             break;
                         case "Numesti svorio":
                             goal = 1;
+                            difference = -300;
                             break;
                         case "Išlaikyti svorį":
                             goal = 2;
+                            difference = 0;
                             break;
                         default:
                             break;
@@ -72,10 +75,10 @@ public class MainActivity extends AppCompatActivity {
                         case "0-1":
                             activityLevel = 1.2f;
                             break;
-                        case "1-3":
+                        case "2-3":
                             activityLevel = 1.375f;
                             break;
-                        case "3-5":
+                        case "4-5":
                             activityLevel = 1.55f;
                             break;
                         case "6-7":
@@ -104,7 +107,11 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case 5:
                     height = Integer.parseInt(inputText.getText().toString());
-                    Log.d("TAG", "gender " + gender + ", age " + age + ", goal " + goal + ", height " + height + ", activityLevel " + activityLevel + ", weight " + weight);
+                    bmr = calcBmr(weight, height, age, gender);
+                    targetKcal = calcTargetKcal(bmr, activityLevel, difference);
+                    Log.d("TAG", "gender " + gender + ", age " + age + "," +
+                            " goal " + goal + ", height " + height + ", activityLevel " +
+                            activityLevel + ", weight " + weight + ", bmr " + bmr + ", target " + targetKcal);
 
                     // Moves to the next activity
 
@@ -129,5 +136,21 @@ public class MainActivity extends AppCompatActivity {
         upperText.setText(questions[questionNum]);
         inputText.setText("");
         inputText.setHint(name);
+    }
+
+    private float calcBmr(float weight, int height, int age, String gender) {
+        return (gender.equals("Vyras")) ? calcManBMR(weight, height, age) : calcWomanBMR(weight, height, age);
+    }
+
+    private float calcManBMR(float weight, int height, int age) {
+    return (10f * weight) + (6.25f * height) - (5f * age) + 5f;
+    }
+
+    private float calcWomanBMR(float weight, int height, int age) {
+       return (10f * weight) + (6.25f * height) - (5f * age) - 16;
+    }
+
+    private int calcTargetKcal(float bmr, float activityLevel, int difference) {
+        return (int) (bmr * activityLevel) + difference;
     }
 }
