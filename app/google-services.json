@@ -1,0 +1,122 @@
+{
+  "project_info": {
+    "project_number": "308268513701",
+    "firebase_url": "https://caloriecounter-3b037-default-rtdb.firebaseio.com",
+    "project_id": "caloriecounter-3b037",
+    "storage_bucket": "caloriecounter-3b037.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308268513701:android:9e741af2064448d2e4104c",
+        "android_client_info": {
+          "package_name": "com.example.firui"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "308268513701-vmcqbdc2s7d2dub421uufc39e8o66fbc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.firui",
+            "certificate_hash": "358886cb53a6b3a942cc211107f5678476e838b2"
+          }
+        },
+        {
+          "client_id": "308268513701-menrr4si8brc618me227d4jmclrgjllr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhce2z41778e4pqmSMZnELZ-CH4IxB8Ck"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "308268513701-menrr4si8brc618me227d4jmclrgjllr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308268513701:android:6efe231256d6fde9e4104c",
+        "android_client_info": {
+          "package_name": "com.example.kmiskaiciuokle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "308268513701-hqqov0kmphij4q430ok3s4i8copdq9qm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.kmiskaiciuokle",
+            "certificate_hash": "358886cb53a6b3a942cc211107f5678476e838b2"
+          }
+        },
+        {
+          "client_id": "308268513701-menrr4si8brc618me227d4jmclrgjllr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhce2z41778e4pqmSMZnELZ-CH4IxB8Ck"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "308268513701-menrr4si8brc618me227d4jmclrgjllr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308268513701:android:e357c31e061fa61be4104c",
+        "android_client_info": {
+          "package_name": "edu.vvk_pit_21_i_nt.countyourcalories"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "308268513701-ancisre4a7jkb7c9bo53bmon52iqkd8o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.vvk_pit_21_i_nt.countyourcalories",
+            "certificate_hash": "358886cb53a6b3a942cc211107f5678476e838b2"
+          }
+        },
+        {
+          "client_id": "308268513701-menrr4si8brc618me227d4jmclrgjllr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhce2z41778e4pqmSMZnELZ-CH4IxB8Ck"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "308268513701-menrr4si8brc618me227d4jmclrgjllr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

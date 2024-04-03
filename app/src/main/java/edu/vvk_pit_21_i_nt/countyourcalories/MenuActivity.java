@@ -16,12 +16,16 @@ import androidx.fragment.app.FragmentTransaction;
 import edu.vvk_pit_21_i_nt.countyourcalories.databinding.ActivityMainBinding;
 import edu.vvk_pit_21_i_nt.countyourcalories.databinding.ActivityMenuBinding;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class MenuActivity extends AppCompatActivity {
 
     ActivityMenuBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         binding = ActivityMenuBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         replaceFragment(new HomeFragment());
@@ -65,5 +69,6 @@ public class MenuActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout,fragment);
         fragmentTransaction.commit();
+
     }
 }

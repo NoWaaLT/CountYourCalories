@@ -1,5 +1,8 @@
 package edu.vvk_pit_21_i_nt.countyourcalories;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,11 +16,31 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.util.Log;
 
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
+import com.firebase.ui.auth.IdpResponse;
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Arrays;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
     Spinner spinner;
     Button buttonNext;
     TextView upperText;
     EditText inputText;
+    Button signoutButton;
+    FirebaseUser user;
+    private DatabaseReference mDatabase;
     final String[] genderList = {"Vyras", "Moteris"};
     final String[] mainGoal = {"Auginti masę", "Numesti svorio", "Išlaikyti svorį"};
     final String[] activityDesc = {"0-1", "2-3", "4-5", "6-7", "2 k./d."};
@@ -33,12 +56,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        signIn();
 
         upperText = findViewById(R.id.textView2);
         spinner = findViewById(R.id.gender_spinner);
         buttonNext = findViewById(R.id.button_next);
         inputText = findViewById(R.id.inputText);
-
+        signoutButton = findViewById(R.id.signout_button);
+        signOut();
         setUpGUI(0, genderList);
 
         buttonNext.setOnClickListener(v -> {
@@ -112,6 +138,8 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("TAG", "gender " + gender + ", age " + age + "," +
                             " goal " + goal + ", height " + height + ", activityLevel " +
                             activityLevel + ", weight " + weight + ", bmr " + bmr + ", target " + targetKcal);
+                    addUserData();
+
 
                     // Moves to the next activity
 
@@ -124,6 +152,95 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
+            new FirebaseAuthUIActivityResultContract(),
+            new ActivityResultCallback<FirebaseAuthUIAuthenticationResult>() {
+                @Override
+                public void onActivityResult(FirebaseAuthUIAuthenticationResult result) {
+                    onSignInResult(result);
+                }
+            }
+    );
+    private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
+        IdpResponse response = result.getIdpResponse();
+        if (result.getResultCode() == RESULT_OK) {
+            // Successfully signed in
+            user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null) {
+                String userUid = user.getUid();
+                mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (!dataSnapshot.hasChild("Users/"+userUid)) {
+                            mDatabase.child("Users").child(userUid).child("user_name").setValue(user.getDisplayName());
+                            mDatabase.child("Users").child(userUid).child("user_email").setValue(user.getEmail());
+                            Log.v("Prisijungimas", userUid);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.w("Firebase klaida", databaseError.getMessage());
+                    }
+                });
+            }
+
+        } else {
+            // Sign in failed. If response is null the user canceled the
+            // sign-in flow using the back button. Otherwise check
+            // response.getError().getErrorCode() and handle the error.
+            // ...
+        }
+    }
+    void signIn() {
+
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                //new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build()
+        );
+        Intent signInIntent = AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAvailableProviders(providers)
+                .build();
+        signInLauncher.launch(signInIntent);
+
+
+    }
+    void signOut() {
+        signoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                user  = FirebaseAuth.getInstance().getCurrentUser();
+                if (user != null) {
+                    AuthUI.getInstance()
+                            .signOut(MainActivity.this)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                public void onComplete(@NonNull Task<Void> task) {
+                                }
+                            });
+
+                }
+                signIn();
+            }
+        });
+    }
+   private void addUserData() {
+       user = FirebaseAuth.getInstance().getCurrentUser();
+       if (user != null) {
+           String userUid = user.getUid();
+           mDatabase.child("Users").child(userUid).child("gender").setValue(gender);
+           mDatabase.child("Users").child(userUid).child("age").setValue(age);
+           mDatabase.child("Users").child(userUid).child("goal").setValue(goal);
+           mDatabase.child("Users").child(userUid).child("height").setValue(height);
+           mDatabase.child("Users").child(userUid).child("activity_level").setValue(activityLevel);
+           mDatabase.child("Users").child(userUid).child("weight").setValue(weight);
+           mDatabase.child("Users").child(userUid).child("bmr").setValue(bmr);
+           mDatabase.child("Users").child(userUid).child("target").setValue(targetKcal);
+
+
+       }
+   }
+
 
     private void setUpGUI(int questionNum, String[] valuesArr) {
         upperText.setText(questions[questionNum]);
