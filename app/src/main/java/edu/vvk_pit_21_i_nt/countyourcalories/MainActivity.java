@@ -32,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     Spinner spinner;
@@ -57,7 +58,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        signIn();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            signIn();
+        }
+        else {
+            Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+            startActivity(intent);
+        }
+        //signIn();
 
         upperText = findViewById(R.id.textView2);
         spinner = findViewById(R.id.gender_spinner);
@@ -165,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         IdpResponse response = result.getIdpResponse();
         if (result.getResultCode() == RESULT_OK) {
             // Successfully signed in
-            user = FirebaseAuth.getInstance().getCurrentUser();
+            //user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null) {
                 String userUid = user.getUid();
                 mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -175,6 +184,10 @@ public class MainActivity extends AppCompatActivity {
                             mDatabase.child("Users").child(userUid).child("user_name").setValue(user.getDisplayName());
                             mDatabase.child("Users").child(userUid).child("user_email").setValue(user.getEmail());
                             Log.v("Prisijungimas", userUid);
+                        }
+                        else {
+                            Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+                            startActivity(intent);
                         }
                     }
 
@@ -186,6 +199,12 @@ public class MainActivity extends AppCompatActivity {
             }
 
         } else {
+            if (response == null) {
+                signIn();
+            }
+            else {
+                Log.e("Prisijungimo klaida", response.getError().getMessage());
+            }
             // Sign in failed. If response is null the user canceled the
             // sign-in flow using the back button. Otherwise check
             // response.getError().getErrorCode() and handle the error.
@@ -210,7 +229,6 @@ public class MainActivity extends AppCompatActivity {
         signoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user  = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
                     AuthUI.getInstance()
                             .signOut(MainActivity.this)
