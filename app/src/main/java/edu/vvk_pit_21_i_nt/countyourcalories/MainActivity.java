@@ -37,6 +37,7 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
     Spinner spinner;
     Button buttonNext;
+    Button buttonBack;
     TextView upperText;
     EditText inputText;
     Button signoutButton;
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         upperText = findViewById(R.id.textView2);
         spinner = findViewById(R.id.gender_spinner);
         buttonNext = findViewById(R.id.button_next);
+        buttonBack = findViewById(R.id.button_back);
         inputText = findViewById(R.id.inputText);
         signoutButton = findViewById(R.id.signout_button);
         signOut();
@@ -82,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
                     gender = spinner.getSelectedItem().toString();
                     preMenuStage++;
                     setUpGUI(1, mainGoal);
+                    buttonBack.setVisibility(View.VISIBLE);
                     break;
                 case 1:
                     String goalString = spinner.getSelectedItem().toString();
@@ -160,7 +163,45 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         });
+
+        buttonBack.setOnClickListener(v -> {
+            if(preMenuStage != 0) {
+                switch(preMenuStage) {
+                    case 1:
+                        setUpGUI(0, genderList);
+                        preMenuStage--;
+                        buttonBack.setVisibility(View.INVISIBLE);
+                        break;
+                    case 2:
+                        setUpGUI(1, mainGoal);
+                        preMenuStage--;
+                        break;
+                    case 3:
+                        setUpGUI(2, activityDesc);
+                        preMenuStage--;
+                        break;
+                    case 4:
+                        setUpGUI(3, "Amžius");
+                        preMenuStage--;
+                        break;
+                    case 5:
+                        setUpGUI(4, "Ūgis");
+                        preMenuStage--;
+                        break;
+                    case 6:
+                        setUpGUI(5, "Svoris");
+                        preMenuStage--;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+
+
+
     }
+
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(),
             result -> onSignInResult(result)
@@ -231,7 +272,6 @@ public class MainActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                 }
                             });
-
                 }
                 signIn();
             }
