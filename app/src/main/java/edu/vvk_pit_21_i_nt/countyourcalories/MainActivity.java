@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, MenuActivity.class);
             startActivity(intent);
         }
-        //signIn();
+
 
         upperText = findViewById(R.id.textView2);
         spinner = findViewById(R.id.gender_spinner);
