@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.util.Pair;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -15,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
@@ -37,6 +39,7 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
     Spinner spinner;
     Button buttonNext;
+    Button buttonBack;
     TextView upperText;
     EditText inputText;
     Button signoutButton;
@@ -74,17 +77,20 @@ public class MainActivity extends AppCompatActivity {
         upperText = findViewById(R.id.textView2);
         spinner = findViewById(R.id.gender_spinner);
         buttonNext = findViewById(R.id.button_next);
+        buttonBack = findViewById(R.id.button_back);
         inputText = findViewById(R.id.inputText);
         signoutButton = findViewById(R.id.signout_button);
         signOut();
         setUpGUI(0, genderList);
 
         buttonNext.setOnClickListener(v -> {
+            String inputString;
             switch (preMenuStage) {
                 case 0:
                     gender = spinner.getSelectedItem().toString();
                     preMenuStage++;
                     setUpGUI(1, mainGoal);
+                    buttonBack.setVisibility(View.VISIBLE);
                     break;
                 case 1:
                     String goalString = spinner.getSelectedItem().toString();
@@ -134,36 +140,96 @@ public class MainActivity extends AppCompatActivity {
                     inputText.setVisibility(View.VISIBLE);
                     break;
                 case 3:
-                    age = Integer.parseInt(inputText.getText().toString());
-                    preMenuStage++;
-                    setUpGUI(4, "Ūgis");
+                    inputString = inputText.getText().toString();
+                    if(!inputString.isEmpty()) {
+                        age = Integer.parseInt(inputString);
+                        preMenuStage++;
+                        setUpGUI(4, "Svoris");
+                    }
+                    else {
+                        Toast.makeText(MainActivity.this, "Nepalikite tuščio laukelio!", Toast.LENGTH_SHORT).show();
+                    }
                     break;
                 case 4:
-                    weight = Float.parseFloat(inputText.getText().toString());
-                    preMenuStage++;
-                    setUpGUI(5, "Svoris");
+                    inputString = inputText.getText().toString();
+                    if(!inputString.isEmpty()) {
+                        weight = Float.parseFloat(inputText.getText().toString());
+                        preMenuStage++;
+                        setUpGUI(5, "Ūgis");
+                    }
+                    else {
+                        Toast.makeText(MainActivity.this, "Nepalikite tuščio laukelio!", Toast.LENGTH_SHORT).show();
+                    }
                     break;
                 case 5:
-                    height = Integer.parseInt(inputText.getText().toString());
-                    bmr = calcBmr(weight, height, age, gender);
-                    targetKcal = calcTargetKcal(bmr, activityLevel, difference);
-                    Log.d("TAG", "gender " + gender + ", age " + age + "," +
-                            " goal " + goal + ", height " + height + ", activityLevel " +
-                            activityLevel + ", weight " + weight + ", bmr " + bmr + ", target " + targetKcal);
-                    addUserData();
+                    inputString = inputText.getText().toString();
+                    if(!inputString.equals("")) {
+                        height = Integer.parseInt(inputText.getText().toString());
+                        bmr = calcBmr(weight, height, age, gender);
+                        targetKcal = calcTargetKcal(bmr, activityLevel, difference);
+                        Log.d("TAG", "gender " + gender + ", age " + age + "," +
+                                " goal " + goal + ", height " + height + ", activityLevel " +
+                                activityLevel + ", weight " + weight + ", bmr " + bmr + ", target " + targetKcal);
 
 
-                    // Moves to the next activity
+                        addUserData();
 
-                    Intent intent = new Intent(MainActivity.this, MenuActivity.class);
-                    startActivity(intent);
-                    finish();
+
+                        // Moves to the next activity
+
+                        Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                    else {
+                        Toast.makeText(MainActivity.this, "Nepalikite tuščio laukelio!", Toast.LENGTH_SHORT).show();
+                    }
                     break;
                 default:
                     break;
             }
         });
+
+        buttonBack.setOnClickListener(v -> {
+            if(preMenuStage != 0) {
+                switch(preMenuStage) {
+                    case 1:
+                        setUpGUI(0, genderList);
+                        preMenuStage--;
+                        buttonBack.setVisibility(View.INVISIBLE);
+                        break;
+                    case 2:
+                        setUpGUI(1, mainGoal);
+                        preMenuStage--;
+                        break;
+                    case 3:
+                        setUpGUI(2, activityDesc);
+                        spinner.setVisibility(View.VISIBLE);
+                        inputText.setVisibility(View.INVISIBLE);
+                        preMenuStage--;
+                        break;
+                    case 4:
+                        setUpGUI(3, "Amžius");
+                        preMenuStage--;
+                        break;
+                    case 5:
+                        setUpGUI(4, "Ūgis");
+                        preMenuStage--;
+                        break;
+                    case 6:
+                        setUpGUI(5, "Svoris");
+                        preMenuStage--;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+
+
+
     }
+
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(),
             result -> onSignInResult(result)
@@ -234,7 +300,6 @@ public class MainActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                 }
                             });
-
                 }
                 signIn();
             }
@@ -285,5 +350,44 @@ public class MainActivity extends AppCompatActivity {
 
     private int calcTargetKcal(float bmr, float activityLevel, int difference) {
         return (int) (bmr * activityLevel) + difference;
+    }
+
+    private int calcTargetProtein(int goal,  int targetKcal) {
+        int proteins;
+        if (goal == 0) {
+            proteins = targetKcal / 100 * 20;
+        } else if (goal == 1){
+            proteins = targetKcal / 100 * 30;
+        } else {
+            proteins = targetKcal/ 100 * 20;
+        }
+
+        return proteins;
+    }
+
+    private int calcTargetCarbs(int goal,  int targetKcal) {
+        int carbs;
+        if (goal == 0) {
+            carbs = targetKcal / 100 * 55;
+        } else if (goal == 1){
+            carbs = targetKcal / 100 * 45;
+        } else {
+            carbs = targetKcal/ 100 * 55;
+        }
+
+        return carbs;
+    }
+
+    private int calcTargetFat(int goal,  int targetKcal) {
+        int fat;
+        if (goal == 0) {
+            fat = targetKcal / 100 * 25;
+        } else if (goal == 1){
+            fat = targetKcal / 100 * 25;
+        } else {
+            fat = targetKcal/ 100 * 25;
+        }
+
+        return fat;
     }
 }
