@@ -114,4 +114,43 @@ public class MenuActivity extends AppCompatActivity {
         };
         mDatabase.addValueEventListener(postListener);
     }
+
+    private int calcTargetProtein(int goal, int targetKcal) {
+        int proteins;
+        if (goal == 0) {
+            proteins = targetKcal / 100 * 20;
+        } else if (goal == 1) {
+            proteins = targetKcal / 100 * 30;
+        } else {
+            proteins = targetKcal / 100 * 20;
+        }
+
+        return proteins;
+    }
+
+    private int calcTargetCarbs(int goal, int targetKcal) {
+        int carbs;
+        if (goal == 0) {
+            carbs = targetKcal / 100 * 55;
+        } else if (goal == 1) {
+            carbs = targetKcal / 100 * 45;
+        } else {
+            carbs = targetKcal / 100 * 55;
+        }
+
+        return carbs;
+    }
+
+    private int calcTargetFat(int goal, int targetKcal) {
+        int fat;
+        if (goal == 0) {
+            fat = targetKcal / 100 * 25;
+        } else if (goal == 1) {
+            fat = targetKcal / 100 * 25;
+        } else {
+            fat = targetKcal / 100 * 25;
+        }
+
+        return fat;
+    }
 }

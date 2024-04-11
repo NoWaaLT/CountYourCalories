@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     Button buttonNext;
     Button buttonBack;
     TextView upperText;
+    TextView progress;
     EditText inputText;
     Button signoutButton;
     FirebaseUser user;
@@ -61,17 +62,17 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        user = FirebaseAuth.getInstance().getCurrentUser();
+//   this     mDatabase = FirebaseDatabase.getInstance().getReference();
+//        user = FirebaseAuth.getInstance().getCurrentUser();
         
 
-        if (user == null) {
-            signIn();
-        }
-        else {
-            Intent intent = new Intent(MainActivity.this, MenuActivity.class);
-            startActivity(intent);
-        }
+//     this   if (user == null) {
+//            signIn();
+//        }
+//        else {
+//            Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+//            startActivity(intent);
+//        }
 
 
         upperText = findViewById(R.id.textView2);
@@ -80,9 +81,10 @@ public class MainActivity extends AppCompatActivity {
         buttonBack = findViewById(R.id.button_back);
         inputText = findViewById(R.id.inputText);
         signoutButton = findViewById(R.id.signout_button);
-        signOut();
+        progress = findViewById(R.id.textViewSteps);
+//        signOut();
         setUpGUI(0, genderList);
-
+        progress.setText((preMenuStage + 1) + " of 6 steps");
         buttonNext.setOnClickListener(v -> {
             String inputString;
             switch (preMenuStage) {
@@ -91,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
                     preMenuStage++;
                     setUpGUI(1, mainGoal);
                     buttonBack.setVisibility(View.VISIBLE);
+                    progress.setText((preMenuStage + 1) + " of 6 steps");
                     break;
                 case 1:
                     String goalString = spinner.getSelectedItem().toString();
@@ -112,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     preMenuStage++;
                     setUpGUI(2, activityDesc);
+                    progress.setText((preMenuStage + 1) + " of 6 steps");
                     break;
                 case 2:
                     String activityString = spinner.getSelectedItem().toString();
@@ -136,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     preMenuStage++;
                     setUpGUI(3, "Amžius");
+                    progress.setText((preMenuStage + 1) + " of 6 steps");
                     spinner.setVisibility(View.INVISIBLE);
                     inputText.setVisibility(View.VISIBLE);
                     break;
@@ -145,17 +150,22 @@ public class MainActivity extends AppCompatActivity {
                         age = Integer.parseInt(inputString);
                         preMenuStage++;
                         setUpGUI(4, "Svoris");
+                        progress.setText((preMenuStage + 1) + " of 6 steps");
                     }
                     else {
                         Toast.makeText(MainActivity.this, "Nepalikite tuščio laukelio!", Toast.LENGTH_SHORT).show();
                     }
+
+
                     break;
                 case 4:
+
                     inputString = inputText.getText().toString();
                     if(!inputString.isEmpty()) {
                         weight = Float.parseFloat(inputText.getText().toString());
                         preMenuStage++;
                         setUpGUI(5, "Ūgis");
+                        progress.setText((preMenuStage + 1) + " of 6 steps");
                     }
                     else {
                         Toast.makeText(MainActivity.this, "Nepalikite tuščio laukelio!", Toast.LENGTH_SHORT).show();
@@ -171,15 +181,15 @@ public class MainActivity extends AppCompatActivity {
                                 " goal " + goal + ", height " + height + ", activityLevel " +
                                 activityLevel + ", weight " + weight + ", bmr " + bmr + ", target " + targetKcal);
 
-
-                        addUserData();
+                        progress.setText((preMenuStage + 1) + " of 6 steps");
+// this                       addUserData();
 
 
                         // Moves to the next activity
 
-                        Intent intent = new Intent(MainActivity.this, MenuActivity.class);
-                        startActivity(intent);
-                        finish();
+//      this                  Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+//                        startActivity(intent);
+//                        finish();
                     }
                     else {
                         Toast.makeText(MainActivity.this, "Nepalikite tuščio laukelio!", Toast.LENGTH_SHORT).show();
@@ -328,6 +338,7 @@ public class MainActivity extends AppCompatActivity {
         upperText.setText(questions[questionNum]);
         inputText.setText("");
         inputText.setHint(name);
+//        progress.setText((preMenuStage + 1));
     }
 
     private float calcBmr(float weight, int height, int age, String gender) {
