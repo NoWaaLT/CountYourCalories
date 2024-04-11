@@ -3,6 +3,7 @@ package edu.vvk_pit_21_i_nt.countyourcalories;
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -22,12 +23,19 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class MenuActivity extends AppCompatActivity {
 
     ActivityMenuBinding binding;
+    public DatabaseReference mDatabase;
+    public UserDb userDb;
+    public FirebaseUser user;
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -38,6 +46,7 @@ public class MenuActivity extends AppCompatActivity {
         binding = ActivityMenuBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         replaceFragment(new MyDiaryFragment());
+        getUserData();
         binding.bottomNavigationView.setOnItemSelectedListener(Item -> {
 
             int itemId = Item.getItemId();
@@ -82,5 +91,27 @@ public class MenuActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.frame_layout,fragment);
         fragmentTransaction.commit();
 
+    }
+    void getUserData() {
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference("Users/"+ user.getUid());
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+
+                userDb = dataSnapshot.getValue(UserDb.class);
+                assert userDb != null;
+                Log.d("Naudotojo duomenys", userDb.displayName);
+                // ..
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("Firebase klaida", "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        mDatabase.addValueEventListener(postListener);
     }
 }
