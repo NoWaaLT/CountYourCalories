@@ -245,8 +245,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (!dataSnapshot.hasChild("Users/"+userUid)) {
-                            UserDb userDb = new UserDb(user.getEmail(), user.getDisplayName(), (long) weight, height, activityLevel, age, gender, (long) bmr, goal, targetKcal);
-                            mDatabase.child("Users").child(userUid).setValue(userDb);
+
+                            mDatabase.child("Users").child(userUid).child("Display Name").setValue(user.getDisplayName());
+                            mDatabase.child("Users").child(userUid).child("Email").setValue(user.getEmail());
                             Log.v("Prisijungimas", userUid);
                         }
                         else {
@@ -310,16 +311,8 @@ public class MainActivity extends AppCompatActivity {
        user = FirebaseAuth.getInstance().getCurrentUser();
        if (user != null) {
            String userUid = user.getUid();
-           mDatabase.child("Users").child(userUid).child("gender").setValue(gender);
-           mDatabase.child("Users").child(userUid).child("age").setValue(age);
-           mDatabase.child("Users").child(userUid).child("goal").setValue(goal);
-           mDatabase.child("Users").child(userUid).child("height").setValue(height);
-           mDatabase.child("Users").child(userUid).child("activity_level").setValue(activityLevel);
-           mDatabase.child("Users").child(userUid).child("weight").setValue(weight);
-           mDatabase.child("Users").child(userUid).child("bmr").setValue(bmr);
-           mDatabase.child("Users").child(userUid).child("target").setValue(targetKcal);
-
-
+           UserDb userDb = new UserDb(user.getEmail(), user.getDisplayName(), (long) weight, height, activityLevel, age, gender, (long) bmr, goal, targetKcal);
+           mDatabase.child("Users").child(userUid).setValue(userDb);
        }
    }
 
