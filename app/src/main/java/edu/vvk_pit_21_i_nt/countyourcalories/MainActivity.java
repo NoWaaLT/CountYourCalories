@@ -245,8 +245,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (!dataSnapshot.hasChild("Users/"+userUid)) {
-                            mDatabase.child("Users").child(userUid).child("user_name").setValue(user.getDisplayName());
-                            mDatabase.child("Users").child(userUid).child("user_email").setValue(user.getEmail());
+                            UserDb userDb = new UserDb(user.getEmail(), user.getDisplayName(), (long) weight, height, activityLevel, age, gender, (long) bmr, goal, targetKcal);
+                            mDatabase.child("Users").child(userUid).setValue(userDb);
                             Log.v("Prisijungimas", userUid);
                         }
                         else {
@@ -284,6 +284,7 @@ public class MainActivity extends AppCompatActivity {
         Intent signInIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
+                //.setIsSmartLockEnabled(false, true)
                 .build();
         signInLauncher.launch(signInIntent);
 
