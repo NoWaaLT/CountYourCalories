@@ -1,6 +1,5 @@
 package edu.vvk_pit_21_i_nt.countyourcalories;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,11 +7,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import android.util.Pair;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.util.Log;
@@ -29,29 +28,23 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     Spinner spinner;
     Button buttonNext;
     Button buttonBack;
     TextView upperText;
-    TextView progress;
+    TextView progressText;
     EditText inputText;
     Button signoutButton;
+    ProgressBar progressBar;
     FirebaseUser user;
     private DatabaseReference mDatabase;
-    final String[] genderList = {"Vyras", "Moteris"};
-    final String[] mainGoal = {"Auginti masę", "Numesti svorio", "Išlaikyti svorį"};
-    final String[] activityDesc = {"0-1", "2-3", "4-5", "6-7", "2 k./d."};
-    final String[] questions = {"Identifikuokite save", "Pasirinkite savo tikslą", "Treniruočių skaičius","Įveskite savo amžių", "Įveskite savo svorį", "Įveskite savo ūgį (CM)"};
-
-    String gender;
+    String gender, stepProgress;
     int goal, age, height, targetKcal, difference;
     float activityLevel, weight, bmr;
 
@@ -81,19 +74,20 @@ public class MainActivity extends AppCompatActivity {
         buttonBack = findViewById(R.id.button_back);
         inputText = findViewById(R.id.inputText);
         signoutButton = findViewById(R.id.signout_button);
-        progress = findViewById(R.id.textViewSteps);
+        progressText = findViewById(R.id.textViewSteps);
+        progressBar = findViewById(R.id.entryProgressBar);
+
 //        signOut();
-        setUpGUI(0, genderList);
-        progress.setText((preMenuStage + 1) + " of 6 steps");
+        setUpGUI(0, getResources().getStringArray(R.array.gender_list));
+
         buttonNext.setOnClickListener(v -> {
             String inputString;
             switch (preMenuStage) {
                 case 0:
                     gender = spinner.getSelectedItem().toString();
                     preMenuStage++;
-                    setUpGUI(1, mainGoal);
+                    setUpGUI(1, getResources().getStringArray(R.array.main_goal));
                     buttonBack.setVisibility(View.VISIBLE);
-                    progress.setText((preMenuStage + 1) + " of 6 steps");
                     break;
                 case 1:
                     String goalString = spinner.getSelectedItem().toString();
@@ -114,12 +108,12 @@ public class MainActivity extends AppCompatActivity {
                             break;
                     }
                     preMenuStage++;
-                    setUpGUI(2, activityDesc);
-                    progress.setText((preMenuStage + 1) + " of 6 steps");
+                    setUpGUI(2, getResources().getStringArray(R.array.activity_desc));
                     break;
                 case 2:
                     String activityString = spinner.getSelectedItem().toString();
                     switch (activityString) {
+
                         case "0-1":
                             activityLevel = 1.2f;
                             break;
@@ -139,8 +133,7 @@ public class MainActivity extends AppCompatActivity {
                             break;
                     }
                     preMenuStage++;
-                    setUpGUI(3, "Amžius");
-                    progress.setText((preMenuStage + 1) + " of 6 steps");
+                    setUpGUI(3, getResources().getString(R.string.age));
                     spinner.setVisibility(View.INVISIBLE);
                     inputText.setVisibility(View.VISIBLE);
                     break;
@@ -149,39 +142,30 @@ public class MainActivity extends AppCompatActivity {
                     if(!inputString.isEmpty()) {
                         age = Integer.parseInt(inputString);
                         preMenuStage++;
-                        setUpGUI(4, "Svoris");
-                        progress.setText((preMenuStage + 1) + " of 6 steps");
+                        setUpGUI(4, getResources().getString(R.string.weight));
                     }
                     else {
-                        Toast.makeText(MainActivity.this, "Nepalikite tuščio laukelio!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, getResources().getString(R.string.emptyField), Toast.LENGTH_SHORT).show();
                     }
-
-
                     break;
                 case 4:
-
                     inputString = inputText.getText().toString();
                     if(!inputString.isEmpty()) {
                         weight = Float.parseFloat(inputText.getText().toString());
                         preMenuStage++;
-                        setUpGUI(5, "Ūgis");
-                        progress.setText((preMenuStage + 1) + " of 6 steps");
+                        setUpGUI(5, getResources().getString(R.string.height));
                     }
                     else {
-                        Toast.makeText(MainActivity.this, "Nepalikite tuščio laukelio!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, getResources().getString(R.string.emptyField), Toast.LENGTH_SHORT).show();
                     }
                     break;
                 case 5:
                     inputString = inputText.getText().toString();
-                    if(!inputString.equals("")) {
+                    if(!inputString.isEmpty()) {
                         height = Integer.parseInt(inputText.getText().toString());
                         bmr = calcBmr(weight, height, age, gender);
                         targetKcal = calcTargetKcal(bmr, activityLevel, difference);
-                        Log.d("TAG", "gender " + gender + ", age " + age + "," +
-                                " goal " + goal + ", height " + height + ", activityLevel " +
-                                activityLevel + ", weight " + weight + ", bmr " + bmr + ", target " + targetKcal);
 
-                        progress.setText((preMenuStage + 1) + " of 6 steps");
 // this                       addUserData();
 
 
@@ -192,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
 //                        finish();
                     }
                     else {
-                        Toast.makeText(MainActivity.this, "Nepalikite tuščio laukelio!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, getResources().getString(R.string.emptyField), Toast.LENGTH_SHORT).show();
                     }
                     break;
                 default:
@@ -204,40 +188,37 @@ public class MainActivity extends AppCompatActivity {
             if(preMenuStage != 0) {
                 switch(preMenuStage) {
                     case 1:
-                        setUpGUI(0, genderList);
                         preMenuStage--;
+                        setUpGUI(0, getResources().getStringArray(R.array.gender_list));
                         buttonBack.setVisibility(View.INVISIBLE);
                         break;
                     case 2:
-                        setUpGUI(1, mainGoal);
                         preMenuStage--;
+                        setUpGUI(1, getResources().getStringArray(R.array.main_goal));
                         break;
                     case 3:
-                        setUpGUI(2, activityDesc);
+                        preMenuStage--;
+                        setUpGUI(2, getResources().getStringArray(R.array.activity_desc));
                         spinner.setVisibility(View.VISIBLE);
                         inputText.setVisibility(View.INVISIBLE);
-                        preMenuStage--;
                         break;
                     case 4:
-                        setUpGUI(3, "Amžius");
                         preMenuStage--;
+                        setUpGUI(3, getResources().getString(R.string.age));
                         break;
                     case 5:
-                        setUpGUI(4, "Ūgis");
                         preMenuStage--;
+                        setUpGUI(4, getResources().getString(R.string.height));
                         break;
                     case 6:
-                        setUpGUI(5, "Svoris");
                         preMenuStage--;
+                        setUpGUI(5, getResources().getString(R.string.weight));
                         break;
                     default:
                         break;
                 }
             }
         });
-
-
-
     }
 
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
@@ -299,7 +280,6 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         signInLauncher.launch(signInIntent);
 
-
     }
     void signOut() {
         signoutButton.setOnClickListener(new View.OnClickListener() {
@@ -328,17 +308,20 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void setUpGUI(int questionNum, String[] valuesArr) {
-        upperText.setText(questions[questionNum]);
+        upperText.setText(getResources().getStringArray(R.array.questions)[questionNum]);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.custom_dropdown_item, valuesArr);
         adapter.setDropDownViewResource(R.layout.custom_dropdown_item);
         spinner.setAdapter(adapter);
+        progressStepsPrint();
+        progressBar.setProgress((int) (100 * ((float) (questionNum + 1) / 6)));
     }
 
     private void setUpGUI(int questionNum, String name) {
-        upperText.setText(questions[questionNum]);
+        upperText.setText(getResources().getStringArray(R.array.questions)[questionNum]);
         inputText.setText("");
         inputText.setHint(name);
-//        progress.setText((preMenuStage + 1));
+        progressStepsPrint();
+        progressBar.setProgress((int) (100 * ((float) (questionNum + 1) / 6)));
     }
 
     private float calcBmr(float weight, int height, int age, String gender) {
@@ -356,6 +339,12 @@ public class MainActivity extends AppCompatActivity {
     private int calcTargetKcal(float bmr, float activityLevel, int difference) {
         return (int) (bmr * activityLevel) + difference;
     }
+
+    private void progressStepsPrint() {
+        stepProgress = (preMenuStage + 1) + getResources().getString(R.string.totalSteps);
+        progressText.setText(stepProgress);
+    }
+
 
     private int calcTargetProtein(int goal,  int targetKcal) {
         int proteins;
@@ -387,7 +376,7 @@ public class MainActivity extends AppCompatActivity {
         int fat;
         if (goal == 0) {
             fat = targetKcal / 100 * 25;
-        } else if (goal == 1){
+        } else if (goal == 1) {
             fat = targetKcal / 100 * 25;
         } else {
             fat = targetKcal/ 100 * 25;
