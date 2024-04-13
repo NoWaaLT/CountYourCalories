@@ -7,6 +7,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.util.Calendar;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,10 +53,13 @@ public class MyDiaryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
 
 
     }
@@ -60,9 +67,53 @@ public class MyDiaryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_diary, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_my_diary, container, false);
+
+
+        TextView textView2 = (TextView) view.findViewById(R.id.textView2);
+        String timeOfDay = TimeOfDayDeterminer();
+        textView2.setText("Good " + timeOfDay + "!");
+
+        TextView Diena1 = (TextView)  view.findViewById(R.id.textView10);
+        TextView Diena2 = (TextView)  view.findViewById(R.id.textView21);
+        TextView Diena3 = (TextView)  view.findViewById(R.id.textView6);
+        TextView Diena4 = (TextView)  view.findViewById(R.id.textView22);
+        TextView Diena5 = (TextView)  view.findViewById(R.id.textView7);
+        TextView Diena6 = (TextView)  view.findViewById(R.id.textView8);
+        TextView Diena7 = (TextView)  view.findViewById(R.id.textView9);
+        TextView Diena11 = (TextView)  view.findViewById(R.id.textView11);
+        TextView Diena12 = (TextView)  view.findViewById(R.id.textView12);
+        TextView Diena13 = (TextView)  view.findViewById(R.id.textView13);
+        TextView Diena14 = (TextView)  view.findViewById(R.id.textView14);
+        TextView Diena15 = (TextView)  view.findViewById(R.id.textView15);
+        TextView Diena16 = (TextView)  view.findViewById(R.id.textView16);
+        TextView Diena17 = (TextView)  view.findViewById(R.id.textView17);
+        int[] days = getLastSevenDaysOfMonth();
+        Diena1.setText(Integer.toString(days[6]));
+        Diena2.setText(Integer.toString(days[5]));
+        Diena3.setText(Integer.toString(days[4]));
+        Diena4.setText(Integer.toString(days[3]));
+        Diena5.setText(Integer.toString(days[2]));
+        Diena6.setText(Integer.toString(days[1]));
+        Diena7.setText(Integer.toString(days[0]));
+        String[] days2 = getLastSixDays();
+        Diena11.setText(days2[6]);
+        Diena12.setText(days2[5]);
+        Diena13.setText(days2[4]);
+        Diena14.setText(days2[3]);
+        Diena15.setText(days2[2]);
+        Diena16.setText(days2[1]);
+        Diena17.setText(days2[0]);
+
+
+
+        return view;
+
     }
+
+
+
 
     private int calcTargetProtein(int goal, int targetKcal) {
         int proteins;
@@ -101,5 +152,61 @@ public class MyDiaryFragment extends Fragment {
         }
 
         return fat;
+    }
+    private String TimeOfDayDeterminer (){
+
+            Calendar calendar = Calendar.getInstance();
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+
+            if (hour >= 6 && hour < 12) {
+                return "Morning";
+            } else if (hour >= 12 && hour < 18) {
+                return "Day";
+            } else if (hour >= 18 && hour < 22) {
+                return "Evening";
+            } else {
+                return "Night";
+            }
+
+    }
+
+    public static int[] getLastSevenDaysOfMonth() {
+        int[] daysOfMonth = new int[7];
+        Calendar calendar = Calendar.getInstance();
+
+        // Get today's day of the month
+        int today = calendar.get(Calendar.DAY_OF_MONTH);
+        daysOfMonth[0] = today;
+
+        // Get the day of the month for the last six days
+        for (int i = 1; i < 7; i++) {
+            calendar.add(Calendar.DAY_OF_MONTH, -1); // Go back one day
+            daysOfMonth[i] = calendar.get(Calendar.DAY_OF_MONTH);
+        }
+
+        return daysOfMonth;
+    }
+
+    public static String[] getLastSixDays() {
+        String[] weekDays = new String[7];
+        Calendar calendar = Calendar.getInstance();
+
+        // Get today's day of the week
+        int today = calendar.get(Calendar.DAY_OF_WEEK);
+        weekDays[0] = getFirstLetterOfDayOfWeek(today);
+
+        // Get the last six days
+        for (int i = 1; i < 7; i++) {
+            calendar.add(Calendar.DAY_OF_WEEK, -1);
+            int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+            weekDays[i] = getFirstLetterOfDayOfWeek(dayOfWeek);
+        }
+
+        return weekDays;
+    }
+
+    private static String getFirstLetterOfDayOfWeek(int dayOfWeek) {
+        String[] dayNames = {"S", "M", "T", "W", "T", "F", "S"};
+        return dayNames[dayOfWeek - 1];
     }
 }
