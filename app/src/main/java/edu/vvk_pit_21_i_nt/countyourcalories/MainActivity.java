@@ -93,15 +93,15 @@ public class MainActivity extends AppCompatActivity {
                 case 1:
                     String goalString = spinner.getSelectedItem().toString();
                     switch (goalString) {
-                        case "Auginti masę":
+                        case "Gain weight":
                             goal = 0;
                             difference = 300;
                             break;
-                        case "Numesti svorio":
+                        case "Lose weight":
                             goal = 1;
                             difference = -300;
                             break;
-                        case "Išlaikyti svorį":
+                        case "Maintain weight":
                             goal = 2;
                             difference = 0;
                             break;
@@ -230,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
         IdpResponse response = result.getIdpResponse();
         if (result.getResultCode() == RESULT_OK) {
             // Successfully signed in
-            //user = FirebaseAuth.getInstance().getCurrentUser();
+            // user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null) {
                 String userUid = user.getUid();
                 mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -326,7 +326,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private float calcBmr(float weight, int height, int age, String gender) {
-        return (gender.equals("Vyras")) ? calcManBMR(weight, height, age) : calcWomanBMR(weight, height, age);
+        String[] genderArray = getResources().getStringArray(R.array.gender_list);
+        return (gender.equals(genderArray[0]) ? calcManBMR(weight, height, age) : calcWomanBMR(weight, height, age));
     }
 
     private float calcManBMR(float weight, int height, int age) {
