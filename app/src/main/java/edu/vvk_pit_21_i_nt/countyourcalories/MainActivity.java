@@ -222,6 +222,7 @@ public class MainActivity extends AppCompatActivity {
                 preMenuStage++;
                 setUpGUI(1, getResources().getStringArray(R.array.main_goal));
                 buttonBack.setVisibility(View.VISIBLE);
+                backArrow.setVisibility(View.VISIBLE);
                 break;
             case 1:
                 String goalString = spinner.getSelectedItem().toString();
@@ -322,6 +323,7 @@ public class MainActivity extends AppCompatActivity {
                     preMenuStage--;
                     setUpGUI(0, getResources().getStringArray(R.array.gender_list));
                     buttonBack.setVisibility(View.INVISIBLE);
+                    backArrow.setVisibility(View.INVISIBLE);
                     break;
                 case 2:
                     preMenuStage--;
