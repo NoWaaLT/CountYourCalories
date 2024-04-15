@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void progressStepsPrint() {
-        stepProgress = (preMenuStage + 1) + getResources().getString(R.string.totalSteps);
+        stepProgress = (preMenuStage + 1) + " " + getResources().getString(R.string.totalSteps);
         progressText.setText(stepProgress);
     }
 
@@ -299,9 +299,7 @@ public class MainActivity extends AppCompatActivity {
                     bmr = calcBmr(weight, height, age, gender);
                     targetKcal = calcTargetKcal(bmr, activityLevel, difference);
 
-                         addUserData();
-
-
+                    addUserData();
                     // Moves to the next activity
 
                         Intent intent = new Intent(MainActivity.this, MenuActivity.class);
