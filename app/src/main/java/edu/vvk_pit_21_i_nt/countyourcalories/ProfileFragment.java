@@ -9,8 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.Objects;
-
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ProfileFragment#newInstance} factory method to
@@ -26,7 +24,7 @@ public class ProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private UserDb userDb;
+
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -58,10 +56,12 @@ public class ProfileFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
 
         }
-        //Objektas, kuris saugo naudotojo duomenis
-        userDb = ((MenuActivity) requireActivity()).userDb;
-        //long sc = userDb.height;
-        //Log.d("Svoris", String.valueOf(sc));
+        //Naudotojo duomenu keitimas
+        //((MenuActivity) requireActivity()).updateUserData("age", 56);
+        //Duomenu paemimas is MenuActivity naudotojo objekto
+        //String email = ((MenuActivity) requireActivity()).userDb.getEmail();
+        //.d("Email", email);
+        //Log.d("Age", String.valueOf(age));
     }
 
     @Override
