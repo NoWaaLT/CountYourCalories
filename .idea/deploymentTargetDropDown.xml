@@ -9,24 +9,13 @@
               <type value="RUNNING_DEVICE_TARGET" />
               <deviceKey>
                 <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\vytau\.android\avd\Pixel_3a_API_Tiramisu.avd" />
+                  <type value="SERIAL_NUMBER" />
+                  <value value="29836f48e20d7ece" />
                 </Key>
               </deviceKey>
             </Target>
           </runningDeviceTargetSelectedWithDropDown>
-          <targetSelectedWithDropDown>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\vytau\.android\avd\Pixel_3a_API_Tiramisu.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-04-15T17:57:56.860038600Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-04-16T20:34:32.181668300Z" />
         </State>
       </entry>
     </value>

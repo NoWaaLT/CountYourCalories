@@ -1,26 +1,16 @@
 package edu.vvk_pit_21_i_nt.countyourcalories;
 
 import android.annotation.SuppressLint;
-import android.content.ClipData;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
-import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import edu.vvk_pit_21_i_nt.countyourcalories.databinding.ActivityMainBinding;
 import edu.vvk_pit_21_i_nt.countyourcalories.databinding.ActivityMenuBinding;
 
-import com.google.android.material.bottomnavigation.BottomNavigationItemView;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +18,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 
 public class MenuActivity extends AppCompatActivity {
@@ -46,6 +38,8 @@ public class MenuActivity extends AppCompatActivity {
         binding = ActivityMenuBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         replaceFragment(new MyDiaryFragment());
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference("Users/"+ user.getUid());
         getUserData();
         binding.bottomNavigationView.setOnItemSelectedListener(Item -> {
 
@@ -92,18 +86,16 @@ public class MenuActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
     }
-    void getUserData() {
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance().getReference("Users/"+ user.getUid());
-        ValueEventListener postListener = new ValueEventListener() {
+    protected void getUserData() {
+
+        ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-
                 userDb = dataSnapshot.getValue(UserDb.class);
-                assert userDb != null;
-                Log.d("Naudotojo duomenys", userDb.displayName);
-                // ..
+                if (userDb != null) {
+                    Log.d("Naudotojo duomenys", userDb.getDisplayName());
+                }
+
             }
 
             @Override
@@ -112,7 +104,40 @@ public class MenuActivity extends AppCompatActivity {
                 Log.w("Firebase klaida", "loadPost:onCancelled", databaseError.toException());
             }
         };
-        mDatabase.addValueEventListener(postListener);
+        mDatabase.addValueEventListener(userListener);
+    }
+    protected void updateUserData(String key, String val) {
+        if (Objects.equals(key, "gender")) {
+            userDb.setGender(val);
+            mDatabase.child(key).setValue(val);
+        }
+    }
+    protected void updateUserData(String key, float val) {
+        if (Objects.equals(key, "weight")) {
+            userDb.setWeight(val);
+        }
+        else if (Objects.equals(key, "activityLevel")) {
+            userDb.setActivityLevel(val);;
+        }
+        else if (Objects.equals(key, "bmr")) {
+            userDb.setBmr(val);
+        }
+        mDatabase.child(key).setValue(val);
+    }
+    protected void updateUserData(String key, int val) {
+        if (Objects.equals(key, "height")) {
+            userDb.setHeight(val);
+        }
+        else if (Objects.equals(key, "age")) {
+            userDb.setAge(val);
+        }
+        else if (Objects.equals(key, "goal")) {
+            userDb.setGoal(val);
+        }
+        else if (Objects.equals(key, "target")) {
+            userDb.setTarget(val);
+        }
+        mDatabase.child(key).setValue(val);
     }
 
     private int calcTargetProtein(int goal, int targetKcal) {

@@ -1,18 +1,21 @@
 package edu.vvk_pit_21_i_nt.countyourcalories;
 
 public class UserDb {
-    public String email;
-    public String displayName;
-    public long weight;
-    public long height;
-    public double activityLevel;
-    public long age;
-    public String gender;
-    public long bmr;
-    public long goal;
-    public long target;
+
+
+    private String email;
+
+    private String displayName;
+    private float weight;
+    private int height;
+    private float activityLevel;
+    private int age;
+    private String gender;
+    private float bmr;
+    private int goal;
+    private int target;
     public UserDb() {}
-    public UserDb(String email, String displayName, long weight, long height, double activityLevel, long age, String gender, long bmr, long goal, long target) {
+    public UserDb(String email, String displayName, float weight, int height, float activityLevel, int age, String gender, float bmr, int goal, int target) {
         this.email = email;
         this.displayName = displayName;
         this.weight = weight;
@@ -24,5 +27,85 @@ public class UserDb {
         this.goal = goal;
         this.target = target;
 
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public float getWeight() {
+        return weight;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public float getActivityLevel() {
+        return activityLevel;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public float getBmr() {
+        return bmr;
+    }
+
+    public int getGoal() {
+        return goal;
+    }
+
+    public int getTarget() {
+        return target;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public void setWeight(float weight) {
+        this.weight = weight;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public void setActivityLevel(float activityLevel) {
+        this.activityLevel = activityLevel;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setBmr(float bmr) {
+        this.bmr = bmr;
+    }
+
+    public void setGoal(int goal) {
+        this.goal = goal;
+    }
+
+    public void setTarget(int target) {
+        this.target = target;
     }
 }
