@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.view.View;
@@ -34,6 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     Spinner spinner;
@@ -60,13 +62,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         user = FirebaseAuth.getInstance().getCurrentUser();
-
         if (user == null) {
             signIn();
         }
         else {
-            Intent intent = new Intent(MainActivity.this, MenuActivity.class);
-            startActivity(intent);
+            int userData = checkUserData();
+            if (userData == 1) {
+                Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+                startActivity(intent);
+            }
         }
 
         upperText = findViewById(R.id.textView2);
@@ -89,27 +93,29 @@ public class MainActivity extends AppCompatActivity {
 
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(),
-            result -> onSignInResult(result)
+            this::onSignInResult
     );
 
     private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
         IdpResponse response = result.getIdpResponse();
         if (result.getResultCode() == RESULT_OK) {
             // Successfully signed in
-            // user = FirebaseAuth.getInstance().getCurrentUser();
+            user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null) {
                 String userUid = user.getUid();
                 mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (!dataSnapshot.hasChild("Users/" + userUid)) {
-
-                            mDatabase.child("Users").child(userUid).child("Display Name").setValue(user.getDisplayName());
+                        if (!dataSnapshot.hasChild("Users/"+userUid)) {
                             mDatabase.child("Users").child(userUid).child("Email").setValue(user.getEmail());
-                            Log.v("Prisijungimas", userUid);
-                        } else {
-                            Intent intent = new Intent(MainActivity.this, MenuActivity.class);
-                            startActivity(intent);
+                            //Log.v("Prisijungimas", userUid);
+
+                        }
+                        else {
+                            if (dataSnapshot.hasChild("Users/"+userUid+"/target")) {
+                                Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+                                startActivity(intent);
+                            }
                         }
                     }
 
@@ -123,8 +129,9 @@ public class MainActivity extends AppCompatActivity {
         } else {
             if (response == null) {
                 signIn();
-            } else {
-                Log.e("Prisijungimo klaida", response.getError().getMessage());
+            }
+            else {
+                Log.e("Prisijungimo klaida", Objects.requireNonNull(response.getError().getMessage()));
             }
             // Sign in failed. If response is null the user canceled the
             // sign-in flow using the back button. Otherwise check
@@ -132,48 +139,56 @@ public class MainActivity extends AppCompatActivity {
             // ...
         }
     }
-
     void signIn() {
 
         List<AuthUI.IdpConfig> providers = Arrays.asList(
-                //new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.EmailBuilder().build(),
                 new AuthUI.IdpConfig.GoogleBuilder().build()
         );
         Intent signInIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
-                //.setIsSmartLockEnabled(false, true)
+                .setIsSmartLockEnabled(false, true)
                 .build();
         signInLauncher.launch(signInIntent);
 
     }
-
     void signOut() {
-        signoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (user != null) {
-                    AuthUI.getInstance()
-                            .signOut(MainActivity.this)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                public void onComplete(@NonNull Task<Void> task) {
-                                }
-                            });
-                }
-                signIn();
+        signoutButton.setOnClickListener(v -> {
+            if (user != null) {
+                AuthUI.getInstance()
+                        .signOut(MainActivity.this)
+                        .addOnCompleteListener(task -> {
+                        });
             }
+            signIn();
         });
     }
 
     private void addUserData() {
-        user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             String userUid = user.getUid();
-            UserDb userDb = new UserDb(user.getEmail(), user.getDisplayName(), (long) weight, height, activityLevel, age, gender, (long) bmr, goal, targetKcal);
+            UserDb userDb = new UserDb(user.getEmail(), user.getDisplayName(), weight, height, activityLevel, age, gender, bmr, goal, targetKcal);
             mDatabase.child("Users").child(userUid).setValue(userDb);
+            SharedPreferences shaPre = getSharedPreferences("UserInfo", MODE_PRIVATE);
+            SharedPreferences.Editor editor = shaPre.edit();
+            editor.putInt(userUid, 1);
+            editor.apply();
         }
     }
 
+    private int checkUserData() {
+        if (user != null) {
+            SharedPreferences shaPre = getSharedPreferences("UserInfo", MODE_PRIVATE);
+            int userInput = shaPre.getInt(user.getUid(), -1);
+            Log.d(user.getUid(), String.valueOf(userInput));
+            return  userInput;
+        }
+        else {
+            return 0;
+        }
+
+    }
 
     private void setUpGUI(int questionNum, String[] valuesArr) {
         upperText.setText(getResources().getStringArray(R.array.questions)[questionNum]);
