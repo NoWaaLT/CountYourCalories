@@ -7,10 +7,11 @@
     android:background="@color/white"
     tools:context=".ProfileFragment">
 
+
     <TextView
         android:id="@+id/profile_title"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_height="50dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/profile_title"
@@ -20,41 +21,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView22"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="65dp"
-        app:cardBackgroundColor="#E1F6FF"
-        app:cardCornerRadius="20dp"
-        android:layout_marginHorizontal="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView">
-
-        <TextView
-            android:id="@+id/profile_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:layout_centerInParent="true"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:layout_marginHorizontal="10dp"
-           android:layout_marginVertical="10dp"
-            android:text="@string/profile_description"
-            android:textColor="@color/black"
- />
-
-
-    </androidx.cardview.widget.CardView>
 
     <ImageView
         android:id="@+id/genderIconMale"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="10dp"
         android:src="@drawable/male_symbol_2239" />
 
@@ -63,7 +36,7 @@
         android:layout_width="110dp"
         android:layout_height="110dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="10dp"
         android:rotation="42"
         android:src="@drawable/female_symbol_2240" />
@@ -72,7 +45,7 @@
         android:id="@+id/profile_age"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="410dp"
+        android:layout_marginTop="210dp"
         android:height="30dp"
         android:text="@string/profile_age" />
 
