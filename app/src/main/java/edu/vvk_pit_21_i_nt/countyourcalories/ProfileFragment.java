@@ -148,6 +148,6 @@ public class ProfileFragment extends Fragment {
                 "Your goal is " + myGoal + " and target is " + myTarget + ".";
     }
     private String profile_Title() {
-        return "My Profile";
+        return "My ";
     }
 }
