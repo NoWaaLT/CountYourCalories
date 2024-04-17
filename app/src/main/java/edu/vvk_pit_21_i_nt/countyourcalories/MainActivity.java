@@ -1,15 +1,9 @@
 package edu.vvk_pit_21_i_nt.countyourcalories;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,16 +11,16 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.util.Log;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
-import com.firebase.ui.auth.data.model.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -302,7 +296,7 @@ public class MainActivity extends AppCompatActivity {
    private void addUserData() {
        if (user != null) {
            String userUid = user.getUid();
-           UserDb userDb = new UserDb(user.getEmail(), user.getDisplayName(), weight, height, activityLevel, age, gender, bmr, goal, targetKcal);
+           UserDb userDb = new UserDb(user.getEmail(), user.getDisplayName(), weight, height, activityLevel, age, gender, bmr, goal, targetKcal,difference);
            mDatabase.child("Users").child(userUid).setValue(userDb);
            SharedPreferences shaPre = getSharedPreferences("UserInfo", MODE_PRIVATE);
            SharedPreferences.Editor editor = shaPre.edit();

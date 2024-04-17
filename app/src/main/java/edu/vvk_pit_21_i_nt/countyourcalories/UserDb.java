@@ -14,8 +14,9 @@ public class UserDb {
     private float bmr;
     private int goal;
     private int target;
+    private int difference;
     public UserDb() {}
-    public UserDb(String email, String displayName, float weight, int height, float activityLevel, int age, String gender, float bmr, int goal, int target) {
+    public UserDb(String email, String displayName, float weight, int height, float activityLevel, int age, String gender, float bmr, int goal, int target,int difference) {
         this.email = email;
         this.displayName = displayName;
         this.weight = weight;
@@ -26,7 +27,17 @@ public class UserDb {
         this.bmr = bmr;
         this.goal = goal;
         this.target = target;
+        this.difference = difference;
 
+
+    }
+
+    public int getDifference() {
+        return difference;
+    }
+
+    public void setDifference(int difference) {
+        this.difference = difference;
     }
 
     public String getEmail() {

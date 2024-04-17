@@ -37,6 +37,9 @@ public class ProfileFragment extends Fragment {
     private float myBmr;
     private int myGoal;
     private int myTarget;
+    private int myDifference;
+
+
 
 
     public ProfileFragment() {
@@ -96,6 +99,7 @@ public class ProfileFragment extends Fragment {
         myBmr = ((MenuActivity) requireActivity()).userDb.getBmr();
         myGoal = ((MenuActivity) requireActivity()).userDb.getGoal();
         myTarget = ((MenuActivity) requireActivity()).userDb.getTarget();
+        myDifference = ((MenuActivity) requireActivity()).userDb.getDifference();
     }
 
     @Override
@@ -148,6 +152,6 @@ public class ProfileFragment extends Fragment {
                 "Your goal is " + myGoal + " and target is " + myTarget + ".";
     }
     private String profile_Title() {
-        return "My ";
+        return "My Profile";
     }
 }
