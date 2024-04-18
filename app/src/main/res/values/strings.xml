@@ -20,4 +20,6 @@
     <string name="profile_age">profile_age</string>
     <string name="profile_title">profile_title</string>
     <string name="profile_description">profile_Description</string>
+    <string name="profile_desc_title" />
+    <string name="profile_desc_summary" />
 </resources>

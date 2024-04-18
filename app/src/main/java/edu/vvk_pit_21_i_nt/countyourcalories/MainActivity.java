@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
     String gender, stepProgress;
     int goal, age, height, targetKcal, difference;
     float activityLevel, weight, bmr;
-
     int preMenuStage = 0;
 
     @Override
@@ -92,15 +91,15 @@ public class MainActivity extends AppCompatActivity {
                 case 1:
                     String goalString = spinner.getSelectedItem().toString();
                     switch (goalString) {
-                        case "Auginti masę":
+                        case "Gain weight":
                             goal = 0;
                             difference = 300;
                             break;
-                        case "Numesti svorio":
+                        case "Lose weight":
                             goal = 1;
                             difference = -300;
                             break;
-                        case "Išlaikyti svorį":
+                        case "Maintain weight":
                             goal = 2;
                             difference = 0;
                             break;

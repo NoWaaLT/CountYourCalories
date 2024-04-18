@@ -1,6 +1,7 @@
 package edu.vvk_pit_21_i_nt.countyourcalories;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,9 +38,10 @@ public class ProfileFragment extends Fragment {
     private float myBmr;
     private int myGoal;
     private int myTarget;
-    private int myDifference;
-
-
+    private final int[] myDifference = {300, -300, 0};
+    private final String[] myGoalDescription = {"Gain weight", "Lose weight", "Maintain weight"};
+    private String key;
+    private String value;
 
 
     public ProfileFragment() {
@@ -73,8 +75,9 @@ public class ProfileFragment extends Fragment {
 
         }
         userDataRead();
-//        userDataPut();
-
+        userDataPut("difference", "0");
+        String des = (profile_description());
+        Log.d("Description", des);
 
         //Naudotojo duomenu keitimas
         //((MenuActivity) requireActivity()).updateUserData("age", 56);
@@ -85,6 +88,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void userDataPut(String key, String value) {
+
         ((MenuActivity) requireActivity()).updateUserData(key, value);
     }
 
@@ -99,7 +103,7 @@ public class ProfileFragment extends Fragment {
         myBmr = ((MenuActivity) requireActivity()).userDb.getBmr();
         myGoal = ((MenuActivity) requireActivity()).userDb.getGoal();
         myTarget = ((MenuActivity) requireActivity()).userDb.getTarget();
-        myDifference = ((MenuActivity) requireActivity()).userDb.getDifference();
+
     }
 
     @Override
@@ -111,8 +115,11 @@ public class ProfileFragment extends Fragment {
 
 
         TextView profile_Title = (TextView) view.findViewById(R.id.profile_title);
+
         TextView age = (TextView) view.findViewById(R.id.profile_age);
         TextView profile_Description = (TextView) view.findViewById(R.id.profile_description);
+        TextView profile_Desc_Title = (TextView) view.findViewById(R.id.profile_desc_title);
+        TextView profile_Desc_Summary = (TextView) view.findViewById(R.id.profile_desc_summary);
 
 
 //        TextView email =(TextView) view.findViewById(R.id.email);
@@ -126,6 +133,10 @@ public class ProfileFragment extends Fragment {
 //        TextView target =(TextView) view.findViewById(R.id.target);
         profile_Title.setText(profile_Title());
         profile_Description.setText(profile_description());
+        profile_Desc_Title.setText(profile_desc_title());
+//        profile_Desc_Summary.setText(profile_desc_summary());
+
+
         age.setText(myAge + " years old");
 
         ImageView genderIconMale = (ImageView) view.findViewById(R.id.genderIconMale);
@@ -143,15 +154,34 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-    private String profile_description() {
-        return "Hello, " + myDisplayName + "!\n" +
-                "You are " + myAge + " years old " + myGender + ".\n" +
-                "Your weight is " + myWeight + " kg "+ ".\n" +"and height is " + myHeight + " cm.\n" +
-                "Your activity level is " + myActivityLevel + ".\n" +
-                "Your BMR is " + myBmr + ".\n" +
-                "Your goal is " + myGoal + " and target is " + myTarget + ".";
+    private String profile_desc_summary() {
+        return "In summary, this message provides a snapshot of " + myDisplayName + " health profile, including his basic information, activity level, and dietary goal, along with a recommended calorie intake to support his objective of " + gal_Description() + ".";
     }
+
+    private String profile_desc_title() {
+        return "Hi " + myDisplayName + "! We've compiled some information about your health profile:\n\n";
+    }
+
+    private Object gal_Description() {
+        return myGoalDescription[myGoal];
+    }
+
+    private String profile_description() {
+
+        return "Age: " + myAge + " years old. Age is an important factor in determining health and nutritional needs. " +
+                "Gender: " + myGender + ". Gender can influence metabolism and nutrient requirements. " +
+                "Weight: " + myWeight + " kg. This is crucial for assessing overall health and setting weight-related goals. " +
+                "Height: " + myHeight + " cm. Height is necessary for calculating certain health indicators like body mass index (BMI). " +
+                "Activity Level: " + myActivityLevel + ".  This indicates how much physical activity he engages in daily, which impacts calorie needs. " +
+                "BMR (Basal Metabolic Rate): " + myBmr + ".  BMR represents the number of calories the body needs at rest to maintain vital functions such as breathing and circulation." +
+                "Goal: goal is to " + gal_Description() + ". This information is crucial for tailoring dietary recommendations and setting calorie targets. " +
+                " (Target Calories: To achieve the goal of" + gal_Description() + "You should consume " + myTarget + " calories per day. This figure considers his BMR, activity level, and the desired outcome of " + gal_Description() + ")\n\n" +
+                " In summary, this message provides a snapshot of " + myDisplayName + " health profile, including his basic information, activity level, and dietary goal, along with a recommended calorie intake to support his objective of " + gal_Description() + ".";
+
+    }
+
     private String profile_Title() {
         return "My Profile";
     }
+
 }
