@@ -17,4 +17,9 @@
     <string name="height">Height</string>
     <string name="emptyField">Fill empty field!</string>
     <string name="totalSteps"> of 6 steps</string>
+    <string name="profile_age">profile_age</string>
+    <string name="profile_title">profile_title</string>
+    <string name="profile_description">profile_Description</string>
+    <string name="profile_desc_title" />
+    <string name="profile_desc_summary" />
 </resources>

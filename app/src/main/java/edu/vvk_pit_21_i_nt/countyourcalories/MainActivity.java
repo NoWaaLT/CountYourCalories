@@ -1,12 +1,14 @@
 package edu.vvk_pit_21_i_nt.countyourcalories;
 
+
+import android.util.Log;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
 
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -16,15 +18,21 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.util.Log;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
+
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -52,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
     String gender, stepProgress;
     int goal, age, height, targetKcal, difference;
     float activityLevel, weight, bmr;
-
     int preMenuStage = 0;
 
     @Override
@@ -86,9 +93,150 @@ public class MainActivity extends AppCompatActivity {
         signOut();
         setUpGUI(0, getResources().getStringArray(R.array.gender_list));
 
+        buttonNext.setOnClickListener(v -> {
+            String inputString;
+            switch (preMenuStage) {
+                case 0:
+                    gender = spinner.getSelectedItem().toString();
+                    preMenuStage++;
+                    setUpGUI(1, getResources().getStringArray(R.array.main_goal));
+                    buttonBack.setVisibility(View.VISIBLE);
+                    break;
+                case 1:
+                    String goalString = spinner.getSelectedItem().toString();
+                    switch (goalString) {
+                        case "Gain weight":
+                            goal = 0;
+                            difference = 300;
+                            break;
+                        case "Lose weight":
+                            goal = 1;
+                            difference = -300;
+                            break;
+                        case "Maintain weight":
+                            goal = 2;
+                            difference = 0;
+                            break;
+                        default:
+                            break;
+                    }
+                    preMenuStage++;
+                    setUpGUI(2, getResources().getStringArray(R.array.activity_desc));
+                    break;
+                case 2:
+                    String activityString = spinner.getSelectedItem().toString();
+                    switch (activityString) {
+
+                        case "0-1":
+                            activityLevel = 1.2f;
+                            break;
+                        case "2-3":
+                            activityLevel = 1.375f;
+                            break;
+                        case "4-5":
+                            activityLevel = 1.55f;
+                            break;
+                        case "6-7":
+                            activityLevel = 1.725f;
+                            break;
+                        case "2 k./d.":
+                            activityLevel = 1.9f;
+                            break;
+                        default:
+                            break;
+                    }
+                    preMenuStage++;
+                    setUpGUI(3, getResources().getString(R.string.age));
+                    spinner.setVisibility(View.INVISIBLE);
+                    inputText.setVisibility(View.VISIBLE);
+                    break;
+                case 3:
+                    inputString = inputText.getText().toString();
+                    if(!inputString.isEmpty()) {
+                        age = Integer.parseInt(inputString);
+                        preMenuStage++;
+                        setUpGUI(4, getResources().getString(R.string.weight));
+                    }
+                    else {
+                        Toast.makeText(MainActivity.this, getResources().getString(R.string.emptyField), Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                case 4:
+                    inputString = inputText.getText().toString();
+                    if(!inputString.isEmpty()) {
+                        weight = Float.parseFloat(inputText.getText().toString());
+                        preMenuStage++;
+                        setUpGUI(5, getResources().getString(R.string.height));
+                    }
+                    else {
+                        Toast.makeText(MainActivity.this, getResources().getString(R.string.emptyField), Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                case 5:
+                    inputString = inputText.getText().toString();
+                    if(!inputString.isEmpty()) {
+                        height = Integer.parseInt(inputText.getText().toString());
+                        bmr = calcBmr(weight, height, age, gender);
+                        targetKcal = calcTargetKcal(bmr, activityLevel, difference);
+
+                        addUserData();
+
+
+                        // Moves to the next activity
+
+                        Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                    else {
+                        Toast.makeText(MainActivity.this, getResources().getString(R.string.emptyField), Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        buttonBack.setOnClickListener(v -> {
+            if(preMenuStage != 0) {
+                switch(preMenuStage) {
+                    case 1:
+                        preMenuStage--;
+                        setUpGUI(0, getResources().getStringArray(R.array.gender_list));
+                        buttonBack.setVisibility(View.INVISIBLE);
+                        break;
+                    case 2:
+                        preMenuStage--;
+                        setUpGUI(1, getResources().getStringArray(R.array.main_goal));
+                        break;
+                    case 3:
+                        preMenuStage--;
+                        setUpGUI(2, getResources().getStringArray(R.array.activity_desc));
+                        spinner.setVisibility(View.VISIBLE);
+                        inputText.setVisibility(View.INVISIBLE);
+                        break;
+                    case 4:
+                        preMenuStage--;
+                        setUpGUI(3, getResources().getString(R.string.age));
+                        break;
+                    case 5:
+                        preMenuStage--;
+                        setUpGUI(4, getResources().getString(R.string.height));
+                        break;
+                    case 6:
+                        preMenuStage--;
+                        setUpGUI(5, getResources().getString(R.string.weight));
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+
         buttonNext.setOnClickListener(v -> moveNext(v));
         buttonBack.setOnClickListener(v -> moveBack(v));
         backArrow.setOnClickListener(v -> moveBack(v));
+
     }
 
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
@@ -165,19 +313,20 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void addUserData() {
-        if (user != null) {
-            String userUid = user.getUid();
-            UserDb userDb = new UserDb(user.getEmail(), user.getDisplayName(), weight, height, activityLevel, age, gender, bmr, goal, targetKcal);
-            mDatabase.child("Users").child(userUid).setValue(userDb);
-            SharedPreferences shaPre = getSharedPreferences("UserInfo", MODE_PRIVATE);
-            SharedPreferences.Editor editor = shaPre.edit();
-            editor.putInt(userUid, 1);
-            editor.apply();
-        }
-    }
+   private void addUserData() {
+       if (user != null) {
+           String userUid = user.getUid();
+           UserDb userDb = new UserDb(user.getEmail(), user.getDisplayName(), weight, height, activityLevel, age, gender, bmr, goal, targetKcal,difference);
+           mDatabase.child("Users").child(userUid).setValue(userDb);
+           SharedPreferences shaPre = getSharedPreferences("UserInfo", MODE_PRIVATE);
+           SharedPreferences.Editor editor = shaPre.edit();
+           editor.putInt(userUid, 1);
+           editor.apply();
+       }
+   }
 
-    private int checkUserData() {
+   private int checkUserData() {
+
         if (user != null) {
             SharedPreferences shaPre = getSharedPreferences("UserInfo", MODE_PRIVATE);
             int userInput = shaPre.getInt(user.getUid(), -1);
