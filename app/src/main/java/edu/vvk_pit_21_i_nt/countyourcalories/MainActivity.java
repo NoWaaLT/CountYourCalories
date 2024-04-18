@@ -1,13 +1,20 @@
 package edu.vvk_pit_21_i_nt.countyourcalories;
 
+
+import android.util.Log;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+
+
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -21,6 +28,11 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
+
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -39,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     Button buttonBack;
     TextView upperText;
     TextView progressText;
+    ImageView backArrow;
     EditText inputText;
     Button signoutButton;
     ProgressBar progressBar;
@@ -75,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         signoutButton = findViewById(R.id.signout_button);
         progressText = findViewById(R.id.textViewSteps);
         progressBar = findViewById(R.id.entryProgressBar);
+        backArrow = findViewById(R.id.back_arrow);
 
         signOut();
         setUpGUI(0, getResources().getStringArray(R.array.gender_list));
@@ -218,12 +232,18 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        buttonNext.setOnClickListener(v -> moveNext(v));
+        buttonBack.setOnClickListener(v -> moveBack(v));
+        backArrow.setOnClickListener(v -> moveBack(v));
+
     }
 
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(),
             this::onSignInResult
     );
+
     private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
         IdpResponse response = result.getIdpResponse();
         if (result.getResultCode() == RESULT_OK) {
@@ -292,6 +312,7 @@ public class MainActivity extends AppCompatActivity {
             signIn();
         });
     }
+
    private void addUserData() {
        if (user != null) {
            String userUid = user.getUid();
@@ -305,6 +326,7 @@ public class MainActivity extends AppCompatActivity {
    }
 
    private int checkUserData() {
+
         if (user != null) {
             SharedPreferences shaPre = getSharedPreferences("UserInfo", MODE_PRIVATE);
             int userInput = shaPre.getInt(user.getUid(), -1);
@@ -315,8 +337,7 @@ public class MainActivity extends AppCompatActivity {
             return 0;
         }
 
-  }
-
+    }
 
     private void setUpGUI(int questionNum, String[] valuesArr) {
         upperText.setText(getResources().getStringArray(R.array.questions)[questionNum]);
@@ -336,15 +357,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private float calcBmr(float weight, int height, int age, String gender) {
-        return (gender.equals("Vyras")) ? calcManBMR(weight, height, age) : calcWomanBMR(weight, height, age);
+        String[] genderArray = getResources().getStringArray(R.array.gender_list);
+        return (gender.equals(genderArray[0]) ? calcManBMR(weight, height, age) : calcWomanBMR(weight, height, age));
     }
 
     private float calcManBMR(float weight, int height, int age) {
-    return (10f * weight) + (6.25f * height) - (5f * age) + 5f;
+        return (10f * weight) + (6.25f * height) - (5f * age) + 5f;
     }
 
     private float calcWomanBMR(float weight, int height, int age) {
-       return (10f * weight) + (6.25f * height) - (5f * age) - 16;
+        return (10f * weight) + (6.25f * height) - (5f * age) - 16;
     }
 
     private int calcTargetKcal(float bmr, float activityLevel, int difference) {
@@ -352,47 +374,145 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void progressStepsPrint() {
-        stepProgress = (preMenuStage + 1) + getResources().getString(R.string.totalSteps);
+        stepProgress = (preMenuStage + 1) + " " + getResources().getString(R.string.totalSteps);
         progressText.setText(stepProgress);
     }
 
+    public void moveNext(View view) {
+        String inputString;
+        switch (preMenuStage) {
+            case 0:
+                gender = spinner.getSelectedItem().toString();
+                preMenuStage++;
+                setUpGUI(1, getResources().getStringArray(R.array.main_goal));
+                buttonBack.setVisibility(View.VISIBLE);
+                backArrow.setVisibility(View.VISIBLE);
+                break;
+            case 1:
+                String goalString = spinner.getSelectedItem().toString();
+                switch (goalString) {
+                    case "Gain weight":
+                        goal = 0;
+                        difference = 300;
+                        break;
+                    case "Lose weight":
+                        goal = 1;
+                        difference = -300;
+                        break;
+                    case "Maintain weight":
+                        goal = 2;
+                        difference = 0;
+                        break;
+                    default:
+                        break;
+                }
+                preMenuStage++;
+                setUpGUI(2, getResources().getStringArray(R.array.activity_desc));
+                break;
+            case 2:
+                String activityString = spinner.getSelectedItem().toString();
+                switch (activityString) {
 
-    private int calcTargetProtein(int goal,  int targetKcal) {
-        int proteins;
-        if (goal == 0) {
-            proteins = targetKcal / 100 * 20;
-        } else if (goal == 1){
-            proteins = targetKcal / 100 * 30;
-        } else {
-            proteins = targetKcal/ 100 * 20;
+                    case "0-1":
+                        activityLevel = 1.2f;
+                        break;
+                    case "2-3":
+                        activityLevel = 1.375f;
+                        break;
+                    case "4-5":
+                        activityLevel = 1.55f;
+                        break;
+                    case "6-7":
+                        activityLevel = 1.725f;
+                        break;
+                    case "2 k./d.":
+                        activityLevel = 1.9f;
+                        break;
+                    default:
+                        break;
+                }
+                preMenuStage++;
+                setUpGUI(3, getResources().getString(R.string.age));
+                spinner.setVisibility(View.INVISIBLE);
+                inputText.setVisibility(View.VISIBLE);
+                break;
+            case 3:
+                inputString = inputText.getText().toString();
+                if (!inputString.isEmpty()) {
+                    age = Integer.parseInt(inputString);
+                    preMenuStage++;
+                    setUpGUI(4, getResources().getString(R.string.weight));
+                } else {
+                    Toast.makeText(MainActivity.this, getResources().getString(R.string.emptyField), Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case 4:
+                inputString = inputText.getText().toString();
+                if (!inputString.isEmpty()) {
+                    weight = Float.parseFloat(inputText.getText().toString());
+                    preMenuStage++;
+                    setUpGUI(5, getResources().getString(R.string.height));
+                } else {
+                    Toast.makeText(MainActivity.this, getResources().getString(R.string.emptyField), Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case 5:
+                inputString = inputText.getText().toString();
+                if (!inputString.isEmpty()) {
+                    height = Integer.parseInt(inputText.getText().toString());
+                    bmr = calcBmr(weight, height, age, gender);
+                    targetKcal = calcTargetKcal(bmr, activityLevel, difference);
+
+                    addUserData();
+                    // Moves to the next activity
+
+                        Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+                        startActivity(intent);
+                        finish();
+                } else {
+                    Toast.makeText(MainActivity.this, getResources().getString(R.string.emptyField), Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                break;
         }
-
-        return proteins;
     }
 
-    private int calcTargetCarbs(int goal,  int targetKcal) {
-        int carbs;
-        if (goal == 0) {
-            carbs = targetKcal / 100 * 55;
-        } else if (goal == 1){
-            carbs = targetKcal / 100 * 45;
-        } else {
-            carbs = targetKcal/ 100 * 55;
+    public void moveBack(View view) {
+        if (preMenuStage != 0) {
+            switch (preMenuStage) {
+                case 1:
+                    preMenuStage--;
+                    setUpGUI(0, getResources().getStringArray(R.array.gender_list));
+                    buttonBack.setVisibility(View.INVISIBLE);
+                    backArrow.setVisibility(View.INVISIBLE);
+                    break;
+                case 2:
+                    preMenuStage--;
+                    setUpGUI(1, getResources().getStringArray(R.array.main_goal));
+                    break;
+                case 3:
+                    preMenuStage--;
+                    setUpGUI(2, getResources().getStringArray(R.array.activity_desc));
+                    spinner.setVisibility(View.VISIBLE);
+                    inputText.setVisibility(View.INVISIBLE);
+                    break;
+                case 4:
+                    preMenuStage--;
+                    setUpGUI(3, getResources().getString(R.string.age));
+                    break;
+                case 5:
+                    preMenuStage--;
+                    setUpGUI(4, getResources().getString(R.string.height));
+                    break;
+                case 6:
+                    preMenuStage--;
+                    setUpGUI(5, getResources().getString(R.string.weight));
+                    break;
+                default:
+                    break;
+            }
         }
-
-        return carbs;
     }
 
-    private int calcTargetFat(int goal,  int targetKcal) {
-        int fat;
-        if (goal == 0) {
-            fat = targetKcal / 100 * 25;
-        } else if (goal == 1) {
-            fat = targetKcal / 100 * 25;
-        } else {
-            fat = targetKcal/ 100 * 25;
-        }
-
-        return fat;
-    }
 }
