@@ -177,7 +177,6 @@ public class ProfileFragment extends Fragment {
                 "Goal: goal is to " + gal_Description() + ". This information is crucial for tailoring dietary recommendations and setting calorie targets. " +
                 " (Target Calories: To achieve the goal of" + gal_Description() + "You should consume " + myTarget + " calories per day. This figure considers his BMR, activity level, and the desired outcome of " + gal_Description() + ")\n\n" +
                 " In summary, this message provides a snapshot of " + myDisplayName + " health profile, including his basic information, activity level, and dietary goal, along with a recommended calorie intake to support his objective of " + gal_Description() + ".";
-
     }
 
     private String profile_Title() {
