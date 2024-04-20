@@ -20,8 +20,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/buttonReview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:layout_margin="16dp"
+        android:background="@drawable/round_button"
+        android:textColor="@color/white"
+        android:text="Edit" />
+
     <ScrollView
         android:layout_width="fill_parent"
+        android:layout_marginTop="80dp"
         android:layout_height="fill_parent">
 
         <LinearLayout
@@ -34,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="65dp"
+                android:layout_marginBottom="90dp"
                 app:cardBackgroundColor="#E1F6FF"
                 app:cardCornerRadius="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -48,33 +59,33 @@
                     android:layout_centerInParent="true"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginVertical="10dp"
+                    android:layout_marginBottom="100dp"
+                    android:justificationMode="inter_word"
+                    android:padding="10dp"
+                    android:paddingBottom="40dp"
                     android:text="@string/profile_desc_title"
                     android:textColor="@color/black"
                     android:textSize="23sp"
-                    android:padding="10dp"
-                    android:paddingBottom="40dp"
-                    android:layout_marginBottom="100dp"
-                    android:justificationMode="inter_word"
                     android:textStyle="bold|italic" />
+
+                <!--   android:gravity="center"
+                   android:textAlignment="center"
+                    -->
 
                 <TextView
                     android:id="@+id/profile_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
                     android:layout_centerInParent="true"
                     android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="100dp"
+                    android:layout_marginTop="130dp"
                     android:layout_marginBottom="30dp"
+                    android:justificationMode="inter_word"
+                    android:padding="10dp"
                     android:text="@string/profile_description"
                     android:textColor="@color/black"
                     android:textSize="20sp"
-                    android:justificationMode="inter_word"
                     android:textStyle="italic" />
-                <!--   android:gravity="center"
-                   android:textAlignment="center"
-                    -->
-
 
                 <TextView
 
@@ -84,44 +95,48 @@
                     android:layout_centerInParent="true"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginVertical="10dp"
+                    android:layout_marginBottom="200dp"
+                    android:justificationMode="inter_word"
+                    android:padding="20dp"
+                    android:paddingBottom="40dp"
                     android:text="@string/profile_desc_summary"
                     android:textColor="@color/black"
                     android:textSize="23sp"
-                    android:padding="20dp"
-                    android:paddingBottom="40dp"
-                    android:layout_marginBottom="100dp"
-                    android:justificationMode="inter_word"
                     android:textStyle="bold|italic" />
+
+
+
             </androidx.cardview.widget.CardView>
 
-            <ImageView
-                android:id="@+id/genderIconMale"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="200dp"
-                android:layout_marginEnd="10dp"
-                android:src="@drawable/male_symbol_2239" />
-
-            <ImageView
-                android:id="@+id/genderIconFemale"
-                android:layout_width="110dp"
-                android:layout_height="110dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="200dp"
-                android:layout_marginEnd="10dp"
-                android:rotation="42"
-                android:src="@drawable/female_symbol_2240" />
-
-            <TextView
-                android:id="@+id/profile_age"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="410dp"
-                android:height="30dp"
-                android:text="@string/profile_age" />
-
         </LinearLayout>
+
     </ScrollView>
+
+    <ImageView
+        android:id="@+id/genderIconMale"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="1100dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/male_symbol_2239" />
+
+    <ImageView
+        android:id="@+id/genderIconFemale"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="1100dp"
+        android:layout_marginEnd="10dp"
+        android:rotation="42"
+        android:src="@drawable/female_symbol_2240" />
+
+    <TextView
+        android:id="@+id/profile_age"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1300dp"
+        android:height="30dp"
+        android:text="@string/profile_age" />
 
 </FrameLayout>
