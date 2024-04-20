@@ -72,7 +72,6 @@ public class ProfileFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-
         }
         userDataRead();
         userDataPut("difference", "0");
@@ -103,7 +102,6 @@ public class ProfileFragment extends Fragment {
         myBmr = ((MenuActivity) requireActivity()).userDb.getBmr();
         myGoal = ((MenuActivity) requireActivity()).userDb.getGoal();
         myTarget = ((MenuActivity) requireActivity()).userDb.getTarget();
-
     }
 
     @Override
