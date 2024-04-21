@@ -22,4 +22,10 @@
     <string name="profile_description">profile_Description</string>
     <string name="profile_desc_title" />
     <string name="profile_desc_summary" />
+    <string name="edit_profile">edit_profile</string>
+    <string name="edit_age_text">edit_age_text</string>
+    <string name="value_hint" />
+    <string name="value" />
+    <string name="edit_eight_text" />
+    <string name="edit">EDIT</string>
 </resources>
