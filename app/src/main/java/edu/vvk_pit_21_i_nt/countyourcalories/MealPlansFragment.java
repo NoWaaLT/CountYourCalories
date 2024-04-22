@@ -1,11 +1,14 @@
 package edu.vvk_pit_21_i_nt.countyourcalories;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Handler;
 import android.util.Log;
@@ -49,6 +52,11 @@ public class MealPlansFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    Activity activity = getActivity();
+
+
+
+
 
     public MealPlansFragment() {
         // Required empty public constructor
@@ -69,6 +77,7 @@ public class MealPlansFragment extends Fragment {
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -76,6 +85,7 @@ public class MealPlansFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+
 
 
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -97,6 +107,7 @@ public class MealPlansFragment extends Fragment {
         TextView visable3 = (TextView) view.findViewById(R.id.textView56);
         TextView visable4 = (TextView) view.findViewById(R.id.textView57);
         TextView visable5 = (TextView) view.findViewById(R.id.textView61);
+        TextView dovile = (TextView) view.findViewById(R.id.textView63);
         TextView calories = (TextView) view.findViewById(R.id.textView50);
         TextView carbs = (TextView) view.findViewById(R.id.textView58);
         TextView protein = (TextView) view.findViewById(R.id.textView59);
@@ -108,6 +119,18 @@ public class MealPlansFragment extends Fragment {
         TextView tempFat = (TextView) view.findViewById(R.id.textView67);
         ImageButton imgbtn = (ImageButton) view.findViewById(R.id.imageButton5);
         ImageView imgvw = (ImageView) view.findViewById(R.id.imageView13);
+
+
+        dovile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frame_layout,new DatabaseFoodAdd());
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
 
 
         ScrollView scrollView = view.findViewById(R.id.scrview);
