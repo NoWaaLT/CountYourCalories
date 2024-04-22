@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="-1dp"
+    android:background="@drawable/gradient_background"
     tools:context=".ProfileFragment">
 
     <TextView
@@ -14,11 +16,30 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
         android:text="@string/profile_title"
-        android:textColor="@color/UI_dark"
+        android:textColor="@color/black"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/genderIconMale"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="top|right"
+        android:layout_margin="25dp"
+        android:foregroundGravity="center"
+        android:src="@drawable/male_symbol_2239" />
+
+    <ImageView
+        android:id="@+id/genderIconFemale"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="top|right"
+        android:layout_margin="25dp"
+        android:foregroundGravity="center"
+        android:src="@drawable/female_symbol_2240" />
+
 
     <Button
         android:id="@+id/edit_profile"
@@ -29,7 +50,7 @@
         android:background="@drawable/round_button"
         android:text="@string/edit"
         android:textColor="@color/white"
-        app:backgroundTint="@color/purple_200" />
+        />
 
     <ScrollView
         android:id="@+id/scroll_view_profile"
@@ -124,45 +145,47 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
             <EditText
                 android:id="@+id/edit_profile_age"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="numberSigned"
                 android:layout_gravity="center"
                 android:layout_margin="16dp"
-                android:hint="@string/value_hint"
+                android:autofillHints=""
                 android:background="@drawable/profile_edit_circle"
-                android:text="@string/edit_age_text"
-                android:textSize="40sp"
                 android:gravity="center"
+                android:hint="@string/value_hint"
+                android:inputType="numberSigned"
+                android:text="@string/edit_age_text"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:autofillHints="" />
+                android:textSize="30sp"
+                android:textStyle="italic" />
 
             <TextView
                 android:id="@+id/edit_age_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
-                android:textSize="20sp"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
             <EditText
                 android:id="@+id/edit_profile_height"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="numberSigned"
                 android:layout_gravity="center"
                 android:layout_margin="16dp"
-                android:hint="@string/value_hint"
+                android:autofillHints=""
                 android:background="@drawable/profile_edit_circle"
-                android:text="@string/edit_age_text"
-                android:textSize="40sp"
                 android:gravity="center"
+                android:hint="@string/value_hint"
+                android:inputType="numberSigned"
+                android:text="@string/edit_age_text"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:autofillHints="" />
+                android:textSize="30sp"
+                android:textStyle="italic" />
 
 
             <TextView
@@ -170,60 +193,157 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
-                android:textSize="20sp"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/edit_profile_weight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
                 android:layout_gravity="center"
                 android:layout_margin="16dp"
-                android:hint="@string/value_hint"
+                android:autofillHints=""
                 android:background="@drawable/profile_edit_circle"
-                android:text="@string/edit_age_text"
-                android:textSize="40sp"
                 android:gravity="center"
+                android:hint="@string/value_hint"
+                android:inputType="numberDecimal"
+                android:text="@string/edit_age_text"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:autofillHints="" />
+                android:textSize="30sp"
+                android:textStyle="italic" />
 
             <TextView
                 android:id="@+id/edit_weight_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
-                android:textSize="20sp"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+
+            <TextView
+                android:id="@+id/edit_profile_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:autofillHints=""
+                android:background="@drawable/profile_edit_circle"
+                android:gravity="center"
+                android:hint="@string/value_hint"
+                android:text="@string/edit_age_text"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/edit_gender_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/edit_profile_activity_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:autofillHints=""
+                android:background="@drawable/profile_edit_circle"
+                android:gravity="center"
+                android:hint="@string/value_hint"
+                android:text="@string/edit_age_text"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="23sp" />
+
+            <TextView
+                android:id="@+id/edit_activity_level_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp" />
+
+            <TextView
+                android:id="@+id/edit_profile_goal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:autofillHints=""
+                android:background="@drawable/profile_edit_circle"
+                android:gravity="center"
+                android:hint="@string/value_hint"
+                android:text="@string/edit_age_text"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="23sp" />
+
+            <TextView
+                android:id="@+id/edit_goal_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/edit_profile_bmr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:autofillHints=""
+                android:background="@drawable/profile_edit_circle"
+                android:gravity="center"
+                android:hint="@string/value_hint"
+                android:text="@string/edit_age_text"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="23sp" />
+
+            <TextView
+                android:id="@+id/edit_bmr_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/edit_profile_target"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:autofillHints=""
+                android:background="@drawable/profile_edit_circle"
+                android:gravity="center"
+                android:hint="@string/value_hint"
+                android:text="@string/edit_age_text"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="23sp" />
+
+            <TextView
+                android:id="@+id/edit_target_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textAlignment="center"
+                android:textSize="20sp" />
 
         </LinearLayout>
     </ScrollView>
 
-    <ImageView
-        android:id="@+id/genderIconMale"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="1100dp"
-        android:layout_marginEnd="10dp"
-        android:src="@drawable/male_symbol_2239" />
-
-    <ImageView
-        android:id="@+id/genderIconFemale"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="1100dp"
-        android:layout_marginEnd="10dp"
-        android:rotation="42"
-        android:src="@drawable/female_symbol_2240" />
-
-    <TextView
-        android:id="@+id/profile_age"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1300dp"
-        android:height="30dp"
-        android:text="@string/profile_age" />
 </FrameLayout>

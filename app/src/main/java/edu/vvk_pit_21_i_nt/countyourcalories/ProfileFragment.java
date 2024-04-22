@@ -2,6 +2,7 @@ package edu.vvk_pit_21_i_nt.countyourcalories;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,10 @@ public class ProfileFragment extends Fragment {
     private int myTarget;
     EditText edit_profile_age;
     private boolean isEditing = false;
+    private final String[] genders = {"A Man", "A Woman"};
+    private final String[] genderName = {"Man", "Woman"};
+    private final float[] myActivityLevels = {1.2f, 1.375f, 1.55f, 1.725f, 1.9f};
+    private final String[] myActivityLevelDescription = {"Sedentary, 0-1 per week", "Lightly Active, 2-3 per week", "Moderately Active, 4-5 per week", "Very Active, 6-7 per week", "Super Active, 2 per day"};
     private final int[] myDifference = {300, -300, 0};
     private final String[] myGoalDescription = {"Gain weight", "Lose weight", "Maintain weight"};
     private String key;
@@ -123,9 +128,24 @@ public class ProfileFragment extends Fragment {
         EditText edit_profile_age = (EditText) view.findViewById(R.id.edit_profile_age);
         EditText edit_profile_height = (EditText) view.findViewById(R.id.edit_profile_height);
         EditText edit_profile_weight = (EditText) view.findViewById(R.id.edit_profile_weight);
-//        edit_profile_age.setVisibility(View.INVISIBLE);
-
+        TextView profile_Description = (TextView) view.findViewById(R.id.profile_description);
+        TextView profile_Desc_Title = (TextView) view.findViewById(R.id.profile_desc_title);
+        TextView edit_age_text = (TextView) view.findViewById(R.id.edit_age_text);
+        TextView edit_height_text = (TextView) view.findViewById(R.id.edit_height_text);
+        TextView edit_weight_text = (TextView) view.findViewById(R.id.edit_weight_text);
+        TextView edit_profile_gender = (TextView) view.findViewById(R.id.edit_profile_gender);
+        TextView edit_gender_text = (TextView) view.findViewById(R.id.edit_gender_text);
+        TextView edit_activity_level_text = (TextView) view.findViewById(R.id.edit_activity_level_text);
+        TextView edit_profile_activity_level = (TextView) view.findViewById(R.id.edit_profile_activity_level);
+        TextView edit_profile_goal = (TextView) view.findViewById(R.id.edit_profile_goal);
+        TextView edit_goal_text = (TextView) view.findViewById(R.id.edit_goal_text);
+        TextView edit_profile_target = (TextView) view.findViewById(R.id.edit_profile_target);
+        TextView edit_target_text = (TextView) view.findViewById(R.id.edit_target_text);
+        TextView edit_bmr_text = (TextView) view.findViewById(R.id.edit_bmr_text);
+        TextView edit_profile_bmr = (TextView) view.findViewById(R.id.edit_profile_bmr);
         Button editProfile = (Button) view.findViewById(R.id.edit_profile);
+
+
         editProfile.setOnClickListener(v -> {
             if (isEditing) {
                 isEditing = false;
@@ -144,23 +164,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-
-        TextView profile_Description = (TextView) view.findViewById(R.id.profile_description);
-        TextView profile_Desc_Title = (TextView) view.findViewById(R.id.profile_desc_title);
-        TextView edit_age_text = (TextView) view.findViewById(R.id.edit_age_text);
-        TextView edit_height_text = (TextView) view.findViewById(R.id.edit_height_text);
-        TextView edit_weight_text = (TextView) view.findViewById(R.id.edit_weight_text);
-
-
-//        TextView email =(TextView) view.findViewById(R.id.email);
-//        TextView displayName =(TextView) view.findViewById(R.id.displayName);
-//        TextView weight =(TextView) view.findViewById(R.id.weight);
-//        TextView height =(TextView) view.findViewById(R.id.height);
-//        TextView activityLevel =(TextView) view.findViewById(R.id.activityLevel);
-//        TextView gender = (TextView) view.findViewById(R.id.gender);
-//        TextView bmr =(TextView) view.findViewById(R.id.bmr);
-//        TextView goal =(TextView) view.findViewById(R.id.goal);
-//        TextView target =(TextView) view.findViewById(R.id.target);
         profile_Description.setText(profile_description());
         profile_Desc_Title.setText(profile_desc_title());
 
@@ -211,11 +214,14 @@ public class ProfileFragment extends Fragment {
             mgr.hideSoftInputFromWindow(edit_profile_weight.getWindowToken(), 0);
         });
 
-
+        edit_gender_text.setText("Edit Gender");
+        if (Objects.equals(myGender, genders[0])) {
+            edit_profile_gender.setText(genderName[0]);
+        } else {
+            edit_profile_gender.setText(genderName[1]);
+        }
         ImageView genderIconMale = (ImageView) view.findViewById(R.id.genderIconMale);
         ImageView genderIconFemale = (ImageView) view.findViewById(R.id.genderIconFemale);
-
-
         if (Objects.equals(myGender, "A Man")) {
             genderIconMale.setVisibility(View.VISIBLE);
             genderIconFemale.setVisibility(View.INVISIBLE);
@@ -223,15 +229,115 @@ public class ProfileFragment extends Fragment {
             genderIconMale.setVisibility(View.INVISIBLE);
             genderIconFemale.setVisibility(View.VISIBLE);
         }
+        edit_profile_gender.setOnClickListener(v -> {
+                    if (Objects.equals(myGender, "A Man")) {
+                        genderIconMale.setVisibility(View.INVISIBLE);
+                        genderIconFemale.setVisibility(View.VISIBLE);
+                    } else {
+                        genderIconMale.setVisibility(View.VISIBLE);
+                        genderIconFemale.setVisibility(View.INVISIBLE);
+                    }
+                    if (Objects.equals(myGender, genders[0])) {
+                        edit_profile_gender.setText(genderName[1]);
+                        ((MenuActivity) requireActivity()).updateUserData("gender", genders[1]);
+
+                    } else {
+                        edit_profile_gender.setText(genderName[0]);
+                        ((MenuActivity) requireActivity()).updateUserData("gender", genders[0]);
+                    }
+                    userDataRead();
+                }
+        );
+        edit_activity_level_text.setText("Edit Activity Level");
+        edit_profile_activity_level.setText("" + myActivityLevel);
+
+        for (int i = 0; i < myActivityLevels.length; i++) {
+            if (myActivityLevel == myActivityLevels[i]) {
+                edit_profile_activity_level.setText(myActivityLevelDescription[i]);
+            }
+        }
+        edit_profile_activity_level.setOnClickListener(v -> {
+            Log.d("Gender: ", myActivityLevel + "");
+            for (int i = 0; i < myActivityLevels.length; i++) {
+                if (myActivityLevel == myActivityLevels[i]) {
+                    if (i == myActivityLevels.length - 1) {
+                        edit_profile_activity_level.setText(myActivityLevelDescription[0]);
+                        ((MenuActivity) requireActivity()).updateUserData("activityLevel", myActivityLevels[0]);
+                        userDataRead();
+                        break;
+                    } else {
+                        edit_profile_activity_level.setText(myActivityLevelDescription[i + 1]);
+                        ((MenuActivity) requireActivity()).updateUserData("activityLevel", myActivityLevels[i + 1]);
+                        userDataRead();
+                        break;
+                    }
+                }
+            }
+        });
+
+        edit_goal_text.setText("Edit Goal");
+        edit_profile_goal.setText(gal_Description());
+        edit_profile_goal.setOnClickListener(v -> {
+            for (int i = 0; i < myGoalDescription.length; i++) {
+                if (Objects.equals(gal_Description(), myGoalDescription[i])) {
+                    if (i == myGoalDescription.length - 1) {
+                        edit_profile_goal.setText(myGoalDescription[0]);
+                        ((MenuActivity) requireActivity()).updateUserData("goal", 0);
+                        userDataRead();
+                        break;
+                    } else {
+                        edit_profile_goal.setText(myGoalDescription[i + 1]);
+                        ((MenuActivity) requireActivity()).updateUserData("goal", i + 1);
+                        userDataRead();
+                        break;
+                    }
+                }
+            }
+        });
+
+
+        edit_bmr_text.setText("BMR (Basal Metabolic Rate)");
+        edit_profile_bmr.setText("" + myBmr);
+        float newBmr = calcBmr(myWeight, myHeight, myAge, myGender);
+        if (newBmr != myBmr) {
+            ((MenuActivity) requireActivity()).updateUserData("bmr", newBmr);
+            userDataRead();
+        }
+
+        edit_target_text.setText("Target Calories");
+        edit_profile_target.setText("" + myTarget);
+
+            for (int i = 0; i < myDifference.length; i++) {
+                if (myTarget == myBmr + myDifference[i]) {
+                    if (i == myDifference.length - 1) {
+                        edit_profile_target.setText("" + (myBmr + myDifference[0]));
+                        ((MenuActivity) requireActivity()).updateUserData("target", myBmr + myDifference[0]);
+                        userDataRead();
+                        break;
+                    } else {
+                        edit_profile_target.setText("" + (myBmr + myDifference[i + 1]));
+                        ((MenuActivity) requireActivity()).updateUserData("target", myBmr + myDifference[i + 1]);
+                        userDataRead();
+                        break;
+                    }
+                }
+            }
+
+
+
 
         return view;
+    }
+
+
+    private void click() {
     }
 
     private String profile_desc_title() {
         return "Hi " + myDisplayName + "! We've compiled some information about your health profile:\n\n";
     }
 
-    private Object gal_Description() {
+    private CharSequence gal_Description() {
         return myGoalDescription[myGoal];
     }
 
@@ -250,6 +356,19 @@ public class ProfileFragment extends Fragment {
 
     private String profile_Title() {
         return "My Profile";
+    }
+
+    private float calcBmr(float weight, int height, int age, String gender) {
+        String[] genderArray = getResources().getStringArray(R.array.gender_list);
+        return (gender.equals(genderArray[0]) ? calcManBMR(weight, height, age) : calcWomanBMR(weight, height, age));
+    }
+
+    private float calcManBMR(float weight, int height, int age) {
+        return (10f * weight) + (6.25f * height) - (5f * age) + 5f;
+    }
+
+    private float calcWomanBMR(float weight, int height, int age) {
+        return (10f * weight) + (6.25f * height) - (5f * age) - 16;
     }
 
 
