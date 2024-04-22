@@ -43,6 +43,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -257,7 +258,6 @@ public class MainActivity extends AppCompatActivity {
                         if (!dataSnapshot.hasChild("Users/"+userUid)) {
                             mDatabase.child("Users").child(userUid).child("Email").setValue(user.getEmail());
                             //Log.v("Prisijungimas", userUid);
-
                         }
                         else {
                             if (dataSnapshot.hasChild("Users/"+userUid+"/target")) {
@@ -317,7 +317,8 @@ public class MainActivity extends AppCompatActivity {
        if (user != null) {
            String userUid = user.getUid();
            UserDb userDb = new UserDb(user.getEmail(), user.getDisplayName(), weight, height, activityLevel, age, gender, bmr, goal, targetKcal,difference);
-           mDatabase.child("Users").child(userUid).setValue(userDb);
+           Map<String, Object> userVals = userDb.toMap();
+           mDatabase.child("Users").child(userUid).updateChildren(userVals);
            SharedPreferences shaPre = getSharedPreferences("UserInfo", MODE_PRIVATE);
            SharedPreferences.Editor editor = shaPre.edit();
            editor.putInt(userUid, 1);

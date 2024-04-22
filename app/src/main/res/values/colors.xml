@@ -11,4 +11,5 @@
     <color name="UI_dark">#521C98</color>
     <color name="UI_light">#F1EBFD</color>
     <color name="Microsoft_blue">#00A4EF</color>
+    <color name="progress_bar_gray">#99adcf</color>
 </resources>
