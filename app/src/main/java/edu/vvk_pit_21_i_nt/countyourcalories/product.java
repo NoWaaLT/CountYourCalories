@@ -1,45 +1,45 @@
 package edu.vvk_pit_21_i_nt.countyourcalories;
 
 public class product {
-    private float Angliavandeniai;
-    private float Baltymai;
-    private float Kilokalorijos;
-    private String Produktas;
-    private float Riebalai;
+    float Angliavandeniai;
+    float Baltymai;
+    float Kilokalorijos;
+    String Produktas;
+    float Riebalai;
 
     public product() {
-        Angliavandeniai = 0.01f;
-        Riebalai = 0.01f;
-        Baltymai = 0.01f;
-        Kilokalorijos = 0.01f;
+        Angliavandeniai = 0.01F;
+        Riebalai = 0.01F;
+        Baltymai = 0.01F;
+        Kilokalorijos = 0.01F;
     }
 
     public float getAngliavandeniai() {
         return Angliavandeniai;
     }
 
-    public void setAngliavandeniai(float Angliavandeniai) {
-        this.Angliavandeniai = Angliavandeniai;
+    public void setAngliavandeniai(Float angliavandeniai) {
+        Angliavandeniai = angliavandeniai;
     }
 
     public float getBaltymai() {
         return Baltymai;
     }
 
-    public void setProduktas(String Produktas) {
-        this.Produktas = Produktas;
+    public void setProduktas(String produktas) {
+        Produktas = produktas;
     }
 
-    public void setBaltymai(float Baltymai) {
-        this.Baltymai = Baltymai;
+    public void setBaltymai(Float baltymai) {
+        Baltymai = baltymai;
     }
 
     public float getKilokalorijos() {
         return Kilokalorijos;
     }
 
-    public void setKilokalorijos(float Kilokalorijos) {
-        this.Kilokalorijos = Kilokalorijos;
+    public void setKilokalorijos(Float kilokalorijos) {
+        Kilokalorijos = kilokalorijos;
     }
 
     public String getProduktas() {
@@ -50,7 +50,10 @@ public class product {
         return Riebalai;
     }
 
-    public void setRiebalai(float Riebalai) {
-        this.Riebalai = Riebalai;
+    public void setRiebalai(Float riebalai) {
+        Riebalai = riebalai;
     }
+
 }
+
+
