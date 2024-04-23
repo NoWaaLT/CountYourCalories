@@ -2,11 +2,17 @@ package edu.vvk_pit_21_i_nt.countyourcalories;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.google.android.material.slider.Slider;
+
+import java.text.DecimalFormat;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,6 +65,25 @@ public class DatabaseFoodAdd extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_database_food_add, container, false);
+        View view = inflater.inflate(R.layout.fragment_database_food_add, container, false);
+
+        DecimalFormat df = new DecimalFormat("#.##");
+
+        TextView laukasOne = (TextView) view.findViewById(R.id.textView68);
+        Slider sliderOne = (Slider) view.findViewById(R.id.vienas);
+        laukasOne.setText(Float.toString(sliderOne.getValue())+"g");
+
+        sliderOne.addOnChangeListener(new Slider.OnChangeListener() {
+            @Override
+            public void onValueChange(@NonNull Slider slider, float v, boolean b) {
+                float abb = sliderOne.getValue();
+                Double abc = (double) abb;
+                abc = Double.parseDouble(df.format(abc));
+                laukasOne.setText(Double.toString(abc)+"g");
+            }
+        });
+
+
+        return view;
     }
 }
