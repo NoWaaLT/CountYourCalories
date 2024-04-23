@@ -1,6 +1,31 @@
 <resources>
-    <string name="app_name">Maisto Kalorijų skaičiuoklė</string>
+    <string name="app_name">Nutrition Calorie Counter</string>
 
-    <string name="sign_out_button_text">Atsijungti</string>
-
+    <string name="sign_out_button_text">Log Out</string>
+    <string name="next">Next</string>
+    <string name="back">Back</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="welcome_message">Welcome to MyApp!</string>
+    <string name="error_message">An error occurred. Please try again later.</string>
+    <string name="button_next">Next</string>
+    <string name="button_back">Back</string>
+    <string name="goal_gain_mass">Gain weight</string>
+    <string name="goal_lose_weight">Lose weight</string>
+    <string name="goal_maintain_weight">Maintain weight</string>
+    <string name="age">Age</string>
+    <string name="weight">Weight</string>
+    <string name="height">Height</string>
+    <string name="emptyField">Fill empty field!</string>
+    <string name="totalSteps"> of 6 steps</string>
+    <string name="profile_age">profile_age</string>
+    <string name="profile_title">profile_title</string>
+    <string name="profile_description">profile_Description</string>
+    <string name="profile_desc_title" />
+    <string name="profile_desc_summary" />
+    <string name="edit_profile">edit_profile</string>
+    <string name="edit_age_text">edit_age_text</string>
+    <string name="value_hint" />
+    <string name="value" />
+    <string name="edit_eight_text" />
+    <string name="edit">EDIT</string>
 </resources>
