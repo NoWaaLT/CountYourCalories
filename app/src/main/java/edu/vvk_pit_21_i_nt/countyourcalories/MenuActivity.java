@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -17,6 +18,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import edu.vvk_pit_21_i_nt.countyourcalories.databinding.ActivityMenuBinding;
@@ -26,6 +33,7 @@ public class MenuActivity extends AppCompatActivity {
 
     ActivityMenuBinding binding;
     public DatabaseReference mDatabase;
+   HashMap<String, UserHistory> userHistoryHashMap;
     public UserDb userDb;
     public FirebaseUser user;
 
@@ -39,8 +47,13 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         replaceFragment(new MyDiaryFragment());
         user = FirebaseAuth.getInstance().getCurrentUser();
+        //firebaseDb = FirebaseDatabase.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference("Users/"+ user.getUid());
+
+        userHistoryHashMap = new HashMap<>();
         getUserData();
+        //UserHistory uh = new UserHistory(1890, 213, 256, 452, 2300);
+        //addUserHistory("2024-04-22", uh);
         binding.bottomNavigationView.setOnItemSelectedListener(Item -> {
 
             int itemId = Item.getItemId();
@@ -87,7 +100,6 @@ public class MenuActivity extends AppCompatActivity {
 
     }
     protected void getUserData() {
-
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -95,7 +107,14 @@ public class MenuActivity extends AppCompatActivity {
                 if (userDb != null) {
                     Log.d("Naudotojo duomenys", userDb.getDisplayName());
                 }
+                for (DataSnapshot userSnapshot: dataSnapshot.child("History").getChildren()) {
+                    String key = userSnapshot.getKey();
+                    if(key != null) {
+                        userHistoryHashMap.put(key, userSnapshot.getValue(UserHistory.class));
+                        //Log.d("Istorijos raktas", key);
 
+                    }
+                }
             }
 
             @Override
@@ -138,6 +157,19 @@ public class MenuActivity extends AppCompatActivity {
             userDb.setTarget(val);
         }
         mDatabase.child(key).setValue(val);
+    }
+    protected void addUserHistory() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
+        String currentDate = sdf.format(new Date());
+        UserHistory uh = new UserHistory();
+        mDatabase.child("History").child(currentDate).setValue(uh);
+    }
+
+    protected void updateUserHistory(String date, String key, int val) {
+        mDatabase.child("History").child(date).child(key).setValue(val);
+    }
+    protected void addUserHistory(String date, UserHistory uh) {
+        mDatabase.child("History").child(date).setValue(uh);
     }
 
     private int calcTargetProtein(int goal, int targetKcal) {

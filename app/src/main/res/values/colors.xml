@@ -23,5 +23,6 @@
     <color name="purple">#800080</color>
     <color name="brown">#A52A2A</color>
     <color name="gray">#77808080</color>
+    <color name="progress_bar_gray">#99adcf</color>
 
 </resources>

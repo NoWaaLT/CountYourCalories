@@ -7,7 +7,7 @@
         android:icon="@drawable/diary_logo"/>
     <item
         android:id="@+id/meal_plans"
-        android:title="Meal Plans"
+        android:title="Nutrition"
         android:icon="@drawable/meal_logo"/>
     <item
         android:id="@+id/add_food"
