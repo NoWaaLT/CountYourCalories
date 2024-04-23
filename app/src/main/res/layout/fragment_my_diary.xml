@@ -373,7 +373,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
-                android:layout_marginTop="86dp"
+                android:layout_marginTop="100dp"
                 android:text="Kcal"
                 android:textStyle="bold" />
 
@@ -440,7 +440,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="75dp"
                 android:progressTint="@color/UI_dark"
-                android:progress="25"
+                android:progress="55"
 
                 android:layout_marginTop="190dp" />
 
@@ -495,20 +495,21 @@
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
+
+
             <ProgressBar
                 android:id="@+id/progressBar4"
-                style="?android:attr/progressBarStyle"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:indeterminateTint="@color/lavander"
-                android:progressTint="@color/UI_dark"
                 android:layout_marginLeft="140dp"
-                android:secondaryProgress="10"
-                android:secondaryProgressTint="@color/white"
-                android:progress="25"
                 android:layout_marginTop="25dp"
-                android:backgroundTint="@color/UI_dark"
-                android:backgroundTintMode="src_over" />
+                android:indeterminate="false"
+                android:background="@drawable/circle_shape"
+                android:progressDrawable="@drawable/circular_progressbar"
+
+                android:progress="25"
+                />
 
             <TextView
                 android:id="@+id/textView32"
@@ -521,6 +522,7 @@
 
                 android:textSize="30dp"
                 android:textStyle="bold" />
+
 
             <TextView
                 android:id="@+id/textView33"
