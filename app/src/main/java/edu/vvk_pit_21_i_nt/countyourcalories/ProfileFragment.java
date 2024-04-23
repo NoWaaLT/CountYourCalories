@@ -3,7 +3,6 @@ package edu.vvk_pit_21_i_nt.countyourcalories;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,11 +51,8 @@ public class ProfileFragment extends Fragment {
     private final String[] genderName = {"Man", "Woman"};
     private final float[] myActivityLevels = {1.2f, 1.375f, 1.55f, 1.725f, 1.9f};
     private final String[] myActivityLevelDescription = {"Sedentary, 0-1 per week", "Lightly Active, 2-3 per week", "Moderately Active, 4-5 per week", "Very Active, 6-7 per week", "Super Active, 2 workout per day"};
-    private String nowActivity;
     private final int[] myDifference = {300, -300, 0};
     private final String[] myGoalDescription = {"Gain weight", "Lose weight", "Maintain weight"};
-    private String key;
-    private String value;
 
     public ProfileFragment() {
         // Required empty public constructor
