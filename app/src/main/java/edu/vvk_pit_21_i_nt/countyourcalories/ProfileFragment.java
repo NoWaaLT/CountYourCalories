@@ -202,7 +202,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        edit_profile_age.setOnClickListener(v -> {
+        edit_profile_age.setOnClickListener(v -> { //edit age
             edit_age_text.setText("Edit Age");
             String content = edit_profile_age.getText().toString();
             edit_profile_age.setText(content);
@@ -221,7 +221,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        edit_profile_height.setOnClickListener(v -> {
+        edit_profile_height.setOnClickListener(v -> { // edit height
             edit_height_text.setText("Edit Height (cm)");
             String content = edit_profile_height.getText().toString();
             edit_profile_height.setText(content);
@@ -240,7 +240,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        edit_profile_weight.setOnClickListener(v -> {
+        edit_profile_weight.setOnClickListener(v -> { // edit weight
             edit_weight_text.setText("Edit Weight (kg)");
             String content = edit_profile_weight.getText().toString();
             edit_profile_weight.setText(content);
@@ -259,7 +259,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        edit_profile_gender.setOnClickListener(v -> {
+        edit_profile_gender.setOnClickListener(v -> { // edit gender
             edit_profile_bmr.setText(calcNewBmr());
             if (newBmr != myBmr) {
                 userDataPut_Float("bmr", newBmr);
@@ -284,7 +284,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        edit_profile_activity_level.setOnClickListener(v -> {
+        edit_profile_activity_level.setOnClickListener(v -> { //edit activity level
             edit_profile_target.setText(calcNewTarget());
             for (int i = 0; i < myActivityLevels.length; i++) {
                 if (myActivityLevel == myActivityLevels[i]) {
@@ -301,7 +301,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        edit_profile_goal.setOnClickListener(v -> {
+        edit_profile_goal.setOnClickListener(v -> { //edit goal
             for (int i = 0; i < myGoalDescription.length; i++) {
                 if (Objects.equals(gal_Description(), myGoalDescription[i])) {
                     if (i == myGoalDescription.length - 1) {
