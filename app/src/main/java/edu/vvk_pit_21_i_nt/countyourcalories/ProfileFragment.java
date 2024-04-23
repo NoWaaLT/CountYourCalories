@@ -1,5 +1,6 @@
 package edu.vvk_pit_21_i_nt.countyourcalories;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,7 +33,6 @@ public class ProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private String myEmail;
     private String myDisplayName;
     private float myWeight;
     private int myHeight;
@@ -46,10 +46,13 @@ public class ProfileFragment extends Fragment {
     private boolean isEditing = false;
     private final String[] genders = {"A Man", "A Woman"};
     private final String[] genderName = {"Man", "Woman"};
-    private float[] myActivityLevels = {1.2f, 1.375f, 1.55f, 1.725f, 1.9f};
-    private final String[] myActivityLevelDescription = {"Sedentary, 0-1 per week", "Lightly Active, 2-3 per week", "Moderately Active, 4-5 per week", "Very Active, 6-7 per week", "Super Active, 2 per day"};
+    private final float[] myActivityLevels = {1.2f, 1.375f, 1.55f, 1.725f, 1.9f};
+    private final String[] myActivityLevelDescription = {"Sedentary, 0-1 per week", "Lightly Active, 2-3 per week", "Moderately Active, 4-5 per week", "Very Active, 6-7 per week", "Super Active, 2 workout per day"};
+    private String nowActivity;
     private final int[] myDifference = {300, -300, 0};
     private final String[] myGoalDescription = {"Gain weight", "Lose weight", "Maintain weight"};
+    private String key;
+    private String value;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -96,7 +99,6 @@ public class ProfileFragment extends Fragment {
     }
 
     private void userDataRead() {
-        myEmail = ((MenuActivity) requireActivity()).userDb.getEmail();
         myDisplayName = ((MenuActivity) requireActivity()).userDb.getDisplayName();
         myWeight = (float) (Math.round(((MenuActivity) requireActivity()).userDb.getWeight() * 100.0) / 100.0);
         myHeight = ((MenuActivity) requireActivity()).userDb.getHeight();
@@ -108,6 +110,7 @@ public class ProfileFragment extends Fragment {
         myTarget = ((MenuActivity) requireActivity()).userDb.getTarget();
     }
 
+    @SuppressLint({"SetTextI18n", "UseCompatLoadingForColorStateLists"})
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view;
@@ -168,12 +171,13 @@ public class ProfileFragment extends Fragment {
 
         edit_profile_age.setOnClickListener(v -> {
             edit_age_text.setText("Edit Age");
-            String content = edit_profile_age.getText().toString(); //gets you the contents of edit text
+            String content = edit_profile_age.getText().toString();
             edit_profile_age.setText(content);
             if (Integer.parseInt(content) > 0 && Integer.parseInt(content) < 120) {
                 if (newBmr != myBmr) {
-                    edit_profile_bmr.setText(calcNewBmr());
                     userDataPut_Float("bmr", newBmr);
+                    edit_profile_target.setText(calcNewTarget());
+                    edit_profile_bmr.setText(calcNewBmr());
                 }
                 userDataPut_Int("age", Integer.parseInt(content));
                 edit_profile_bmr.setText(calcNewBmr());
@@ -188,12 +192,14 @@ public class ProfileFragment extends Fragment {
 
         edit_profile_height.setOnClickListener(v -> {
             edit_height_text.setText("Edit Height (cm)");
-            String content = edit_profile_height.getText().toString(); //gets you the contents of edit text
+            String content = edit_profile_height.getText().toString();
             edit_profile_height.setText(content);
             if (Integer.parseInt(content) > 0 && Integer.parseInt(content) < 300) {
                 edit_profile_bmr.setText(calcNewBmr());
                 if (newBmr != myBmr) {
                     userDataPut_Float("bmr", newBmr);
+                    edit_profile_target.setText(calcNewTarget());
+                    edit_profile_bmr.setText(calcNewBmr());
                 }
                 userDataPut_Int("height", Integer.parseInt(content));
                 edit_profile_bmr.setText(calcNewBmr());
@@ -207,7 +213,7 @@ public class ProfileFragment extends Fragment {
         edit_profile_weight.setText("" + myWeight);
         edit_profile_weight.setOnClickListener(v -> {
             edit_weight_text.setText("Edit Weight (kg)");
-            String content = edit_profile_weight.getText().toString(); //gets you the contents of edit text
+            String content = edit_profile_weight.getText().toString();
             edit_profile_weight.setText(content);
             if (Float.parseFloat(content) > 0 && Float.parseFloat(content) < 300) {
                 content = String.valueOf((float) (Math.round(Float.parseFloat(content) * 100.0) / 100.0));
@@ -215,14 +221,13 @@ public class ProfileFragment extends Fragment {
                 userDataPut_Float("weight", Float.parseFloat(content));
                 edit_profile_bmr.setText(calcNewBmr());
                 if (newBmr != myBmr) {
-                    edit_profile_bmr.setText(calcNewBmr());
                     userDataPut_Float("bmr", newBmr);
-                    userDataRead();
+                    edit_profile_target.setText(calcNewTarget());
+                    edit_profile_bmr.setText(calcNewBmr());
                 }
                 InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 mgr.hideSoftInputFromWindow(edit_profile_weight.getWindowToken(), 0);
             }
-
         });
 
         edit_gender_text.setText("Edit Gender");
@@ -244,8 +249,9 @@ public class ProfileFragment extends Fragment {
                     Log.d("newBmr: ", newBmr + "");
                     edit_profile_bmr.setText(calcNewBmr());
                     if (newBmr != myBmr) {
-                        edit_profile_bmr.setText(calcNewBmr());
                         userDataPut_Float("bmr", newBmr);
+                        edit_profile_target.setText(calcNewTarget());
+                        edit_profile_bmr.setText(calcNewBmr());
                     }
                     if (Objects.equals(myGender, "A Man")) {
                         genderIconMale.setVisibility(View.INVISIBLE);
@@ -323,14 +329,13 @@ public class ProfileFragment extends Fragment {
                     userDataPut_Float("target", myBmr * myActivityLevel + myDifference[0]);
                     userDataPut_Int("difference", myDifference[0]);
                     edit_profile_target.setText(calcNewTarget());
-                    break;
                 } else {
                     edit_profile_target.setText("" + (myBmr * myActivityLevel + myDifference[i + 1]));
                     userDataPut_Float("target", myBmr * myActivityLevel + myDifference[i + 1]);
                     userDataPut_Int("difference", myDifference[i + 1]);
                     edit_profile_target.setText(calcNewTarget());
-                    break;
                 }
+                break;
             }
         }
         return view;
@@ -346,15 +351,16 @@ public class ProfileFragment extends Fragment {
 
     private String profile_description() {
 
-        return "Age: " + myAge + " years old. Age is an important factor in determining health and nutritional needs. " +
-                "Gender: " + myGender + ". Gender can influence metabolism and nutrient requirements. " +
-                "Weight: " + myWeight + " kg. This is crucial for assessing overall health and setting weight-related goals. " +
-                "Height: " + myHeight + " cm. Height is necessary for calculating certain health indicators like body mass index (BMI). " +
-                "Activity Level: " + myActivityLevel + ".  This indicates how much physical activity he engages in daily, which impacts calorie needs. " +
-                "BMR (Basal Metabolic Rate): " + myBmr + ".  BMR represents the number of calories the body needs at rest to maintain vital functions such as breathing and circulation." +
-                "Goal: goal is to " + gal_Description() + ". This information is crucial for tailoring dietary recommendations and setting calorie targets. " +
-                " (Target Calories: To achieve the goal of" + gal_Description() + "You should consume " + myTarget + " calories per day. This figure considers his BMR, activity level, and the desired outcome of " + gal_Description() + ")\n\n" +
-                " In summary, this message provides a snapshot of " + myDisplayName + " health profile, including his basic information, activity level, and dietary goal, along with a recommended calorie intake to support his objective of " + gal_Description() + ".";
+        return "Yoa a age is " + myAge + " years. Age is an important factor in determining health and nutritional needs. \nFor " + myGender + " weight can influence metabolism and nutrient requirements. Your weight " + myWeight + " kg. This is crucial for assessing overall health and setting weight-related goals. \nYour height: " + myHeight + " cm. Height is necessary for calculating certain health indicators like body mass index (BMI). \nYour activity level " + nowActivity() + ".  This indicates how much physical activity he engages in daily, which impacts calorie needs. \nBMR (Basal Metabolic Rate): " + myBmr + " represents the number of calories the body needs at rest to maintain vital functions such as breathing and circulation. \nYour goal to " + gal_Description() + ". This information is crucial for tailoring dietary recommendations and setting calorie targets, to achieve the goal of " + gal_Description() + ". You should consume " + myTarget + " calories per day. This figure considers his BMR, activity level, and the desired outcome of " + gal_Description() + "\n\n In summary, this message provides a snapshot of " + myDisplayName + " health profile, including his basic information, activity level, and dietary goal, along with a recommended calorie intake to support his objective of " + gal_Description() + ".";
+    }
+
+    private String nowActivity() {
+        for (int i = 0; i < myActivityLevels.length; i++) {
+            if (myActivityLevel == myActivityLevels[i]) {
+                return myActivityLevelDescription[i];
+            }
+        }
+        return null;
     }
 
     private String profile_Title() {
@@ -365,15 +371,12 @@ public class ProfileFragment extends Fragment {
         userDataRead();
         newBmr = (10f * myWeight) + (6.25f * myHeight) - (5f * myAge) + ((Objects.equals(myGender, "A Man") ? 5f : -16));
         userDataPut_Float("bmr", newBmr);
-//        ((MenuActivity) requireActivity()).updateUserData("bmr", newBmr);
         return newBmr + "";
     }
 
     private String calcNewTarget() {
         userDataRead();
         int newTarget = (int) (myBmr * myActivityLevel + myDifference[myGoal]);
-//        Log.d("newTarget", newTarget + "");
-//        ((MenuActivity) requireActivity()).updateUserData("target", newTarget);
         userDataPut_Int("target", newTarget);
         return newTarget + "";
     }
