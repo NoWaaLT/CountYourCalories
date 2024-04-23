@@ -298,7 +298,7 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
-
+// Per iteracija nekinta Targetas po oneclivk, reik suziuret
         edit_goal_text.setText("Edit Goal");
         edit_profile_goal.setText(gal_Description());
         edit_profile_target.setText(calcNewTarget());
@@ -321,6 +321,7 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
+
         edit_target_text.setText("Target Calories");
         edit_profile_target.setText("" + myTarget);
 
@@ -330,14 +331,12 @@ public class ProfileFragment extends Fragment {
                     edit_profile_target.setText("" + (myBmr * myActivityLevel + myDifference[0]));
                     ((MenuActivity) requireActivity()).updateUserData("target", myBmr * myActivityLevel + myDifference[0]);
                     ((MenuActivity) requireActivity()).updateUserData("difference", myDifference[0]);
-
                     edit_profile_target.setText(calcNewTarget());
                     break;
                 } else {
                     edit_profile_target.setText("" + (myBmr * myActivityLevel + myDifference[i + 1]));
                     ((MenuActivity) requireActivity()).updateUserData("target", myBmr * myActivityLevel + myDifference[i + 1]);
                     ((MenuActivity) requireActivity()).updateUserData("difference", myDifference[i + 1]);
-
                     edit_profile_target.setText(calcNewTarget());
                     break;
                 }
@@ -389,5 +388,4 @@ public class ProfileFragment extends Fragment {
         ((MenuActivity) requireActivity()).updateUserData("target", newTarget);
         return newTarget + "";
     }
-    //Naujas
 }
