@@ -389,4 +389,5 @@ public class ProfileFragment extends Fragment {
         ((MenuActivity) requireActivity()).updateUserData("target", newTarget);
         return newTarget + "";
     }
+    //Naujas
 }
