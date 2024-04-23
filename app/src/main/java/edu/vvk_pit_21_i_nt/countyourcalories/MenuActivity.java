@@ -10,8 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import edu.vvk_pit_21_i_nt.countyourcalories.databinding.ActivityMenuBinding;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,6 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+
+import edu.vvk_pit_21_i_nt.countyourcalories.databinding.ActivityMenuBinding;
 
 
 public class MenuActivity extends AppCompatActivity {
@@ -92,7 +92,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
 
-    private  void replaceFragment(Fragment fragment){
+    public  void replaceFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout,fragment);
