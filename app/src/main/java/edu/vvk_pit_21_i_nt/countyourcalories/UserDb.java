@@ -1,5 +1,10 @@
 package edu.vvk_pit_21_i_nt.countyourcalories;
 
+import com.google.firebase.database.Exclude;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class UserDb {
 
 
@@ -118,5 +123,21 @@ public class UserDb {
 
     public void setTarget(int target) {
         this.target = target;
+    }
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("email", email);
+        result.put("displayName", displayName);
+        result.put("weight", weight);
+        result.put("height", height);
+        result.put("activityLevel", activityLevel);
+        result.put("age", age);
+        result.put("gender", gender);
+        result.put("bmr", bmr);
+        result.put("goal", goal);
+        result.put("target", target);
+        result.put("difference", difference);
+        return result;
     }
 }
