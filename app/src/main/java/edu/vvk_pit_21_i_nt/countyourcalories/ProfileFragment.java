@@ -32,7 +32,6 @@ public class ProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     private String myEmail;
     private String myDisplayName;
     private float myWeight;
@@ -43,20 +42,14 @@ public class ProfileFragment extends Fragment {
     private float myBmr;
     private int myGoal;
     private int myTarget;
-    private int myDifferences;
     private float newBmr;
-    private int newTarget;
-    EditText edit_profile_age;
     private boolean isEditing = false;
     private final String[] genders = {"A Man", "A Woman"};
     private final String[] genderName = {"Man", "Woman"};
-    private final float[] myActivityLevels = {1.2f, 1.375f, 1.55f, 1.725f, 1.9f};
+    private float[] myActivityLevels = {1.2f, 1.375f, 1.55f, 1.725f, 1.9f};
     private final String[] myActivityLevelDescription = {"Sedentary, 0-1 per week", "Lightly Active, 2-3 per week", "Moderately Active, 4-5 per week", "Very Active, 6-7 per week", "Super Active, 2 per day"};
     private final int[] myDifference = {300, -300, 0};
     private final String[] myGoalDescription = {"Gain weight", "Lose weight", "Maintain weight"};
-    private String key;
-    private String value;
-
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -90,8 +83,15 @@ public class ProfileFragment extends Fragment {
         userDataRead();
     }
 
-    private void userDataPut(String key, String value) {
+    private void userDataPut_Str(String key, String value) {
+        ((MenuActivity) requireActivity()).updateUserData(key, value);
+    }
 
+    private void userDataPut_Int(String key, int value) {
+        ((MenuActivity) requireActivity()).updateUserData(key, value);
+    }
+
+    private void userDataPut_Float(String key, float value) {
         ((MenuActivity) requireActivity()).updateUserData(key, value);
     }
 
@@ -106,21 +106,16 @@ public class ProfileFragment extends Fragment {
         myBmr = ((MenuActivity) requireActivity()).userDb.getBmr();
         myGoal = ((MenuActivity) requireActivity()).userDb.getGoal();
         myTarget = ((MenuActivity) requireActivity()).userDb.getTarget();
-        myDifferences = ((MenuActivity) requireActivity()).userDb.getDifference();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view;
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         // Inflate the layout for this fragment
         TextView profile_Title = (TextView) view.findViewById(R.id.profile_title);
-        profile_Title.setText(profile_Title());
         ScrollView scroll_Profile = (ScrollView) view.findViewById(R.id.scroll_view_profile);
-        scroll_Profile.setVisibility(View.VISIBLE);
         ScrollView scroll_Edit_Profile = (ScrollView) view.findViewById(R.id.scroll_view_profile_edit);
-        scroll_Edit_Profile.setVisibility(View.INVISIBLE);
         EditText edit_profile_age = (EditText) view.findViewById(R.id.edit_profile_age);
         EditText edit_profile_height = (EditText) view.findViewById(R.id.edit_profile_height);
         EditText edit_profile_weight = (EditText) view.findViewById(R.id.edit_profile_weight);
@@ -140,8 +135,12 @@ public class ProfileFragment extends Fragment {
         TextView edit_bmr_text = (TextView) view.findViewById(R.id.edit_bmr_text);
         TextView edit_profile_bmr = (TextView) view.findViewById(R.id.edit_profile_bmr);
         Button editProfile = (Button) view.findViewById(R.id.edit_profile);
+        profile_Title.setText(profile_Title());
+        scroll_Edit_Profile.setVisibility(View.INVISIBLE);
+        scroll_Profile.setVisibility(View.VISIBLE);
         edit_bmr_text.setText("BMR (Basal Metabolic Rate)");
         edit_profile_bmr.setText("" + myBmr);
+
 
         editProfile.setOnClickListener(v -> {
             if (isEditing) {
@@ -174,11 +173,9 @@ public class ProfileFragment extends Fragment {
             if (Integer.parseInt(content) > 0 && Integer.parseInt(content) < 120) {
                 if (newBmr != myBmr) {
                     edit_profile_bmr.setText(calcNewBmr());
-                    ((MenuActivity) requireActivity()).updateUserData("bmr", newBmr);
-                    userDataRead();
+                    userDataPut_Float("bmr", newBmr);
                 }
-                ((MenuActivity) requireActivity()).updateUserData("age", Integer.parseInt(content));
-                userDataRead();
+                userDataPut_Int("age", Integer.parseInt(content));
                 edit_profile_bmr.setText(calcNewBmr());
                 calcNewBmr();
                 InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -196,11 +193,9 @@ public class ProfileFragment extends Fragment {
             if (Integer.parseInt(content) > 0 && Integer.parseInt(content) < 300) {
                 edit_profile_bmr.setText(calcNewBmr());
                 if (newBmr != myBmr) {
-                    ((MenuActivity) requireActivity()).updateUserData("bmr", newBmr);
-                    userDataRead();
+                    userDataPut_Float("bmr", newBmr);
                 }
-                ((MenuActivity) requireActivity()).updateUserData("height", Integer.parseInt(content));
-                userDataRead();
+                userDataPut_Int("height", Integer.parseInt(content));
                 edit_profile_bmr.setText(calcNewBmr());
                 calcNewBmr();
                 InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -217,12 +212,11 @@ public class ProfileFragment extends Fragment {
             if (Float.parseFloat(content) > 0 && Float.parseFloat(content) < 300) {
                 content = String.valueOf((float) (Math.round(Float.parseFloat(content) * 100.0) / 100.0));
                 edit_profile_weight.setText(content);
-                ((MenuActivity) requireActivity()).updateUserData("weight", Float.parseFloat(content));
+                userDataPut_Float("weight", Float.parseFloat(content));
                 edit_profile_bmr.setText(calcNewBmr());
-                calcNewBmr();
                 if (newBmr != myBmr) {
                     edit_profile_bmr.setText(calcNewBmr());
-                    ((MenuActivity) requireActivity()).updateUserData("bmr", newBmr);
+                    userDataPut_Float("bmr", newBmr);
                     userDataRead();
                 }
                 InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -251,8 +245,7 @@ public class ProfileFragment extends Fragment {
                     edit_profile_bmr.setText(calcNewBmr());
                     if (newBmr != myBmr) {
                         edit_profile_bmr.setText(calcNewBmr());
-                        ((MenuActivity) requireActivity()).updateUserData("bmr", newBmr);
-                        userDataRead();
+                        userDataPut_Float("bmr", newBmr);
                     }
                     if (Objects.equals(myGender, "A Man")) {
                         genderIconMale.setVisibility(View.INVISIBLE);
@@ -263,11 +256,11 @@ public class ProfileFragment extends Fragment {
                     }
                     if (Objects.equals(myGender, genders[0])) {
                         edit_profile_gender.setText(genderName[1]);
-                        ((MenuActivity) requireActivity()).updateUserData("gender", genders[1]);
+                        userDataPut_Str("gender", genders[1]);
                         edit_profile_bmr.setText(calcNewBmr());
                     } else {
                         edit_profile_gender.setText(genderName[0]);
-                        ((MenuActivity) requireActivity()).updateUserData("gender", genders[0]);
+                        userDataPut_Str("gender", genders[0]);
                         edit_profile_bmr.setText(calcNewBmr());
                     }
                 }
@@ -286,38 +279,36 @@ public class ProfileFragment extends Fragment {
                 if (myActivityLevel == myActivityLevels[i]) {
                     if (i == myActivityLevels.length - 1) {
                         edit_profile_activity_level.setText(myActivityLevelDescription[0]);
-                        ((MenuActivity) requireActivity()).updateUserData("activityLevel", myActivityLevels[0]);
-                        edit_profile_target.setText(calcNewTarget());
-                        break;
+                        userDataPut_Float("activityLevel", myActivityLevels[0]);
                     } else {
                         edit_profile_activity_level.setText(myActivityLevelDescription[i + 1]);
-                        ((MenuActivity) requireActivity()).updateUserData("activityLevel", myActivityLevels[i + 1]);
-                        edit_profile_target.setText(calcNewTarget());
-                        break;
+                        userDataPut_Float("activityLevel", myActivityLevels[i + 1]);
                     }
+                    edit_profile_target.setText(calcNewTarget());
+                    break;
                 }
             }
         });
-// Per iteracija nekinta Targetas po oneclivk, reik suziuret
+
         edit_goal_text.setText("Edit Goal");
         edit_profile_goal.setText(gal_Description());
-        edit_profile_target.setText(calcNewTarget());
+        edit_profile_target.setText("" + myTarget);
+
         edit_profile_goal.setOnClickListener(v -> {
             for (int i = 0; i < myGoalDescription.length; i++) {
                 if (Objects.equals(gal_Description(), myGoalDescription[i])) {
                     if (i == myGoalDescription.length - 1) {
                         edit_profile_goal.setText(myGoalDescription[0]);
-                        ((MenuActivity) requireActivity()).updateUserData("goal", 0);
-                        ((MenuActivity) requireActivity()).updateUserData("difference", myDifference[0]);
+                        userDataPut_Int("goal", 0);
+                        userDataPut_Int("difference", myDifference[0]);
                         edit_profile_target.setText(calcNewTarget());
-                        break;
                     } else {
                         edit_profile_goal.setText(myGoalDescription[i + 1]);
-                        ((MenuActivity) requireActivity()).updateUserData("goal", i + 1);
-                        ((MenuActivity) requireActivity()).updateUserData("difference", myDifference[i + 1]);
+                        userDataPut_Int("goal", i + 1);
+                        userDataPut_Int("difference", myDifference[i + 1]);
                         edit_profile_target.setText(calcNewTarget());
-                        break;
                     }
+                    break;
                 }
             }
         });
@@ -329,24 +320,20 @@ public class ProfileFragment extends Fragment {
             if (myTarget == myBmr * myActivityLevel + myDifference[i]) {
                 if (i == myDifference.length - 1) {
                     edit_profile_target.setText("" + (myBmr * myActivityLevel + myDifference[0]));
-                    ((MenuActivity) requireActivity()).updateUserData("target", myBmr * myActivityLevel + myDifference[0]);
-                    ((MenuActivity) requireActivity()).updateUserData("difference", myDifference[0]);
+                    userDataPut_Float("target", myBmr * myActivityLevel + myDifference[0]);
+                    userDataPut_Int("difference", myDifference[0]);
                     edit_profile_target.setText(calcNewTarget());
                     break;
                 } else {
                     edit_profile_target.setText("" + (myBmr * myActivityLevel + myDifference[i + 1]));
-                    ((MenuActivity) requireActivity()).updateUserData("target", myBmr * myActivityLevel + myDifference[i + 1]);
-                    ((MenuActivity) requireActivity()).updateUserData("difference", myDifference[i + 1]);
+                    userDataPut_Float("target", myBmr * myActivityLevel + myDifference[i + 1]);
+                    userDataPut_Int("difference", myDifference[i + 1]);
                     edit_profile_target.setText(calcNewTarget());
                     break;
                 }
             }
         }
         return view;
-    }
-
-
-    private void click() {
     }
 
     private String profile_desc_title() {
@@ -377,15 +364,17 @@ public class ProfileFragment extends Fragment {
     private String calcNewBmr() {
         userDataRead();
         newBmr = (10f * myWeight) + (6.25f * myHeight) - (5f * myAge) + ((Objects.equals(myGender, "A Man") ? 5f : -16));
-        ((MenuActivity) requireActivity()).updateUserData("bmr", newBmr);
+        userDataPut_Float("bmr", newBmr);
+//        ((MenuActivity) requireActivity()).updateUserData("bmr", newBmr);
         return newBmr + "";
     }
 
     private String calcNewTarget() {
         userDataRead();
-        newTarget = (int) (myBmr * myActivityLevel + myDifferences);
-        Log.d("newTarget", newTarget + "");
-        ((MenuActivity) requireActivity()).updateUserData("target", newTarget);
+        int newTarget = (int) (myBmr * myActivityLevel + myDifference[myGoal]);
+//        Log.d("newTarget", newTarget + "");
+//        ((MenuActivity) requireActivity()).updateUserData("target", newTarget);
+        userDataPut_Int("target", newTarget);
         return newTarget + "";
     }
 }
