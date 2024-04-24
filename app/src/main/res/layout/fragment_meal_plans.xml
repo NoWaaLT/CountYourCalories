@@ -94,7 +94,7 @@
             android:layout_width="match_parent"
             android:layout_height="520dp"
             android:layout_marginTop="55dp"
-            app:cardBackgroundColor="#E1F6FF"
+            android:background="@drawable/card_transition"
             app:cardCornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -305,6 +305,7 @@
                 android:visibility="invisible" />
         </androidx.cardview.widget.CardView>
 
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="30dp"
@@ -330,7 +331,6 @@
                 android:textSize="16dp"
                 android:textStyle="bold" />
         </androidx.cardview.widget.CardView>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
