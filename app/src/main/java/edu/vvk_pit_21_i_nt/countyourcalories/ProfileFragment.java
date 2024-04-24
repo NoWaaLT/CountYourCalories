@@ -166,13 +166,12 @@ public class ProfileFragment extends Fragment {
         edit_gender_text.setText("Edit Gender");
         edit_activity_level_text.setText("Edit Activity Level");
         edit_target_text.setText("Target Calories");
-
+        userDataRead();
         if (Objects.equals(myGender, genders[0])) {
             edit_profile_gender.setText(genderName[0]);
         } else {
             edit_profile_gender.setText(genderName[1]);
         }
-        userDataRead();
         edit_profile_target.setText("" + myTarget);
         edit_profile_bmr.setText("" + myBmr);
         edit_profile_age.setText("" + myAge);
@@ -198,7 +197,7 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-    private void actionCalcTarget(TextView edit_profile_target) {
+    private void actionCalcTarget(@NonNull TextView edit_profile_target) {
         edit_profile_target.setOnClickListener(v -> {
             for (int i = 0; i < myDifference.length; i++) {
                 if (myTarget == myBmr * myActivityLevel + myDifference[i]) {
@@ -219,7 +218,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private void actionCalcGoal(TextView edit_profile_goal, TextView edit_profile_target) {
+    private void actionCalcGoal(@NonNull TextView edit_profile_goal, TextView edit_profile_target) {
         edit_profile_goal.setOnClickListener(v -> { //edit goal
             for (int i = 0; i < myGoalDescription.length; i++) {
                 if (Objects.equals(gal_Description(), myGoalDescription[i])) {
@@ -240,7 +239,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private void actionEditActivityLevel(TextView edit_profile_activity_level, TextView edit_profile_target) {
+    private void actionEditActivityLevel(@NonNull TextView edit_profile_activity_level, TextView edit_profile_target) {
         edit_profile_activity_level.setOnClickListener(v -> { //edit activity level
             edit_profile_target.setText(calcNewTarget());
             for (int i = 0; i < myActivityLevels.length; i++) {
@@ -259,7 +258,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private void actionEditGender(TextView edit_profile_gender, ImageView genderIconMale, ImageView genderIconFemale, TextView edit_profile_bmr, TextView edit_profile_target) {
+    private void actionEditGender(@NonNull TextView edit_profile_gender, ImageView genderIconMale, ImageView genderIconFemale, TextView edit_profile_bmr, TextView edit_profile_target) {
         edit_profile_gender.setOnClickListener(v -> { // edit gender
             edit_profile_bmr.setText(calcNewBmr());
             if (newBmr != myBmr) {
@@ -286,7 +285,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private void actionEditWeight(EditText edit_profile_weight, TextView edit_weight_text, TextView edit_profile_bmr, TextView edit_profile_target) {
+    private void actionEditWeight(@NonNull EditText edit_profile_weight, TextView edit_weight_text, TextView edit_profile_bmr, TextView edit_profile_target) {
         edit_profile_weight.setOnClickListener(v -> { // edit weight
             edit_weight_text.setText("Edit Weight (kg)");
             String content = edit_profile_weight.getText().toString();
@@ -307,7 +306,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private void actionEditHeight(EditText edit_profile_height, TextView edit_height_text, TextView edit_profile_bmr, TextView edit_profile_target) {
+    private void actionEditHeight(@NonNull EditText edit_profile_height, TextView edit_height_text, TextView edit_profile_bmr, TextView edit_profile_target) {
         edit_profile_height.setOnClickListener(v -> { // edit height
             edit_height_text.setText("Edit Height (cm)");
             String content = edit_profile_height.getText().toString();
