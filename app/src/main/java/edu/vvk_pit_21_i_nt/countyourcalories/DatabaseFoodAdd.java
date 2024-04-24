@@ -68,10 +68,11 @@ public class DatabaseFoodAdd extends Fragment {
         View view = inflater.inflate(R.layout.fragment_database_food_add, container, false);
 
         DecimalFormat df = new DecimalFormat("#.##");
+        DecimalFormat dff = new DecimalFormat("#");
 
-        TextView laukasOne = (TextView) view.findViewById(R.id.textView68);
+        TextView tOne = (TextView) view.findViewById(R.id.editTextNumber5);
         Slider sliderOne = (Slider) view.findViewById(R.id.vienas);
-        laukasOne.setText(Float.toString(sliderOne.getValue())+"g");
+        tOne.setText(Float.toString(sliderOne.getValue())+"g");
 
         sliderOne.addOnChangeListener(new Slider.OnChangeListener() {
             @Override
@@ -79,10 +80,66 @@ public class DatabaseFoodAdd extends Fragment {
                 float abb = sliderOne.getValue();
                 Double abc = (double) abb;
                 abc = Double.parseDouble(df.format(abc));
-                laukasOne.setText(Double.toString(abc)+"g");
+                tOne.setText(Double.toString(abc)+"g");
             }
         });
 
+        TextView tTwo = (TextView) view.findViewById(R.id.editTextNumber);
+        Slider sliderTwo = (Slider) view.findViewById(R.id.du);
+        tTwo.setText(Float.toString(sliderTwo.getValue())+"g");
+
+        sliderTwo.addOnChangeListener(new Slider.OnChangeListener() {
+            @Override
+            public void onValueChange(@NonNull Slider slider, float v, boolean b) {
+                float abb = sliderTwo.getValue();
+                Double abc = (double) abb;
+                abc = Double.parseDouble(df.format(abc));
+                tTwo.setText(Double.toString(abc)+"g");
+            }
+        });
+
+        TextView tThree = (TextView) view.findViewById(R.id.editTextNumber2);
+        Slider sliderThree = (Slider) view.findViewById(R.id.trys);
+        tThree.setText(Float.toString(sliderThree.getValue())+"kcal");
+
+        sliderThree.addOnChangeListener(new Slider.OnChangeListener() {
+            @Override
+            public void onValueChange(@NonNull Slider slider, float v, boolean b) {
+                float abb = sliderThree.getValue();
+                Float abc = (float) abb;
+                abc = Float.parseFloat(dff.format(abc));
+                tThree.setText(Float.toString(abc)+"kcal");
+            }
+        });
+
+        TextView tFour = (TextView) view.findViewById(R.id.editTextNumber3);
+        Slider sliderFour = (Slider) view.findViewById(R.id.keturi);
+        tFour.setText(Float.toString(sliderFour.getValue())+"g");
+
+        sliderFour.addOnChangeListener(new Slider.OnChangeListener() {
+            @Override
+            public void onValueChange(@NonNull Slider slider, float v, boolean b) {
+                float abb = sliderFour.getValue();
+                Double abc = (double) abb;
+                abc = Double.parseDouble(df.format(abc));
+                tFour.setText(Double.toString(abc)+"g");
+            }
+        });
+
+
+        TextView tFive = (TextView) view.findViewById(R.id.editTextNumber4);
+        Slider sliderFive = (Slider) view.findViewById(R.id.penki);
+        tFive.setText(Float.toString(sliderFive.getValue())+"g");
+
+        sliderFive.addOnChangeListener(new Slider.OnChangeListener() {
+            @Override
+            public void onValueChange(@NonNull Slider slider, float v, boolean b) {
+                float abb = sliderFive.getValue();
+                Double abc = (double) abb;
+                abc = Double.parseDouble(df.format(abc));
+                tFive.setText(Double.toString(abc)+"g");
+            }
+        });
 
         return view;
     }
