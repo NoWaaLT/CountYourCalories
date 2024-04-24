@@ -118,8 +118,6 @@ public class ProfileFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         // Inflate the layout for this fragment
         TextView profile_Title = (TextView) view.findViewById(R.id.profile_title);
-        ScrollView scroll_Profile = (ScrollView) view.findViewById(R.id.scroll_view_profile);
-        ScrollView scroll_Edit_Profile = (ScrollView) view.findViewById(R.id.scroll_view_profile_edit);
         EditText edit_profile_age = (EditText) view.findViewById(R.id.edit_profile_age);
         EditText edit_profile_height = (EditText) view.findViewById(R.id.edit_profile_height);
         EditText edit_profile_weight = (EditText) view.findViewById(R.id.edit_profile_weight);
@@ -139,6 +137,9 @@ public class ProfileFragment extends Fragment {
         TextView edit_bmr_text = (TextView) view.findViewById(R.id.edit_bmr_text);
         TextView edit_profile_bmr = (TextView) view.findViewById(R.id.edit_profile_bmr);
 
+        ScrollView scroll_Profile = (ScrollView) view.findViewById(R.id.scroll_view_profile);
+        ScrollView scroll_Edit_Profile = (ScrollView) view.findViewById(R.id.scroll_view_profile_edit);
+
         Button editProfile = (Button) view.findViewById(R.id.edit_profile);
         profile_Title.setText(profile_Title());
 
@@ -155,29 +156,29 @@ public class ProfileFragment extends Fragment {
         scroll_Edit_Profile.setVisibility(View.INVISIBLE);
         scroll_Profile.setVisibility(View.VISIBLE);
         edit_bmr_text.setText("BMR (Basal Metabolic Rate)");
-        edit_profile_bmr.setText("" + myBmr);
         edit_goal_text.setText("Edit Goal");
         edit_profile_goal.setText(gal_Description());
-        edit_profile_target.setText("" + myTarget);
         profile_Description.setText(profile_description());
         profile_Desc_Title.setText(profile_desc_title());
         edit_age_text.setText("Edit Age");
-        edit_profile_age.setText("" + myAge);
         edit_height_text.setText("Edit Height (cm)");
-        edit_profile_height.setText("" + myHeight);
         edit_weight_text.setText("Edit Weight (kg)");
-        edit_profile_weight.setText("" + myWeight);
-        edit_target_text.setText("Target Calories");
-        edit_profile_target.setText("" + myTarget);
-
         edit_gender_text.setText("Edit Gender");
+        edit_activity_level_text.setText("Edit Activity Level");
+        edit_target_text.setText("Target Calories");
+
         if (Objects.equals(myGender, genders[0])) {
             edit_profile_gender.setText(genderName[0]);
         } else {
             edit_profile_gender.setText(genderName[1]);
         }
+        userDataRead();
+        edit_profile_target.setText("" + myTarget);
+        edit_profile_bmr.setText("" + myBmr);
+        edit_profile_age.setText("" + myAge);
+        edit_profile_height.setText("" + myHeight);
+        edit_profile_weight.setText("" + myWeight);
 
-        edit_activity_level_text.setText("Edit Activity Level");
         edit_profile_activity_level.setText("" + myActivityLevel);
         for (int i = 0; i < myActivityLevels.length; i++) {
             if (myActivityLevel == myActivityLevels[i]) {
@@ -185,80 +186,80 @@ public class ProfileFragment extends Fragment {
             }
         }
 
-        editProfile.setOnClickListener(v -> {
-            if (isEditing) {
-                isEditing = false;
-                editProfile.setText("Edit");
-                editProfile.setBackgroundTintList(getResources().getColorStateList(R.color.purple_200));
-                scroll_Edit_Profile.setVisibility(View.INVISIBLE);
-                scroll_Profile.setVisibility(View.VISIBLE);
-            } else {
-                isEditing = true;
-                editProfile.setText("Back");
-                editProfile.setBackgroundTintList(getResources().getColorStateList(R.color.teal_700));
-                scroll_Profile.setVisibility(View.INVISIBLE);
-                scroll_Edit_Profile.setVisibility(View.VISIBLE);
-                editProfile.setVisibility(View.INVISIBLE);
-            }
-        });
+        actionEditButton(editProfile, scroll_Edit_Profile, scroll_Profile);
+        actionEditAge(edit_profile_age, edit_age_text, edit_profile_bmr, edit_profile_target);
+        actionEditHeight(edit_profile_height, edit_height_text, edit_profile_bmr, edit_profile_target);
+        actionEditWeight(edit_profile_weight, edit_weight_text, edit_profile_bmr, edit_profile_target);
+        actionEditGender(edit_profile_gender, genderIconMale, genderIconFemale, edit_profile_bmr, edit_profile_target);
+        actionEditActivityLevel(edit_profile_activity_level, edit_profile_target);
+        actionCalcGoal(edit_profile_goal, edit_profile_target);
+        actionCalcTarget(edit_profile_target);
 
-        edit_profile_age.setOnClickListener(v -> { //edit age
-            edit_age_text.setText("Edit Age");
-            String content = edit_profile_age.getText().toString();
-            edit_profile_age.setText(content);
-            if (Integer.parseInt(content) > 0 && Integer.parseInt(content) < 120) {
-                if (newBmr != myBmr) {
-                    userDataPut_Float("bmr", newBmr);
-                    edit_profile_target.setText(calcNewTarget());
-                    edit_profile_bmr.setText(calcNewBmr());
+        return view;
+    }
+
+    private void actionCalcTarget(TextView edit_profile_target) {
+        edit_profile_target.setOnClickListener(v -> {
+            for (int i = 0; i < myDifference.length; i++) {
+                if (myTarget == myBmr * myActivityLevel + myDifference[i]) {
+                    if (i == myDifference.length - 1) {
+                        edit_profile_target.setText("" + (myBmr * myActivityLevel + myDifference[0]));
+                        userDataPut_Float("target", myBmr * myActivityLevel + myDifference[0]);
+                        userDataPut_Int("difference", myDifference[0]);
+                        edit_profile_target.setText(calcNewTarget());
+                    } else {
+                        edit_profile_target.setText("" + (myBmr * myActivityLevel + myDifference[i + 1]));
+                        userDataPut_Float("target", myBmr * myActivityLevel + myDifference[i + 1]);
+                        userDataPut_Int("difference", myDifference[i + 1]);
+                        edit_profile_target.setText(calcNewTarget());
+                    }
+                    break;
                 }
-                userDataPut_Int("age", Integer.parseInt(content));
-                edit_profile_bmr.setText(calcNewBmr());
-                calcNewBmr();
-
-                @SuppressLint("UseRequireInsteadOfGet") InputMethodManager mgr = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
-                mgr.hideSoftInputFromWindow(edit_profile_age.getWindowToken(), 0);
             }
         });
+    }
 
-        edit_profile_height.setOnClickListener(v -> { // edit height
-            edit_height_text.setText("Edit Height (cm)");
-            String content = edit_profile_height.getText().toString();
-            edit_profile_height.setText(content);
-            if (Integer.parseInt(content) > 0 && Integer.parseInt(content) < 300) {
-                edit_profile_bmr.setText(calcNewBmr());
-                if (newBmr != myBmr) {
-                    userDataPut_Float("bmr", newBmr);
-                    edit_profile_target.setText(calcNewTarget());
-                    edit_profile_bmr.setText(calcNewBmr());
+    private void actionCalcGoal(TextView edit_profile_goal, TextView edit_profile_target) {
+        edit_profile_goal.setOnClickListener(v -> { //edit goal
+            for (int i = 0; i < myGoalDescription.length; i++) {
+                if (Objects.equals(gal_Description(), myGoalDescription[i])) {
+                    if (i == myGoalDescription.length - 1) {
+                        edit_profile_goal.setText(myGoalDescription[0]);
+                        userDataPut_Int("goal", 0);
+                        userDataPut_Int("difference", myDifference[0]);
+                        edit_profile_target.setText(calcNewTarget());
+                    } else {
+                        edit_profile_goal.setText(myGoalDescription[i + 1]);
+                        userDataPut_Int("goal", i + 1);
+                        userDataPut_Int("difference", myDifference[i + 1]);
+                        edit_profile_target.setText(calcNewTarget());
+                    }
+                    break;
                 }
-                userDataPut_Int("height", Integer.parseInt(content));
-                edit_profile_bmr.setText(calcNewBmr());
-                calcNewBmr();
-                @SuppressLint("UseRequireInsteadOfGet") InputMethodManager mgr = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
-                mgr.hideSoftInputFromWindow(edit_profile_height.getWindowToken(), 0);
             }
         });
+    }
 
-        edit_profile_weight.setOnClickListener(v -> { // edit weight
-            edit_weight_text.setText("Edit Weight (kg)");
-            String content = edit_profile_weight.getText().toString();
-            edit_profile_weight.setText(content);
-            if (Float.parseFloat(content) > 0 && Float.parseFloat(content) < 300) {
-                content = String.valueOf((float) (Math.round(Float.parseFloat(content) * 100.0) / 100.0));
-                edit_profile_weight.setText(content);
-                userDataPut_Float("weight", Float.parseFloat(content));
-                edit_profile_bmr.setText(calcNewBmr());
-                if (newBmr != myBmr) {
-                    userDataPut_Float("bmr", newBmr);
+    private void actionEditActivityLevel(TextView edit_profile_activity_level, TextView edit_profile_target) {
+        edit_profile_activity_level.setOnClickListener(v -> { //edit activity level
+            edit_profile_target.setText(calcNewTarget());
+            for (int i = 0; i < myActivityLevels.length; i++) {
+                if (myActivityLevel == myActivityLevels[i]) {
+                    if (i == myActivityLevels.length - 1) {
+                        edit_profile_activity_level.setText(myActivityLevelDescription[0]);
+                        userDataPut_Float("activityLevel", myActivityLevels[0]);
+                    } else {
+                        edit_profile_activity_level.setText(myActivityLevelDescription[i + 1]);
+                        userDataPut_Float("activityLevel", myActivityLevels[i + 1]);
+                    }
                     edit_profile_target.setText(calcNewTarget());
-                    edit_profile_bmr.setText(calcNewBmr());
+                    break;
                 }
-                @SuppressLint("UseRequireInsteadOfGet") InputMethodManager mgr = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
-                mgr.hideSoftInputFromWindow(edit_profile_weight.getWindowToken(), 0);
             }
         });
+    }
 
+    private void actionEditGender(TextView edit_profile_gender, ImageView genderIconMale, ImageView genderIconFemale, TextView edit_profile_bmr, TextView edit_profile_target) {
         edit_profile_gender.setOnClickListener(v -> { // edit gender
             edit_profile_bmr.setText(calcNewBmr());
             if (newBmr != myBmr) {
@@ -283,62 +284,95 @@ public class ProfileFragment extends Fragment {
                 edit_profile_bmr.setText(calcNewBmr());
             }
         });
+    }
 
-        edit_profile_activity_level.setOnClickListener(v -> { //edit activity level
-            edit_profile_target.setText(calcNewTarget());
-            for (int i = 0; i < myActivityLevels.length; i++) {
-                if (myActivityLevel == myActivityLevels[i]) {
-                    if (i == myActivityLevels.length - 1) {
-                        edit_profile_activity_level.setText(myActivityLevelDescription[0]);
-                        userDataPut_Float("activityLevel", myActivityLevels[0]);
-                    } else {
-                        edit_profile_activity_level.setText(myActivityLevelDescription[i + 1]);
-                        userDataPut_Float("activityLevel", myActivityLevels[i + 1]);
-                    }
+    private void actionEditWeight(EditText edit_profile_weight, TextView edit_weight_text, TextView edit_profile_bmr, TextView edit_profile_target) {
+        edit_profile_weight.setOnClickListener(v -> { // edit weight
+            edit_weight_text.setText("Edit Weight (kg)");
+            String content = edit_profile_weight.getText().toString();
+            edit_profile_weight.setText(content);
+            if (Float.parseFloat(content) > 0 && Float.parseFloat(content) < 300) {
+                content = String.valueOf((float) (Math.round(Float.parseFloat(content) * 100.0) / 100.0));
+                edit_profile_weight.setText(content);
+                userDataPut_Float("weight", Float.parseFloat(content));
+                edit_profile_bmr.setText(calcNewBmr());
+                if (newBmr != myBmr) {
+                    userDataPut_Float("bmr", newBmr);
                     edit_profile_target.setText(calcNewTarget());
-                    break;
+                    edit_profile_bmr.setText(calcNewBmr());
                 }
+                @SuppressLint("UseRequireInsteadOfGet") InputMethodManager mgr = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
+                mgr.hideSoftInputFromWindow(edit_profile_weight.getWindowToken(), 0);
             }
         });
+    }
 
-        edit_profile_goal.setOnClickListener(v -> { //edit goal
-            for (int i = 0; i < myGoalDescription.length; i++) {
-                if (Objects.equals(gal_Description(), myGoalDescription[i])) {
-                    if (i == myGoalDescription.length - 1) {
-                        edit_profile_goal.setText(myGoalDescription[0]);
-                        userDataPut_Int("goal", 0);
-                        userDataPut_Int("difference", myDifference[0]);
-                        edit_profile_target.setText(calcNewTarget());
-                    } else {
-                        edit_profile_goal.setText(myGoalDescription[i + 1]);
-                        userDataPut_Int("goal", i + 1);
-                        userDataPut_Int("difference", myDifference[i + 1]);
-                        edit_profile_target.setText(calcNewTarget());
-                    }
-                    break;
+    private void actionEditHeight(EditText edit_profile_height, TextView edit_height_text, TextView edit_profile_bmr, TextView edit_profile_target) {
+        edit_profile_height.setOnClickListener(v -> { // edit height
+            edit_height_text.setText("Edit Height (cm)");
+            String content = edit_profile_height.getText().toString();
+            edit_profile_height.setText(content);
+            if (Integer.parseInt(content) > 0 && Integer.parseInt(content) < 300) {
+                edit_profile_bmr.setText(calcNewBmr());
+                if (newBmr != myBmr) {
+                    userDataPut_Float("bmr", newBmr);
+                    edit_profile_target.setText(calcNewTarget());
+                    edit_profile_bmr.setText(calcNewBmr());
                 }
+                userDataPut_Int("height", Integer.parseInt(content));
+                edit_profile_bmr.setText(calcNewBmr());
+                calcNewBmr();
+                @SuppressLint("UseRequireInsteadOfGet") InputMethodManager mgr = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
+                mgr.hideSoftInputFromWindow(edit_profile_height.getWindowToken(), 0);
             }
         });
+    }
 
-        edit_profile_target.setOnClickListener(v -> {
-            for (int i = 0; i < myDifference.length; i++) {
-                if (myTarget == myBmr * myActivityLevel + myDifference[i]) {
-                    if (i == myDifference.length - 1) {
-                        edit_profile_target.setText("" + (myBmr * myActivityLevel + myDifference[0]));
-                        userDataPut_Float("target", myBmr * myActivityLevel + myDifference[0]);
-                        userDataPut_Int("difference", myDifference[0]);
-                        edit_profile_target.setText(calcNewTarget());
-                    } else {
-                        edit_profile_target.setText("" + (myBmr * myActivityLevel + myDifference[i + 1]));
-                        userDataPut_Float("target", myBmr * myActivityLevel + myDifference[i + 1]);
-                        userDataPut_Int("difference", myDifference[i + 1]);
-                        edit_profile_target.setText(calcNewTarget());
-                    }
-                    break;
+    private void actionEditAge(@NonNull EditText edit_profile_age, TextView edit_age_text, TextView edit_profile_bmr, TextView edit_profile_target) {
+        edit_profile_age.setOnClickListener(v -> { //edit age
+            edit_age_text.setText("Edit Age");
+            String content = edit_profile_age.getText().toString();
+            edit_profile_age.setText(content);
+            if (Integer.parseInt(content) > 0 && Integer.parseInt(content) < 120) {
+                if (newBmr != myBmr) {
+                    userDataPut_Float("bmr", newBmr);
+                    edit_profile_target.setText(calcNewTarget());
+                    edit_profile_bmr.setText(calcNewBmr());
                 }
+                userDataPut_Int("age", Integer.parseInt(content));
+                edit_profile_bmr.setText(calcNewBmr());
+                calcNewBmr();
+
+                @SuppressLint("UseRequireInsteadOfGet") InputMethodManager mgr = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
+                mgr.hideSoftInputFromWindow(edit_profile_age.getWindowToken(), 0);
             }
         });
-        return view;
+    }
+
+    @SuppressLint("UseCompatLoadingForColorStateLists")
+    private void actionEditButton(@NonNull Button editProfile, ScrollView scrollEditProfile, ScrollView scrollProfile) {
+        editProfile.setOnClickListener(v -> {
+            if (isEditing) {
+                isEditing = false;
+                editProfile.setText("Edit");
+                editProfile.setBackgroundTintList(getResources().getColorStateList(R.color.purple_200));
+                scrollEditProfile.setVisibility(View.INVISIBLE);
+                scrollProfile.setVisibility(View.VISIBLE);
+            } else {
+                isEditing = true;
+                editProfile.setText("Back");
+                editProfile.setBackgroundTintList(getResources().getColorStateList(R.color.teal_700));
+                scrollProfile.setVisibility(View.INVISIBLE);
+                scrollEditProfile.setVisibility(View.VISIBLE);
+                editProfile.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private String profile_Title() {
+        return "My Profile";
     }
 
     @NonNull
@@ -347,14 +381,13 @@ public class ProfileFragment extends Fragment {
         return "Hi " + myDisplayName + "! We've compiled some information about your health profile:\n\n";
     }
 
-    private CharSequence gal_Description() {
-        return myGoalDescription[myGoal];
-    }
-
     @NonNull
     private String profile_description() {
-
         return "Yoa a age is " + myAge + " years. Age is an important factor in determining health and nutritional needs. \nFor " + myGender + " weight can influence metabolism and nutrient requirements. Your weight " + myWeight + " kg. This is crucial for assessing overall health and setting weight-related goals. \nYour height: " + myHeight + " cm. Height is necessary for calculating certain health indicators like body mass index (BMI). \nYour activity level " + nowActivity() + ".  This indicates how much physical activity he engages in daily, which impacts calorie needs. \nBMR (Basal Metabolic Rate): " + myBmr + " represents the number of calories the body needs at rest to maintain vital functions such as breathing and circulation. \nYour goal to " + gal_Description() + ". This information is crucial for tailoring dietary recommendations and setting calorie targets, to achieve the goal of " + gal_Description() + ". You should consume " + myTarget + " calories per day. This figure considers his BMR, activity level, and the desired outcome of " + gal_Description() + "\n\n In summary, this message provides a snapshot of " + myDisplayName + " health profile, including his basic information, activity level, and dietary goal, along with a recommended calorie intake to support his objective of " + gal_Description() + ".";
+    }
+
+    private CharSequence gal_Description() {
+        return myGoalDescription[myGoal];
     }
 
     @Nullable
@@ -366,12 +399,6 @@ public class ProfileFragment extends Fragment {
             }
         }
         return null;
-    }
-
-    @NonNull
-    @Contract(pure = true)
-    private String profile_Title() {
-        return "My Profile";
     }
 
     @NonNull
