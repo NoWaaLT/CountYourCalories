@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link RecipesFragment#newInstance} factory method to
@@ -23,6 +26,8 @@ public class RecipesFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    public FirebaseUser user;
 
     public RecipesFragment() {
         // Required empty public constructor
@@ -53,6 +58,8 @@ public class RecipesFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
     }
 
     @Override
@@ -61,4 +68,6 @@ public class RecipesFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.recipes_fragment, container, false);
     }
+
+
 }
