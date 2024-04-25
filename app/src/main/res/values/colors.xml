@@ -6,9 +6,23 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
+    <color name="black_t">#56000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="lavander">#8692f7</color>
     <color name="UI_dark">#521C98</color>
     <color name="UI_light">#F1EBFD</color>
     <color name="Microsoft_blue">#00A4EF</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="green">#00FF00</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="orange">#FF7F00</color>
+    <color name="red">#FF0000</color>
+    <color name="skyblue">#3299CC</color>
+    <color name="purple">#800080</color>
+    <color name="brown">#A52A2A</color>
+    <color name="gray">#77808080</color>
+    <color name="progress_bar_gray">#99adcf</color>
+
 </resources>
