@@ -121,6 +121,7 @@ public class ProfileFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         // Inflate the layout for this fragment
         TextView profile_Title =  view.findViewById(R.id.profile_title);
+        TextView profile_title_edit =  view.findViewById(R.id.profile_title_edit);
         ScrollView scroll_Profile = view.findViewById(R.id.scroll_view_profile);
         ScrollView scroll_Edit_Profile =  view.findViewById(R.id.scroll_view_profile_edit);
         EditText edit_profile_age =  view.findViewById(R.id.edit_profile_age);
@@ -144,6 +145,7 @@ public class ProfileFragment extends Fragment {
 
         Button editProfile =  view.findViewById(R.id.edit_profile);
         profile_Title.setText(profile_Title());
+        profile_title_edit.setText(profile_Edit());
 
 
 
@@ -169,6 +171,10 @@ public class ProfileFragment extends Fragment {
         edit_target_text.setText("Target Calories");
         edit_profile_target.setText("" + myTarget);
 
+        Animation animation_profile_edit = new TranslateAnimation(10000, 10000, 0, 0);
+        animation_profile_edit.setDuration(animationDuration());
+        animation_profile_edit.setFillAfter(true);
+        profile_title_edit.startAnimation(animation_profile_edit);
 
         Animation animation_Scroll_Profile = new TranslateAnimation(0, 0, 10000, 0);
         animation_Scroll_Profile.setDuration(animationDuration());
@@ -256,6 +262,11 @@ public class ProfileFragment extends Fragment {
 
             animationDuration = 1500;
 
+            Animation animation_Profile_Edit = new TranslateAnimation(-10000, 0, 0, 0);
+            animation_Profile_Edit.setDuration(animationDuration());
+            animation_Profile_Edit.setFillAfter(true);
+            profile_title_edit.startAnimation(animation_Profile_Edit);
+
             Animation animation_Scroll_Profile_edit = new TranslateAnimation(3000, 0, 0, 0);
             animation_Scroll_Profile_edit.setDuration(animationDuration());
             animation_Scroll_Profile_edit.setFillAfter(true);
@@ -340,12 +351,6 @@ public class ProfileFragment extends Fragment {
             animation_target_text.setDuration(animationDuration());
             animation_target_text.setFillAfter(true);
             edit_target_text.startAnimation(animation_target_text);
-
-            Animation animation_Profile_Edit = new TranslateAnimation(10000, 0, 0, 0);
-            animation_Profile_Edit.setDuration(animationDuration());
-            animation_Profile_Edit.setFillAfter(true);
-            profile_Title.setText(profile_Edit());
-            profile_Title.startAnimation(animation_Profile_Edit);
 
             if (isEditing) {
                 isEditing = false;
