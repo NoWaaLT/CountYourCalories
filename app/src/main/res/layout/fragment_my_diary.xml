@@ -54,19 +54,20 @@
             android:layout_marginBottom="23dp"
             android:background="@drawable/edittext_bg"
             android:drawableStart="@drawable/baseline_timer_24"
-
             android:drawablePadding="8dp"
             android:ems="10"
+            android:gravity=""
             android:padding="10dp"
-            android:text="Fasting"
+            android:text="FASTING"
             android:textColor="@color/UI_dark"
             android:textColorHint="@color/UI_dark"
+            android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.167" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
@@ -353,7 +354,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="55dp"
                 android:text="Consumed"
                 android:textStyle="bold" />
 
@@ -362,7 +363,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="65dp"
+                android:layout_marginTop="70dp"
                 android:text="0"
                 android:textColor="@color/black"
                 android:textSize="35dp"
@@ -373,7 +374,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="90dp"
                 android:text="Kcal"
                 android:textStyle="bold" />
 
@@ -382,7 +383,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="120dp"
+                android:layout_marginTop="125dp"
                 android:text="Burned"
                 android:textStyle="bold" />
 
@@ -573,8 +574,8 @@
                 android:id="@+id/textView36"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="76dp"
-                android:layout_marginTop="80dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="35dp"
                 android:background="@drawable/edittext_gray"
                 android:gravity="center"
                 android:paddingLeft="60dp"
@@ -907,6 +908,18 @@
             app:layout_constraintHorizontal_bias="0.801"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+        <ImageView
+            android:id="@+id/imageView17"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="0dp"
+            android:alpha="0.5"
+            android:src="@drawable/smaller"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.597"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
