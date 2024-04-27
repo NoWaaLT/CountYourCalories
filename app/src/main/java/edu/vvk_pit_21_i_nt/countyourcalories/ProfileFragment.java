@@ -3,10 +3,11 @@ package edu.vvk_pit_21_i_nt.countyourcalories;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,6 +34,7 @@ public class ProfileFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public static boolean isEditing;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -47,16 +49,13 @@ public class ProfileFragment extends Fragment {
     private int myGoal;
     private int myTarget;
     private float newBmr;
-    private boolean isEditing = false;
     private final String[] genders = {"A Man", "A Woman"};
     private final String[] genderName = {"Man", "Woman"};
     private final float[] myActivityLevels = {1.2f, 1.375f, 1.55f, 1.725f, 1.9f};
     private final String[] myActivityLevelDescription = {"Sedentary, 0-1 per week", "Lightly Active, 2-3 per week", "Moderately Active, 4-5 per week", "Very Active, 6-7 per week", "Super Active, 2 workout per day"};
-    private String nowActivity;
     private final int[] myDifference = {300, -300, 0};
     private final String[] myGoalDescription = {"Gain weight", "Lose weight", "Maintain weight"};
-    private String key;
-    private String value;
+    static int animationDuration = 500;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -91,8 +90,8 @@ public class ProfileFragment extends Fragment {
         userDataRead();
     }
 
-    private void userDataPut_Str(String key, String value) {
-        ((MenuActivity) requireActivity()).updateUserData(key, value);
+    private void userDataPut_Str(String value) {
+        ((MenuActivity) requireActivity()).updateUserData("gender", value);
     }
 
     private void userDataPut_Int(String key, int value) {
@@ -121,40 +120,35 @@ public class ProfileFragment extends Fragment {
         View view;
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         // Inflate the layout for this fragment
-        TextView profile_Title = (TextView) view.findViewById(R.id.profile_title);
-        ScrollView scroll_Profile = (ScrollView) view.findViewById(R.id.scroll_view_profile);
-        ScrollView scroll_Edit_Profile = (ScrollView) view.findViewById(R.id.scroll_view_profile_edit);
-        EditText edit_profile_age = (EditText) view.findViewById(R.id.edit_profile_age);
-        EditText edit_profile_height = (EditText) view.findViewById(R.id.edit_profile_height);
-        EditText edit_profile_weight = (EditText) view.findViewById(R.id.edit_profile_weight);
-        TextView profile_Description = (TextView) view.findViewById(R.id.profile_description);
-        TextView profile_Desc_Title = (TextView) view.findViewById(R.id.profile_desc_title);
-        TextView edit_age_text = (TextView) view.findViewById(R.id.edit_age_text);
-        TextView edit_height_text = (TextView) view.findViewById(R.id.edit_height_text);
-        TextView edit_weight_text = (TextView) view.findViewById(R.id.edit_weight_text);
-        TextView edit_profile_gender = (TextView) view.findViewById(R.id.edit_profile_gender);
-        TextView edit_gender_text = (TextView) view.findViewById(R.id.edit_gender_text);
-        TextView edit_activity_level_text = (TextView) view.findViewById(R.id.edit_activity_level_text);
-        TextView edit_profile_activity_level = (TextView) view.findViewById(R.id.edit_profile_activity_level);
-        TextView edit_profile_goal = (TextView) view.findViewById(R.id.edit_profile_goal);
-        TextView edit_goal_text = (TextView) view.findViewById(R.id.edit_goal_text);
-        TextView edit_profile_target = (TextView) view.findViewById(R.id.edit_profile_target);
-        TextView edit_target_text = (TextView) view.findViewById(R.id.edit_target_text);
-        TextView edit_bmr_text = (TextView) view.findViewById(R.id.edit_bmr_text);
-        TextView edit_profile_bmr = (TextView) view.findViewById(R.id.edit_profile_bmr);
+        TextView profile_Title =  view.findViewById(R.id.profile_title);
+        ScrollView scroll_Profile = view.findViewById(R.id.scroll_view_profile);
+        ScrollView scroll_Edit_Profile =  view.findViewById(R.id.scroll_view_profile_edit);
+        EditText edit_profile_age =  view.findViewById(R.id.edit_profile_age);
+        EditText edit_profile_height =  view.findViewById(R.id.edit_profile_height);
+        EditText edit_profile_weight =  view.findViewById(R.id.edit_profile_weight);
+        TextView profile_Desc_Title =  view.findViewById(R.id.profile_desc_title);
+        TextView profile_Description =  view.findViewById(R.id.profile_description);
+        TextView edit_age_text =  view.findViewById(R.id.edit_age_text);
+        TextView edit_height_text =  view.findViewById(R.id.edit_height_text);
+        TextView edit_weight_text =  view.findViewById(R.id.edit_weight_text);
+        TextView edit_profile_gender = view.findViewById(R.id.edit_profile_gender);
+        TextView edit_gender_text =  view.findViewById(R.id.edit_gender_text);
+        TextView edit_activity_level_text =  view.findViewById(R.id.edit_activity_level_text);
+        TextView edit_profile_activity_level =  view.findViewById(R.id.edit_profile_activity_level);
+        TextView edit_profile_goal =  view.findViewById(R.id.edit_profile_goal);
+        TextView edit_goal_text =  view.findViewById(R.id.edit_goal_text);
+        TextView edit_profile_target = view.findViewById(R.id.edit_profile_target);
+        TextView edit_target_text = view.findViewById(R.id.edit_target_text);
+        TextView edit_bmr_text =  view.findViewById(R.id.edit_bmr_text);
+        TextView edit_profile_bmr =  view.findViewById(R.id.edit_profile_bmr);
 
-        Button editProfile = (Button) view.findViewById(R.id.edit_profile);
+        Button editProfile =  view.findViewById(R.id.edit_profile);
         profile_Title.setText(profile_Title());
 
-        ImageView genderIconMale = (ImageView) view.findViewById(R.id.genderIconMale);
-        ImageView genderIconFemale = (ImageView) view.findViewById(R.id.genderIconFemale);
-        if (Objects.equals(myGender, "A Man")) {
-            genderIconMale.setVisibility(View.VISIBLE);
-            genderIconFemale.setVisibility(View.INVISIBLE);
-        } else {
-            genderIconMale.setVisibility(View.INVISIBLE);
-            genderIconFemale.setVisibility(View.VISIBLE);
-        }
+
+
+        ImageView genderIconMale = view.findViewById(R.id.genderIconMale);
+        ImageView genderIconFemale =  view.findViewById(R.id.genderIconFemale);
 
         scroll_Edit_Profile.setVisibility(View.INVISIBLE);
         scroll_Profile.setVisibility(View.VISIBLE);
@@ -163,6 +157,7 @@ public class ProfileFragment extends Fragment {
         edit_goal_text.setText("Edit Goal");
         edit_profile_goal.setText(gal_Description());
         edit_profile_target.setText("" + myTarget);
+
         profile_Description.setText(profile_description());
         profile_Desc_Title.setText(profile_desc_title());
         edit_age_text.setText("Edit Age");
@@ -173,6 +168,204 @@ public class ProfileFragment extends Fragment {
         edit_profile_weight.setText("" + myWeight);
         edit_target_text.setText("Target Calories");
         edit_profile_target.setText("" + myTarget);
+
+
+        Animation animation_Scroll_Profile = new TranslateAnimation(0, 0, 10000, 0);
+        animation_Scroll_Profile.setDuration(animationDuration());
+        animation_Scroll_Profile.setFillAfter(true);
+        scroll_Profile.startAnimation(animation_Scroll_Profile);
+
+        Animation animation_Prof = new TranslateAnimation(-10000, 0, 0, 0);
+        animation_Prof.setDuration(animationDuration());
+        animation_Prof.setFillAfter(true);
+        profile_Title.startAnimation(animation_Prof);
+
+        Animation animation_Prof_title = new TranslateAnimation(0, 0, 10000, 0);
+        animation_Prof_title.setDuration(animationDuration());
+        animation_Prof_title.setFillAfter(true);
+        profile_Desc_Title.startAnimation(animation_Prof_title);
+
+        Animation animation_Prof_desc = new TranslateAnimation(0, 0, 10000, 0);
+        animation_Prof_desc.setDuration(animationDuration());
+        animation_Prof_desc.setFillAfter(true);
+        profile_Description.startAnimation(animation_Prof_desc);
+
+        Animation animation_Button_Edit = new TranslateAnimation(10000, 0, 0, 0);
+        animation_Button_Edit.setDuration(animationDuration());
+        animation_Button_Edit.setFillAfter(true);
+        editProfile.startAnimation(animation_Button_Edit);
+
+        Animation animation_image = new TranslateAnimation(0, -300, -1000, 0);
+        animation_image.setDuration(animationDuration());
+        animation_image.setFillAfter(true);
+
+        if (Objects.equals(myGender, "A Man")) {
+            genderIconMale.setVisibility(View.VISIBLE);
+            genderIconFemale.setVisibility(View.INVISIBLE);
+            genderIconMale.startAnimation(animation_image);
+        } else {
+            genderIconMale.setVisibility(View.INVISIBLE);
+            genderIconFemale.setVisibility(View.VISIBLE);
+            genderIconFemale.startAnimation(animation_image);
+        }
+
+        editProfile.setOnClickListener(v -> {
+
+            Animation animation_image_back = new TranslateAnimation(-300, -10000, 0, -10000);
+            animation_image_back.setDuration(animationDuration());
+            animation_image_back.setFillAfter(true);
+
+            Animation animation_Prof_back = new TranslateAnimation(0, -10000, 0, 0);
+            animation_Prof_back.setDuration(animationDuration());
+            animation_Prof_back.setFillAfter(true);
+            profile_Title.startAnimation(animation_Prof_back);
+
+            if (Objects.equals(myGender, "A Man")) {
+                animation_image_back.setDuration(animationDuration());
+                animation_image_back.setFillAfter(true);
+                genderIconMale.setVisibility(View.VISIBLE);
+                genderIconFemale.setVisibility(View.INVISIBLE);
+                genderIconMale.startAnimation(animation_image_back);
+            } else {
+                animation_image_back.setDuration(animationDuration());
+                animation_image_back.setFillAfter(true);
+                genderIconMale.setVisibility(View.INVISIBLE);
+                genderIconFemale.setVisibility(View.VISIBLE);
+                genderIconFemale.startAnimation(animation_image_back);
+            }
+
+            Animation animation_Button_Edit_back = new TranslateAnimation(0, 10000, 0, 0);
+            animation_Button_Edit_back.setDuration(animationDuration());
+            animation_Button_Edit_back.setFillAfter(true);
+            editProfile.startAnimation(animation_Button_Edit_back);
+
+            Animation animation_Prof_desc_back = new TranslateAnimation(0, 0, 0, 10000);
+            animation_Prof_desc_back.setDuration(animationDuration());
+            animation_Prof_desc_back.setFillAfter(true);
+            profile_Description.startAnimation(animation_Prof_desc_back);
+
+            Animation animation_Prof_title_back = new TranslateAnimation(0, 0, 0, 10000);
+            animation_Prof_title_back.setDuration(animationDuration());
+            animation_Prof_title_back.setFillAfter(true);
+            profile_Desc_Title.startAnimation(animation_Prof_title_back);
+
+            Animation animation_Scroll_Profile_back = new TranslateAnimation(0, 0, 0, 10000);
+            animation_Scroll_Profile_back.setDuration(animationDuration());
+            animation_Scroll_Profile_back.setFillAfter(true);
+            scroll_Profile.startAnimation(animation_Scroll_Profile_back);
+
+            animationDuration = 1500;
+
+            Animation animation_Scroll_Profile_edit = new TranslateAnimation(3000, 0, 0, 0);
+            animation_Scroll_Profile_edit.setDuration(animationDuration());
+            animation_Scroll_Profile_edit.setFillAfter(true);
+            scroll_Edit_Profile.startAnimation(animation_Scroll_Profile_edit);
+
+            Animation animation_age_profile = new TranslateAnimation(3000, 0, 10000, 0);
+            animation_age_profile.setDuration(animationDuration());
+            animation_age_profile.setFillAfter(true);
+            edit_profile_age.startAnimation(animation_age_profile);
+
+            Animation animation_age_text = new TranslateAnimation(3000, 0, 10000, 0);
+            animation_age_text.setDuration(animationDuration());
+            animation_age_text.setFillAfter(true);
+            edit_age_text.startAnimation(animation_age_text);
+
+            Animation animation_height_profile = new TranslateAnimation(3000, 0, 10000, 0);
+            animation_height_profile.setDuration(animationDuration());
+            animation_height_profile.setFillAfter(true);
+            edit_profile_height.startAnimation(animation_height_profile);
+
+            Animation animation_height_text = new TranslateAnimation(3000, 0, 10000, 0);
+            animation_height_text.setDuration(animationDuration());
+            animation_height_text.setFillAfter(true);
+            edit_height_text.startAnimation(animation_height_text);
+
+            Animation animation_weight_profile = new TranslateAnimation(3000, 0, 10000, 0);
+            animation_weight_profile.setDuration(animationDuration());
+            animation_weight_profile.setFillAfter(true);
+            edit_profile_weight.startAnimation(animation_weight_profile);
+
+            Animation animation_weight_text = new TranslateAnimation(3000, 0, 10000, 0);
+            animation_weight_text.setDuration(animationDuration());
+            animation_weight_text.setFillAfter(true);
+            edit_weight_text.startAnimation(animation_weight_text);
+
+            Animation animation_gender_profile = new TranslateAnimation(3000, 0, 10000, 0);
+            animation_gender_profile.setDuration(animationDuration());
+            animation_gender_profile.setFillAfter(true);
+            edit_profile_gender.startAnimation(animation_gender_profile);
+
+            Animation animation_gender_text = new TranslateAnimation(3000, 0, 10000, 0);
+            animation_gender_text.setDuration(animationDuration());
+            animation_gender_text.setFillAfter(true);
+            edit_gender_text.startAnimation(animation_gender_text);
+
+            Animation animation_activity_level_profile = new TranslateAnimation(3000, 0, 10000, 0);
+            animation_activity_level_profile.setDuration(animationDuration());
+            animation_activity_level_profile.setFillAfter(true);
+            edit_profile_activity_level.startAnimation(animation_activity_level_profile);
+
+            Animation animation_activity_level_text = new TranslateAnimation(3000, 0, 10000, 0);
+            animation_activity_level_text.setDuration(animationDuration());
+            animation_activity_level_text.setFillAfter(true);
+            edit_activity_level_text.startAnimation(animation_activity_level_text);
+
+            Animation animation_goal_profile = new TranslateAnimation(3000, 0, 10000, 0);
+            animation_goal_profile.setDuration(animationDuration());
+            animation_goal_profile.setFillAfter(true);
+            edit_profile_goal.startAnimation(animation_goal_profile);
+
+            Animation animation_goal_text = new TranslateAnimation(3000, 0, 10000, 0);
+            animation_goal_text.setDuration(animationDuration());
+            animation_goal_text.setFillAfter(true);
+            edit_goal_text.startAnimation(animation_goal_text);
+
+            Animation animation_bmr_profile = new TranslateAnimation(3000, 0, 10000, 0);
+            animation_bmr_profile.setDuration(animationDuration());
+            animation_bmr_profile.setFillAfter(true);
+            edit_profile_bmr.startAnimation(animation_bmr_profile);
+
+            Animation animation_bmr_text = new TranslateAnimation(3000, 0, 10000, 0);
+            animation_bmr_text.setDuration(animationDuration());
+            animation_bmr_text.setFillAfter(true);
+            edit_bmr_text.startAnimation(animation_bmr_text);
+
+            Animation animation_target_profile = new TranslateAnimation(3000, 0, 10000, 0);
+            animation_target_profile.setDuration(animationDuration());
+            animation_target_profile.setFillAfter(true);
+            edit_profile_target.startAnimation(animation_target_profile);
+
+            Animation animation_target_text = new TranslateAnimation(3000, 0, 10000, 0);
+            animation_target_text.setDuration(animationDuration());
+            animation_target_text.setFillAfter(true);
+            edit_target_text.startAnimation(animation_target_text);
+
+            Animation animation_Profile_Edit = new TranslateAnimation(10000, 0, 0, 0);
+            animation_Profile_Edit.setDuration(animationDuration());
+            animation_Profile_Edit.setFillAfter(true);
+            profile_Title.setText(profile_Edit());
+            profile_Title.startAnimation(animation_Profile_Edit);
+
+            if (isEditing) {
+                isEditing = false;
+                editProfile.setText("Edit");
+                editProfile.setBackgroundTintList(getResources().getColorStateList(R.color.purple_200));
+//                scroll_Edit_Profile.setVisibility(View.INVISIBLE);
+                scroll_Profile.setVisibility(View.VISIBLE);
+
+            } else {
+                isEditing = true;
+//
+
+//                editProfile.setText("Back");
+//                editProfile.setBackgroundTintList(getResources().getColorStateList(R.color.teal_700));
+//                scroll_Profile.setVisibility(View.INVISIBLE);
+                scroll_Edit_Profile.setVisibility(View.VISIBLE);
+//                editProfile.setVisibility(View.INVISIBLE);
+
+            }
+        });
 
         edit_gender_text.setText("Edit Gender");
         if (Objects.equals(myGender, genders[0])) {
@@ -189,22 +382,6 @@ public class ProfileFragment extends Fragment {
             }
         }
 
-        editProfile.setOnClickListener(v -> {
-            if (isEditing) {
-                isEditing = false;
-                editProfile.setText("Edit");
-                editProfile.setBackgroundTintList(getResources().getColorStateList(R.color.purple_200));
-                scroll_Edit_Profile.setVisibility(View.INVISIBLE);
-                scroll_Profile.setVisibility(View.VISIBLE);
-            } else {
-                isEditing = true;
-                editProfile.setText("Back");
-                editProfile.setBackgroundTintList(getResources().getColorStateList(R.color.teal_700));
-                scroll_Profile.setVisibility(View.INVISIBLE);
-                scroll_Edit_Profile.setVisibility(View.VISIBLE);
-                editProfile.setVisibility(View.INVISIBLE);
-            }
-        });
 
         edit_profile_age.setOnClickListener(v -> {
             edit_age_text.setText("Edit Age");
@@ -223,6 +400,7 @@ public class ProfileFragment extends Fragment {
                 @SuppressLint("UseRequireInsteadOfGet") InputMethodManager mgr = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
                 mgr.hideSoftInputFromWindow(edit_profile_age.getWindowToken(), 0);
             }
+            edit_profile_age.setSelection(edit_profile_age.getText().length());
         });
 
         edit_profile_height.setOnClickListener(v -> {
@@ -242,6 +420,7 @@ public class ProfileFragment extends Fragment {
                 @SuppressLint("UseRequireInsteadOfGet") InputMethodManager mgr = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
                 mgr.hideSoftInputFromWindow(edit_profile_height.getWindowToken(), 0);
             }
+            edit_profile_height.setSelection(edit_profile_height.getText().length());
         });
 
         edit_profile_weight.setOnClickListener(v -> {
@@ -261,6 +440,7 @@ public class ProfileFragment extends Fragment {
                 @SuppressLint("UseRequireInsteadOfGet") InputMethodManager mgr = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
                 mgr.hideSoftInputFromWindow(edit_profile_weight.getWindowToken(), 0);
             }
+            edit_profile_weight.setSelection(edit_profile_weight.getText().length());
         });
 
         edit_profile_gender.setOnClickListener(v -> {
@@ -279,11 +459,11 @@ public class ProfileFragment extends Fragment {
             }
             if (Objects.equals(myGender, genders[0])) {
                 edit_profile_gender.setText(genderName[1]);
-                userDataPut_Str("gender", genders[1]);
+                userDataPut_Str(genders[1]);
                 edit_profile_bmr.setText(calcNewBmr());
             } else {
                 edit_profile_gender.setText(genderName[0]);
-                userDataPut_Str("gender", genders[0]);
+                userDataPut_Str(genders[0]);
                 edit_profile_bmr.setText(calcNewBmr());
             }
         });
@@ -345,6 +525,11 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
+    private long animationDuration() {
+        return animationDuration += 400;
+    }
+
+
     @NonNull
     @Contract(pure = true)
     private String profile_desc_title() {
@@ -376,6 +561,10 @@ public class ProfileFragment extends Fragment {
     @Contract(pure = true)
     private String profile_Title() {
         return "My Profile";
+    }
+
+    private String profile_Edit() {
+        return "Edit My Data";
     }
 
     @NonNull
