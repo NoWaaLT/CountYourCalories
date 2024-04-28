@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -19,10 +18,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -55,6 +52,32 @@ public class MenuActivity extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference("Users/"+ user.getUid());
         userHistoryHashMap = new HashMap<>();
+
+        getUserData();
+        //UserHistory uh = new UserHistory(1890, 213, 256, 452, 2300);
+        //addUserHistory("2024-04-22", uh);
+        binding.bottomNavigationView.setOnItemSelectedListener(Item -> {
+
+            int itemId = Item.getItemId();
+            if (itemId == R.id.diary) {
+                ;
+                replaceFragment(new MyDiaryFragment());
+            } else if (itemId == R.id.meal_plans) {
+                ;
+                replaceFragment(new MealPlansFragment());
+            } else if (itemId == R.id.add_food) {
+                ;
+                replaceFragment(new AddFoodFragment());
+            } else if (itemId == R.id.recipes) {
+                ;
+                replaceFragment(new RecipesFragment());
+            } else if (itemId == R.id.profile) {
+
+                ProfileFragment.animationDuration= 700;
+                ProfileFragment.isEditing = false;
+                replaceFragment(new ProfileFragment());
+
+            }
 
         // Initialize fragments
         FragmentManager managerOG = getSupportFragmentManager();
