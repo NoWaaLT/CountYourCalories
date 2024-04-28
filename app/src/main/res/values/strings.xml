@@ -32,4 +32,7 @@
     <string name="value" />
     <string name="edit_eight_text" />
     <string name="edit">EDIT</string>
+    <string name="enter_your_age">Enter your age</string>
+    <string name="enter_your_height_in_cm">Enter your height in cm</string>
+    <string name="enter_your_weight_in_kg">Enter your weight in kg</string>
 </resources>
