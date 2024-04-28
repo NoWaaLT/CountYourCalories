@@ -119,6 +119,7 @@ public class ProfileFragment extends Fragment {
     @SuppressLint({"SetTextI18n", "UseCompatLoadingForColorStateLists"})
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        userDataRead();
         View view;
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         // Inflate the layout for this fragment
@@ -148,7 +149,6 @@ public class ProfileFragment extends Fragment {
         Button editProfile =  view.findViewById(R.id.edit_profile);
         profile_Title.setText(profile_Title());
         profile_title_edit.setText(profile_Edit());
-
 
 
         ImageView genderIconMale = view.findViewById(R.id.genderIconMale);
@@ -373,6 +373,8 @@ public class ProfileFragment extends Fragment {
 
             } else {
                 isEditing = true;
+//                editProfile.setText("Back");
+//                editProfile.setBackgroundTintList(getResources().getColorStateList(R.color.teal_700));
             }
         });
 
