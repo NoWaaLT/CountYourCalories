@@ -30,29 +30,24 @@ public class MenuActivity extends AppCompatActivity {
 
     ActivityMenuBinding binding;
     public DatabaseReference mDatabase;
-    HashMap<String, UserHistory> userHistoryHashMap;
+   HashMap<String, UserHistory> userHistoryHashMap;
     public UserDb userDb;
     public FirebaseUser user;
-
-    private MyDiaryFragment myDiaryFragment;
-    private MealPlansFragment mealPlansFragment;
-    private AddFoodFragment addFoodFragment;
-    private RecipesFragment recipesFragment;
-    private ProfileFragment profileFragment;
-
-    private DatabaseFoodAdd databaseFoodAdd;
 
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         getSupportActionBar().hide();
         binding = ActivityMenuBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        replaceFragment(new MyDiaryFragment());
         user = FirebaseAuth.getInstance().getCurrentUser();
+        //firebaseDb = FirebaseDatabase.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference("Users/"+ user.getUid());
-        userHistoryHashMap = new HashMap<>();
 
+        userHistoryHashMap = new HashMap<>();
         getUserData();
         //UserHistory uh = new UserHistory(1890, 213, 256, 452, 2300);
         //addUserHistory("2024-04-22", uh);
@@ -72,116 +67,35 @@ public class MenuActivity extends AppCompatActivity {
                 ;
                 replaceFragment(new RecipesFragment());
             } else if (itemId == R.id.profile) {
-
-                ProfileFragment.animationDuration= 700;
-                ProfileFragment.isEditing = false;
+                ;
                 replaceFragment(new ProfileFragment());
-
             }
 
-        // Initialize fragments
-        FragmentManager managerOG = getSupportFragmentManager();
-        myDiaryFragment = new MyDiaryFragment();
-        mealPlansFragment = new MealPlansFragment();
-        addFoodFragment = new AddFoodFragment();
-        recipesFragment = new RecipesFragment();
-        profileFragment = new ProfileFragment();
-        databaseFoodAdd = new DatabaseFoodAdd();
-
-        // Show MyDiaryFragment by default
-        showFragment(myDiaryFragment,managerOG);
-
-        // Bottom navigation view listener
-        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-            Fragment selectedFragment;
-
-            if (item.getItemId() == R.id.diary) {
-                selectedFragment = myDiaryFragment;
-
-            } else if (item.getItemId() == R.id.meal_plans) {
-                selectedFragment = mealPlansFragment;
-
-            } else if (item.getItemId() == R.id.add_food) {
-                selectedFragment = addFoodFragment;
-
-            } else if (item.getItemId() == R.id.recipes) {
-                selectedFragment = recipesFragment;
-
-            } else if (item.getItemId() == R.id.profile) {
-                selectedFragment = profileFragment;
-
-            }  else if (item.getItemId() == R.id.textView63){
-                selectedFragment = databaseFoodAdd;
-            }
-            else {
-                return false;
-            }
-            showFragment(selectedFragment,managerOG);
             return true;
         });
 
 
-        // Retrieve user data
-        getUserData();
+//
+//         EdgeToEdge.enable(this);
+//        setContentView(R.layout.activity_menu);
+//
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+//            return insets;
+//        });
+//
+//        Toast.makeText(MenuActivity.this,  "Įšsaugota", Toast.LENGTH_LONG).show();
     }
 
-    public void selectMenuItem(int itemId) {
-        binding.bottomNavigationView.setSelectedItemId(itemId);
-    }
 
-
-    public void showFragment(Fragment fragment, FragmentManager fragmentManager) {
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        List<Fragment> allFragments = fragmentManager.getFragments(); // Get all fragments
-        for (Fragment frag : allFragments) {
-            if (frag != null && frag.isVisible()) {
-                transaction.hide(frag); // Hide all other fragments
-            }
-        }
-// Now, show the intended fragment or add it if not already added
-        if (!fragment.isAdded()) {
-            transaction.add(R.id.frame_layout, fragment);
-        } else {
-            transaction.show(fragment);
-        }
-        transaction.commit();
-    }
-
-    public void replaceFragmentWithBackStack(Fragment fragment, FragmentManager fragmentManager) {
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.frame_layout, fragment);
-        transaction.addToBackStack(null); // Adds transaction to the back stack
-        transaction.commit();
-    }
-
-    public void clearBackStack(FragmentManager fragmentManager) {
-        if (fragmentManager.getBackStackEntryCount() > 0) {
-            FragmentManager.BackStackEntry first = fragmentManager.getBackStackEntryAt(0);
-            fragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        }
-    }
-    public void replaceFragment(Fragment fragment,FragmentManager OG) {
-
-        // Hide the current fragment if there's any
-        FragmentTransaction transactionLOC = OG.beginTransaction();
-        Fragment currentFragment = OG.findFragmentById(R.id.frame_layout);
-        transactionLOC.hide(currentFragment);
-        transactionLOC.show(fragment);
-
-        // Add the new fragment if it's not added already
-        if (!fragment.isAdded()) {
-            transactionLOC.add(R.id.frame_layout, fragment);
-        }
-        transactionLOC.commit();
-    }
-
-    public  void replaceFragmentStatic(Fragment fragment,FragmentManager OG){
-        FragmentTransaction transactionLOC = OG.beginTransaction();
-        transactionLOC.replace(R.id.frame_layout,fragment);
-        transactionLOC.commit();
+    public  void replaceFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout,fragment);
+        fragmentTransaction.commit();
 
     }
-
     protected void getUserData() {
         ValueEventListener userListener = new ValueEventListener() {
             @Override
