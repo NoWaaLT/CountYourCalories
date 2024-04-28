@@ -56,6 +56,8 @@ public class ProfileFragment extends Fragment {
     private final int[] myDifference = {300, -300, 0};
     private final String[] myGoalDescription = {"Gain weight", "Lose weight", "Maintain weight"};
     static int animationDuration = 500;
+    private View genderIconMaleEdit;
+    private View genderIconFemaleEdit;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -151,6 +153,10 @@ public class ProfileFragment extends Fragment {
 
         ImageView genderIconMale = view.findViewById(R.id.genderIconMale);
         ImageView genderIconFemale =  view.findViewById(R.id.genderIconFemale);
+      genderIconMaleEdit =  view.findViewById(R.id.genderIconMale_date);
+        genderIconMaleEdit.setVisibility(View.INVISIBLE);
+        genderIconFemaleEdit =  view.findViewById(R.id.genderIconFemale_date);
+        genderIconFemaleEdit.setVisibility(View.INVISIBLE);
 
         scroll_Edit_Profile.setVisibility(View.INVISIBLE);
         scroll_Profile.setVisibility(View.VISIBLE);
@@ -216,8 +222,7 @@ public class ProfileFragment extends Fragment {
         }
 
         editProfile.setOnClickListener(v -> {
-
-            Animation animation_image_back = new TranslateAnimation(-300, -10000, 0, -10000);
+            Animation animation_image_back = new TranslateAnimation(-300, 0, 0, -10000);
             animation_image_back.setDuration(animationDuration());
             animation_image_back.setFillAfter(true);
 
@@ -225,20 +230,6 @@ public class ProfileFragment extends Fragment {
             animation_Prof_back.setDuration(animationDuration());
             animation_Prof_back.setFillAfter(true);
             profile_Title.startAnimation(animation_Prof_back);
-
-            if (Objects.equals(myGender, "A Man")) {
-                animation_image_back.setDuration(animationDuration());
-                animation_image_back.setFillAfter(true);
-                genderIconMale.setVisibility(View.VISIBLE);
-                genderIconFemale.setVisibility(View.INVISIBLE);
-                genderIconMale.startAnimation(animation_image_back);
-            } else {
-                animation_image_back.setDuration(animationDuration());
-                animation_image_back.setFillAfter(true);
-                genderIconMale.setVisibility(View.INVISIBLE);
-                genderIconFemale.setVisibility(View.VISIBLE);
-                genderIconFemale.startAnimation(animation_image_back);
-            }
 
             Animation animation_Button_Edit_back = new TranslateAnimation(0, 10000, 0, 0);
             animation_Button_Edit_back.setDuration(animationDuration());
@@ -259,6 +250,16 @@ public class ProfileFragment extends Fragment {
             animation_Scroll_Profile_back.setDuration(animationDuration());
             animation_Scroll_Profile_back.setFillAfter(true);
             scroll_Profile.startAnimation(animation_Scroll_Profile_back);
+
+            if (Objects.equals(myGender, "A Man")) {
+                genderIconMale.setVisibility(View.VISIBLE);
+                genderIconFemale.setVisibility(View.INVISIBLE);
+                genderIconMale.startAnimation(animation_image_back);
+            } else {
+                genderIconMale.setVisibility(View.INVISIBLE);
+                genderIconFemale.setVisibility(View.VISIBLE);
+                genderIconFemale.startAnimation(animation_image_back);
+            }
 
             animationDuration = 1500;
 
@@ -352,23 +353,26 @@ public class ProfileFragment extends Fragment {
             animation_target_text.setFillAfter(true);
             edit_target_text.startAnimation(animation_target_text);
 
+            Animation animation_image_male_In = new TranslateAnimation(1000, -300, 0, 0);
+            Animation animation_image_female_In = new TranslateAnimation(1000, -300, 0, 0);
+
+            if (Objects.equals(myGender, "A Man")) {
+                animation_image_male_In.setDuration(1200);
+                animation_image_male_In.setFillAfter(true);
+                genderIconMaleEdit.startAnimation(animation_image_male_In);
+            } else {
+                animation_image_female_In.setDuration(1200);
+                animation_image_female_In.setFillAfter(true);
+                genderIconFemaleEdit.startAnimation(animation_image_female_In);
+            }
+
             if (isEditing) {
                 isEditing = false;
                 editProfile.setText("Edit");
                 editProfile.setBackgroundTintList(getResources().getColorStateList(R.color.purple_200));
-//                scroll_Edit_Profile.setVisibility(View.INVISIBLE);
-                scroll_Profile.setVisibility(View.VISIBLE);
 
             } else {
                 isEditing = true;
-//
-
-//                editProfile.setText("Back");
-//                editProfile.setBackgroundTintList(getResources().getColorStateList(R.color.teal_700));
-//                scroll_Profile.setVisibility(View.INVISIBLE);
-                scroll_Edit_Profile.setVisibility(View.VISIBLE);
-//                editProfile.setVisibility(View.INVISIBLE);
-
             }
         });
 
@@ -450,17 +454,11 @@ public class ProfileFragment extends Fragment {
 
         edit_profile_gender.setOnClickListener(v -> {
             edit_profile_bmr.setText(calcNewBmr());
+            animate_gender_icon();
             if (newBmr != myBmr) {
                 userDataPut_Float("bmr", newBmr);
                 edit_profile_target.setText(calcNewTarget());
                 edit_profile_bmr.setText(calcNewBmr());
-            }
-            if (Objects.equals(myGender, "A Man")) {
-                genderIconMale.setVisibility(View.INVISIBLE);
-                genderIconFemale.setVisibility(View.VISIBLE);
-            } else {
-                genderIconMale.setVisibility(View.VISIBLE);
-                genderIconFemale.setVisibility(View.INVISIBLE);
             }
             if (Objects.equals(myGender, genders[0])) {
                 edit_profile_gender.setText(genderName[1]);
@@ -528,6 +526,28 @@ public class ProfileFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    private void animate_gender_icon() {
+        Animation animation_image_male_In = new TranslateAnimation(1000, -300, 0, 0);
+        Animation animation_image_male_Out = new TranslateAnimation(-300, -300, 0, -1000);
+        Animation animation_image_female_In = new TranslateAnimation(1000, -300, 0, 0);
+        Animation animation_image_female_Out = new TranslateAnimation(-300, -300, 0, -1000);
+        if (Objects.equals(myGender, "A Man")) {
+            animation_image_male_Out.setDuration(1200);
+            animation_image_male_Out.setFillAfter(true);
+            genderIconMaleEdit.startAnimation(animation_image_male_Out);
+            animation_image_female_In.setDuration(1200);
+            animation_image_female_In.setFillAfter(true);
+            genderIconFemaleEdit.startAnimation(animation_image_female_In);
+        } else {
+            animation_image_female_Out.setDuration(1200);
+            animation_image_female_Out.setFillAfter(true);
+            genderIconFemaleEdit.startAnimation(animation_image_female_Out);
+            animation_image_male_In.setDuration(1200);
+            animation_image_male_In.setFillAfter(true);
+            genderIconMaleEdit.startAnimation(animation_image_male_In);
+        }
     }
 
     private long animationDuration() {
