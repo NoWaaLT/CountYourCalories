@@ -1,19 +1,8 @@
 package edu.vvk_pit_21_i_nt.countyourcalories;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
-import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +11,10 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.slider.Slider;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
@@ -127,7 +120,7 @@ public class MealPlansFragment extends Fragment {
         dovile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MenuActivity) getActivity()).selectMenuItem(R.id.add_food);
+//                ((MenuActivity) getActivity()).selectMenuItem(R.id.add_food);
             }
         });
 
@@ -215,7 +208,7 @@ public class MealPlansFragment extends Fragment {
 
     private void navigateToNewFragment() {
         if (getActivity() instanceof MenuActivity) {
-            ((MenuActivity) getActivity()).showFragment(new MealPlansFragment(), ((MenuActivity) getActivity()).getSupportFragmentManager());
+//            ((MenuActivity) getActivity()).showFragment(new MealPlansFragment(), ((MenuActivity) getActivity()).getSupportFragmentManager());
         }
     }
 

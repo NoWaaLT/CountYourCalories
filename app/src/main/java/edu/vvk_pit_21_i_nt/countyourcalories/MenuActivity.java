@@ -68,6 +68,8 @@ public class MenuActivity extends AppCompatActivity {
                 replaceFragment(new RecipesFragment());
             } else if (itemId == R.id.profile) {
                 ;
+                ProfileFragment.animationDuration= 700;
+                ProfileFragment.isEditing = false;
                 replaceFragment(new ProfileFragment());
             }
 
