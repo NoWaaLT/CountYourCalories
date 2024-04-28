@@ -54,6 +54,12 @@ public class product {
         Riebalai = riebalai;
     }
 
+
+    // Covert product to string
+    @Override
+    public String toString() {
+        return getProduktas();
+    }
 }
 
 
