@@ -94,7 +94,7 @@
             android:layout_width="match_parent"
             android:layout_height="520dp"
             android:layout_marginTop="55dp"
-            app:cardBackgroundColor="#E1F6FF"
+            android:background="@drawable/card_transition"
             app:cardCornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -305,6 +305,7 @@
                 android:visibility="invisible" />
         </androidx.cardview.widget.CardView>
 
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="30dp"
@@ -319,8 +320,8 @@
                 android:id="@+id/textView63"
                 android:layout_marginTop="0dp"
                 android:layout_gravity="center"
-                android:drawableStart="@drawable/baseline_auto_awesome_24"
-                android:drawableEnd="@drawable/baseline_auto_awesome_24"
+                android:drawableStart="@drawable/baseline_auto_awesome_24_yellow"
+                android:drawableEnd="@drawable/baseline_auto_awesome_24_yellow"
                 android:drawablePadding="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -330,7 +331,6 @@
                 android:textSize="16dp"
                 android:textStyle="bold" />
         </androidx.cardview.widget.CardView>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
