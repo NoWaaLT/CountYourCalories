@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -19,7 +18,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -86,6 +84,11 @@ public class MenuActivity extends AppCompatActivity {
 
             } else if (item.getItemId() == R.id.profile) {
                 selectedFragment = profileFragment;
+
+//                ProfileFragment.animationDuration= 700;
+//                ProfileFragment.isEditing = false;
+//                replaceFragment(new ProfileFragment());
+
 
             }  else if (item.getItemId() == R.id.textView63){
                 selectedFragment = databaseFoodAdd;
