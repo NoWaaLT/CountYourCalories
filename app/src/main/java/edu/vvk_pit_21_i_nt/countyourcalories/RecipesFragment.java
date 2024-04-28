@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +18,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,9 +47,12 @@ public class RecipesFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    AutoCompleteTextView autoCompleteTextView;
-    Button recipes_add_item_button;
-    Button recipes_create_recipe_button;
+    AutoCompleteTextView atcvSelectItem;
+    Button btnAddItem;
+    Button btnCreateRecipe;
+    TextInputEditText tietRecipeName;
+    FirebaseAuth auth;
+    FirebaseUser user;
     public RecipesFragment() {
         // Required empty public constructor
     }
@@ -81,9 +91,11 @@ public class RecipesFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.recipes_fragment, container, false);
-        autoCompleteTextView = view.findViewById(R.id.auto_compelete_txt);
-        recipes_add_item_button = view.findViewById(R.id.recipes_add_item_button);
-        recipes_create_recipe_button = view.findViewById(R.id.recipes_create_recipe_button);
+
+        atcvSelectItem = view.findViewById(R.id.RecipesFragment_actv_autoCompleteTextView);
+        btnAddItem = view.findViewById(R.id.RecipesFragment_btn_addItem);
+        btnCreateRecipe = view.findViewById(R.id.RecipesFragment_btn_createRecipe);
+        tietRecipeName = view.findViewById(R.id.RecipesFragment_et_recipe_name);
 
         // Stores the product objects in ArrayList
         final ArrayList<product> productList = new ArrayList<>();
@@ -106,7 +118,8 @@ public class RecipesFragment extends Fragment {
                 return view;
             }
         };
-        autoCompleteTextView.setAdapter(adapter);
+
+        atcvSelectItem.setAdapter(adapter);
 
         // Reference to the Firebase database
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Products").child("Sheet1");
@@ -144,10 +157,10 @@ public class RecipesFragment extends Fragment {
         });
 
         final ArrayList<product> selectedProductList = new ArrayList<>();
-        recipes_add_item_button.setOnClickListener(new View.OnClickListener() {
+        btnAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String selectedItem = autoCompleteTextView.getText().toString();
+                String selectedItem = atcvSelectItem.getText().toString();
                 for (product product : productList) {
                     if (product.getProduktas().equals(selectedItem)) {
                         selectedProductList.add(product);
@@ -157,15 +170,15 @@ public class RecipesFragment extends Fragment {
             }
         });
 
-        final ListView selectedItemsListView = view.findViewById(R.id.selected_items_list_view);
+        final ListView selectedItemsListView = view.findViewById(R.id.RecipesFragment_lv_selectedItems);
         final ArrayAdapter<product> selectedItemsAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, selectedProductList);
         selectedItemsListView.setAdapter(selectedItemsAdapter);
 
-        recipes_add_item_button.setOnClickListener(new View.OnClickListener() {
+        btnAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (selectedProductList.size() < 3) {
-                    String selectedItem = autoCompleteTextView.getText().toString();
+                    String selectedItem = atcvSelectItem.getText().toString();
                     for (product product : productList) {
                         if (product.getProduktas().equals(selectedItem)) {
                             selectedProductList.add(product);
@@ -179,10 +192,94 @@ public class RecipesFragment extends Fragment {
             }
         });
 
+        btnCreateRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Recipes");
+
+                // Gets an instance of current user from a database
+                auth = FirebaseAuth.getInstance();
+                user = auth.getCurrentUser();
+
+                // Validates if the user exists in a database
+                reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        if (snapshot.hasChild(user.getUid())) {
+                            String recipeName = tietRecipeName.getText().toString();
+                            if(TextUtils.isEmpty(recipeName)) {
+                                tietRecipeName.setError("Recipe name is required");
+                            } else {
+                                // Validates if the recipe with the same name already exists
+                                DatabaseReference userRecipesRef = FirebaseDatabase.getInstance().getReference("Recipes").child(user.getUid());
+                                userRecipesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        boolean recipeExists = false;
+                                        for (DataSnapshot recipeSnapshot : snapshot.getChildren()) {
+                                            if (recipeSnapshot.getKey().equals(recipeName)) {
+                                                recipeExists = true;
+                                                break;
+                                            }
+                                        }
+                                        if (recipeExists) {
+                                            Toast.makeText(requireContext(), "Recipe with this name already exists", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            createRecipe(selectedProductList, reference, user);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        // Handle error
+                                    }
+                                });
+                            }
+                        }
+                        // If the user record does not exist in the recipes database
+                        else {
+                            String recipeName = tietRecipeName.getText().toString();
+                            if (TextUtils.isEmpty(recipeName)) {
+                                tietRecipeName.setError("Recipe name is required");
+                            } else {
+                              createRecipe(selectedProductList, reference, user);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+        });
+
         return view;
     }
 
+    private void createRecipe(ArrayList<product> selectedProductList, DatabaseReference reference, FirebaseUser user) {
+        String recipeName = tietRecipeName.getText().toString();
+        if (TextUtils.isEmpty(recipeName)) {
+            tietRecipeName.setError("Recipe name is required");
+        } else {
+            ArrayList<HashMap<String, Object>> recipeProductsList = new ArrayList<>();
 
+            for (product product : selectedProductList) {
+                HashMap<String, Object> productMap = new HashMap<>();
+                productMap.put("Angliavandeniai", product.getAngliavandeniai());
+                productMap.put("Baltymai", product.getBaltymai());
+                productMap.put("Kilokalorijos", product.getKilokalorijos());
+                productMap.put("Produktas", product.getProduktas());
+                productMap.put("Riebalai", product.getRiebalai());
+                recipeProductsList.add(productMap);
+            }
+            reference.child(user.getUid()).child(recipeName).setValue(recipeProductsList);
+
+            Log.d("TAG", "RecipeProducts: " + recipeProductsList);
+        }
+    }
 
 
 }

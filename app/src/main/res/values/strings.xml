@@ -22,7 +22,7 @@
     <string name="profile_description">profile_Description</string>
     <string name="profile_desc_title" />
     <string name="profile_desc_summary" />
-    <string name="recipes_title">Create recipe template</string>
+    <string name="recipes_title">Enter recipe name</string>
     <string name="recipes_select_item">Select Item</string>
     <string name="recipes_add_item">Add Item</string>
     <string name="recipes_create_recipe">Create Recipe</string>
