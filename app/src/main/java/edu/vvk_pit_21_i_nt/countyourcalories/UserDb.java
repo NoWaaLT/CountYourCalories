@@ -6,10 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserDb {
-
-
     private String email;
-
     private String displayName;
     private float weight;
     private int height;
@@ -35,8 +32,6 @@ public class UserDb {
         this.goal = goal;
         this.target = target;
         this.difference = difference;
-
-
     }
 
     public int getDifference() {

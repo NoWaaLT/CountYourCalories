@@ -17,6 +17,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="green">#00FF00</color>
     <color name="yellow">#FFFF00</color>
+    <color name="yellow_light">#FEFbe2</color>
     <color name="orange">#FF7F00</color>
     <color name="red">#FF0000</color>
     <color name="skyblue">#3299CC</color>
@@ -24,6 +25,7 @@
     <color name="brown">#A52A2A</color>
     <color name="gray">#77808080</color>
     <color name="progress_bar_gray">#99adcf</color>
+    <color name="UI_complete">#C9F5d9</color>
     <color name="water_cup_blue">#0e65f0</color>
 
 </resources>
