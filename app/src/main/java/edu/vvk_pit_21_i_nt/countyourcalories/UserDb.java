@@ -20,7 +20,9 @@ public class UserDb {
     private int goal;
     private int target;
     private int difference;
-    public UserDb() {}
+    public UserDb() {
+
+    }
     public UserDb(String email, String displayName, float weight, int height, float activityLevel, int age, String gender, float bmr, int goal, int target,int difference) {
         this.email = email;
         this.displayName = displayName;

@@ -3,6 +3,7 @@ package edu.vvk_pit_21_i_nt.countyourcalories;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
@@ -33,6 +35,7 @@ public class MenuActivity extends AppCompatActivity {
 
     ActivityMenuBinding binding;
     public DatabaseReference mDatabase;
+    public DatabaseReference historyRef;
    HashMap<String, UserHistory> userHistoryHashMap;
     public UserDb userDb;
     public FirebaseUser user;
@@ -47,13 +50,13 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         replaceFragment(new MyDiaryFragment());
         user = FirebaseAuth.getInstance().getCurrentUser();
-        //firebaseDb = FirebaseDatabase.getInstance();
+        historyRef = FirebaseDatabase.getInstance().getReference("History/" + user.getUid());
         mDatabase = FirebaseDatabase.getInstance().getReference("Users/"+ user.getUid());
-
         userHistoryHashMap = new HashMap<>();
         getUserData();
-        //UserHistory uh = new UserHistory(1890, 213, 256, 452, 2300);
-        //addUserHistory("2024-04-22", uh);
+        getUserHistory();
+        UserHistory uh = new UserHistory(1500, 386, 280, 410, 1750);
+        addUserHistory("2024-04-29", uh);
         binding.bottomNavigationView.setOnItemSelectedListener(Item -> {
 
             int itemId = Item.getItemId();
@@ -100,30 +103,21 @@ public class MenuActivity extends AppCompatActivity {
 
     }
     protected void getUserData() {
-        ValueEventListener userListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                userDb = dataSnapshot.getValue(UserDb.class);
-                if (userDb != null) {
-                    Log.d("Naudotojo duomenys", userDb.getDisplayName());
-                }
-                for (DataSnapshot userSnapshot: dataSnapshot.child("History").getChildren()) {
-                    String key = userSnapshot.getKey();
-                    if(key != null) {
-                        userHistoryHashMap.put(key, userSnapshot.getValue(UserHistory.class));
-                        //Log.d("Istorijos raktas", key);
+       mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
 
-                    }
-                }
-            }
+           @Override
+           public void onDataChange(@NonNull DataSnapshot snapshot) {
+               userDb = snapshot.getValue(UserDb.class);
+               if (userDb != null) {
+                   Log.d("Naudotojo duomenys", userDb.getDisplayName());
+               }
+           }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("Firebase klaida", "loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        mDatabase.addValueEventListener(userListener);
+           @Override
+           public void onCancelled(@NonNull DatabaseError error) {
+               Log.w("Firebase klaida", "loadPost:onCancelled", error.toException());
+           }
+       });
     }
     protected void updateUserData(String key, String val) {
         if (Objects.equals(key, "gender")) {
@@ -158,18 +152,44 @@ public class MenuActivity extends AppCompatActivity {
         }
         mDatabase.child(key).setValue(val);
     }
+    protected void getUserHistory() {
+        Query userHistoryQuery = historyRef.limitToLast(7);
+        userHistoryQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot daySnapshot : snapshot.getChildren()) {
+                    String key = daySnapshot.getKey();
+                    if(key != null) {
+                        userHistoryHashMap.put(key, daySnapshot.getValue(UserHistory.class));
+                    }
+                }
+                Log.d("Naudotojo istorija", "gauta");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("Firebase klaida", error.getMessage());
+            }
+        });
+    }
     protected void addUserHistory() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
         String currentDate = sdf.format(new Date());
         UserHistory uh = new UserHistory();
-        mDatabase.child("History").child(currentDate).setValue(uh);
+        historyRef.child(currentDate).setValue(uh);
+    }
+    protected void addUserHistory(UserHistory uh) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
+        String currentDate = sdf.format(new Date());
+        historyRef.child(currentDate).setValue(uh);
     }
 
     protected void updateUserHistory(String date, String key, int val) {
-        mDatabase.child("History").child(date).child(key).setValue(val);
+        historyRef.child(date).child(key).setValue(val);
     }
     protected void addUserHistory(String date, UserHistory uh) {
-        mDatabase.child("History").child(date).setValue(uh);
+        historyRef.child(date).setValue(uh);
     }
 
     private int calcTargetProtein(int goal, int targetKcal) {

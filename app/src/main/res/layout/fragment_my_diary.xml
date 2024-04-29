@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="My Diary"
+            android:text="@string/my_diary"
 
             android:textColor="@color/UI_dark"
             android:textSize="28sp"
@@ -730,30 +730,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="190dp"
-                android:textStyle="bold"
-                android:textSize="12dp"
                 android:layout_marginTop="20dp"
-                android:text="Goal: " />
-
-            <TextView
-                android:id="@+id/textView47"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="17dp"
-                android:layout_marginLeft="225dp"
-                android:text="0"
-                android:textColor="@color/black"
-                android:textSize="16dp"
+                android:text="Goal: "
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView48"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:layout_marginLeft="245dp"
+                android:layout_marginTop="20dp"
                 android:text="/2500 ml"
-                android:textSize="12dp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <ImageButton
@@ -761,7 +750,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp"
-                android:layout_marginLeft="315dp"
+                android:layout_marginLeft="340dp"
                 android:background="#55FFFFFF"
                 android:src="@drawable/baseline_settings_suggest_24" />
 

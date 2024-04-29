@@ -1,20 +1,37 @@
 package edu.vvk_pit_21_i_nt.countyourcalories;
 
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -36,17 +53,22 @@ public class MyDiaryFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    //private DatabaseReference mDatabase;
+    //private UserDb userDb;
     private TextView caloriesConsumed;
     private TextView caloriesRemained;
     private TextView carbsConsumed;
     private TextView proteinsConsumed;
     private TextView fatConsumed;
     private TextView waterConsumed;
+    private TextView waterTarget;
     private List<TextView> listOfDays;
     private ProgressBar calsCycle;
     private ProgressBar carbsBar;
     private ProgressBar proteinBar;
     private ProgressBar fatBar;
+    private List<ImageView> waterCups;
+    TextView Diena7;
 
     public MyDiaryFragment() {
         // Required empty public constructor
@@ -78,17 +100,15 @@ public class MyDiaryFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        //((MenuActivity) requireActivity()).updateUserHistory("2024-04-20", "kcal", 1586);
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        //mDatabase = FirebaseDatabase.getInstance().getReference("Users/" + ((MenuActivity) requireActivity()).user.getUid());
+        //getUserData();
         View view = inflater.inflate(R.layout.fragment_my_diary, container, false);
-
-
         TextView textView2 = (TextView) view.findViewById(R.id.textView2);
         String timeOfDay = TimeOfDayDeterminer();
         textView2.setText("Good " + timeOfDay + "!");
@@ -99,7 +119,7 @@ public class MyDiaryFragment extends Fragment {
         TextView Diena4 = (TextView)  view.findViewById(R.id.textView22);
         TextView Diena5 = (TextView)  view.findViewById(R.id.textView7);
         TextView Diena6 = (TextView)  view.findViewById(R.id.textView8);
-        TextView Diena7 = (TextView)  view.findViewById(R.id.textView9);
+        Diena7 = (TextView)  view.findViewById(R.id.textView9);
         TextView Diena11 = (TextView)  view.findViewById(R.id.textView11);
         TextView Diena12 = (TextView)  view.findViewById(R.id.textView12);
         TextView Diena13 = (TextView)  view.findViewById(R.id.textView13);
@@ -132,8 +152,10 @@ public class MyDiaryFragment extends Fragment {
         carbsBar = view.findViewById(R.id.progressBar);
         proteinBar = view.findViewById(R.id.progressBar2);
         fatBar = view.findViewById(R.id.progressBar3);
-        waterConsumed = view.findViewById(R.id.textView47);
+        waterConsumed = view.findViewById(R.id.textView46);
+        waterTarget = view.findViewById(R.id.textView48);
         listOfDays = new ArrayList<>();
+        waterCups = new ArrayList<>();
         addDayListeners(Diena1);
         addDayListeners(Diena2);
         addDayListeners(Diena3);
@@ -148,30 +170,73 @@ public class MyDiaryFragment extends Fragment {
         listOfDays.add(Diena5);
         listOfDays.add(Diena6);
         listOfDays.add(Diena7);
+        ImageView cup1 = view.findViewById(R.id.imageView);
+        ImageView cup2 = view.findViewById(R.id.imageView2);
+        ImageView cup3 = view.findViewById(R.id.imageView3);
+        ImageView cup4 = view.findViewById(R.id.imageView4);
+        ImageView cup5 = view.findViewById(R.id.imageView5);
+        ImageView cup6 = view.findViewById(R.id.imageView6);
+        waterCups.add(cup1);
+        waterCups.add(cup2);
+        waterCups.add(cup3);
+        waterCups.add(cup4);
+        waterCups.add(cup5);
+        waterCups.add(cup6);
+        if (((MenuActivity) requireActivity()).userDb == null) {
+            Handler handler = new Handler();
+            handler.postDelayed(()->showHistory(Diena7),3000);
+        }
+        else {
+            showHistory(Diena7);
+        }
         return view;
 
     }
 
+
     protected void showHistory(TextView txt) {
         String day = (String) txt.getText();
+        Log.d("Show history", "called");
         UserHistory uh = null;
         for (Map.Entry<String, UserHistory> set: ((MenuActivity) requireActivity()).userHistoryHashMap.entrySet()) {
             String date = set.getKey();
-            if (date.endsWith(day)) {
+            String month = date.substring(5, 7);
+            SimpleDateFormat sdf = new SimpleDateFormat("MM", Locale.UK);
+            String currentDate = sdf.format(new Date());
+            if (date.endsWith(day) && month.equals(currentDate)) {
                 uh = set.getValue();
                 break;
             }
         }
-        int target = ((MenuActivity) requireActivity()).userDb.getTarget();
-        int goal = ((MenuActivity) requireActivity()).userDb.getGoal();
+        int target;
+        int goal;
+        String gender;
+        int weight;
+        UserDb ud = ((MenuActivity) requireActivity()).userDb;
+        if (((MenuActivity) requireActivity()).userDb == null) {
+
+            target = 2000;
+            goal = 1;
+            gender = "A Woman";
+            weight = 56;
+        }
+        else {
+            target = ((MenuActivity) requireActivity()).userDb.getTarget();
+            goal = ((MenuActivity) requireActivity()).userDb.getGoal();
+            gender = ((MenuActivity) requireActivity()).userDb.getGender();
+            weight = (int) ((MenuActivity) requireActivity()).userDb.getWeight();
+            Log.d("UserDb", "not null");
+        }
         int targetCarbo = calcTargetCarbs(goal, target);
         int targetProtein = calcTargetProtein(goal, target);
         int targetFat = calcTargetFat(goal, target);
-
+        int targetWater = calcTargetWater(gender, weight);
+        String waterTargetText = String.format(Locale.UK, "/ %d ml", targetWater);
+        waterTarget.setText(waterTargetText);
         if (uh != null) {
-            String carboText = String.format(Locale.UK,"%d/%d", uh.getCarbo(), targetCarbo);
-            String proteinText = String.format(Locale.UK, "%d/%d", uh.getProtein(), targetProtein);
-            String fatText = String.format(Locale.UK, "%d/%d", uh.getFat(), targetFat);
+            String carboText = String.format(Locale.UK,"%d/%d g", uh.getCarbo(), targetCarbo);
+            String proteinText = String.format(Locale.UK, "%d/%d g", uh.getProtein(), targetProtein);
+            String fatText = String.format(Locale.UK, "%d/%d g", uh.getFat(), targetFat);
             caloriesConsumed.setText(String.valueOf(uh.getKcal()));
             carbsConsumed.setText(carboText);
             proteinsConsumed.setText(proteinText);
@@ -179,10 +244,17 @@ public class MyDiaryFragment extends Fragment {
             waterConsumed.setText(String.valueOf(uh.getWater()));
             int remain = target - uh.getKcal();
             caloriesRemained.setText(String.valueOf(remain));
+            if (remain < 0) {
+                caloriesRemained.setTextColor(Color.parseColor("#d40b0b"));
+            }
+            else {
+                caloriesRemained.setTextColor(Color.parseColor("#000000"));
+            }
             int calcPercent = (uh.getKcal() * 100) / target;
             int carbsPercent = (uh.getCarbo() * 100) / targetCarbo;
             int proteinPercent = (uh.getProtein() * 100) / targetProtein;
             int fatPercent = (uh.getFat() * 100) / targetFat;
+            int waterPercent = (uh.getWater() * 100) / targetWater;
             if (calcPercent <= 100) {
                 calsCycle.setProgress(calcPercent);
             }
@@ -207,22 +279,50 @@ public class MyDiaryFragment extends Fragment {
             else {
                 fatBar.setProgress(100);
             }
+            if (waterPercent >= 14 && waterPercent < 28) {
+               paintCups(0);
+            }
+            else if (waterPercent >= 28 && waterPercent <= 42) {
+               paintCups(1);
+            }
+            else if (waterPercent > 42 && waterPercent <= 56) {
+                paintCups(2);
+            } else if (waterPercent > 56 && waterPercent <= 70) {
+                paintCups(3);
+            } else if (waterPercent > 70 && waterPercent <= 84) {
+                paintCups(4);
+            }
+            else if (waterPercent > 84) {
+              for (ImageView cup : waterCups) {
+                  cup.setImageResource(R.drawable.water_cup_blue);
+              }
+            }
+            else {
+                for (ImageView cup : waterCups) {
+                    cup.setImageResource(R.drawable.water_cup);
+                }
+            }
+
         }
         else {
             caloriesConsumed.setText(String.valueOf(0));
-            carbsConsumed.setText(String.valueOf(0));
-            proteinsConsumed.setText((String.valueOf(0)));
-            fatConsumed.setText(String.valueOf(0));
+            carbsConsumed.setText(String.format(Locale.UK, "0/%d g", targetCarbo));
+            proteinsConsumed.setText(String.format(Locale.UK, "0/%d g", targetProtein));
+            fatConsumed.setText(String.format(Locale.UK, "0/%d g", targetFat));
             caloriesRemained.setText(String.valueOf(target));
             waterConsumed.setText(String.valueOf(0));
             calsCycle.setProgress(0);
             carbsBar.setProgress(0);
             proteinBar.setProgress(0);
             fatBar.setProgress(0);
+            for (ImageView cup : waterCups) {
+                cup.setImageResource(R.drawable.water_cup);
+            }
         }
 
 
     }
+
     protected void addDayListeners(TextView day) {
         day.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -237,8 +337,27 @@ public class MyDiaryFragment extends Fragment {
             }
         });
     }
+    protected int calcTargetWater(String gender, int weight) {
+        int water;
+        if (gender.equals("A Woman")) {
+            water = (int) ((weight * 0.037) * 1000);
+        }
+        else {
+            water = (int) ((weight * 0.035) * 1000);
+        }
+        return water;
+    }
 
-
+    protected void paintCups(int numOfCups) {
+        for (int i = 0; i < waterCups.size(); i++) {
+            if (i <= numOfCups) {
+                waterCups.get(i).setImageResource(R.drawable.water_cup_blue);
+            }
+            else {
+                waterCups.get(i).setImageResource(R.drawable.water_cup);
+            }
+        }
+    }
     private int calcTargetProtein(int goal, int targetKcal) {
         int proteins;
         if (goal == 0) {
