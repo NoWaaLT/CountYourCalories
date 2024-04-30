@@ -180,16 +180,15 @@ public class ProfileFragment extends Fragment {
 
         profile_Start_Page(profile_title_edit, scroll_Profile, profile_Title, profile_Desc_Title, profile_Description, editProfile, genderIconMale, genderIconFemale);
 
-        onClickEditProfile(profile_title_edit, scroll_Profile, profile_Title, profile_Desc_Title, profile_Description, genderIconMale, genderIconFemale, editProfile, backProfile, scroll_Edit_Profile, edit_profile_age, edit_age_text, edit_profile_height, edit_height_text, edit_profile_weight, edit_weight_text, edit_profile_gender, edit_gender_text, edit_profile_activity_level, edit_activity_level_text, edit_profile_goal, edit_goal_text, edit_profile_bmr, edit_bmr_text, edit_profile_target, edit_target_text);
+//        onClickEditProfile(profile_title_edit, scroll_Profile, profile_Title, profile_Desc_Title, profile_Description, genderIconMale, genderIconFemale, editProfile, backProfile, scroll_Edit_Profile, edit_profile_age, edit_age_text, edit_profile_height, edit_height_text, edit_profile_weight, edit_weight_text, edit_profile_gender, edit_gender_text, edit_profile_activity_level, edit_activity_level_text, edit_profile_goal, edit_goal_text, edit_profile_bmr, edit_bmr_text, edit_profile_target, edit_target_text);
 
-//        editProfile.setOnClickListener(v -> {
-//
-//            profile_Start_Page_fold(profile_title_edit, scroll_Profile, profile_Title, profile_Desc_Title, profile_Description, genderIconMale, genderIconFemale);
-//            animate_Button_edit(editProfile);
-//            animate_Button_back(backProfile);
-//            profile_Edit_start(profile_title_edit, scroll_Edit_Profile, edit_profile_age, edit_age_text, edit_profile_height, edit_height_text, edit_profile_weight, edit_weight_text, edit_profile_gender, edit_gender_text, edit_profile_activity_level, edit_activity_level_text, edit_profile_goal, edit_goal_text, edit_profile_bmr, edit_bmr_text, edit_profile_target, edit_target_text);
-//            gender_Image_Animation_start_page();
-//        });
+        editProfile.setOnClickListener(v -> {
+            profile_Start_Page_fold(profile_title_edit, scroll_Profile, profile_Title, profile_Desc_Title, profile_Description, genderIconMale, genderIconFemale);
+            animate_Button_edit(editProfile);
+            animate_Button_back(backProfile);
+            profile_Edit_start(profile_title_edit, scroll_Edit_Profile, edit_profile_age, edit_age_text, edit_profile_height, edit_height_text, edit_profile_weight, edit_weight_text, edit_profile_gender, edit_gender_text, edit_profile_activity_level, edit_activity_level_text, edit_profile_goal, edit_goal_text, edit_profile_bmr, edit_bmr_text, edit_profile_target, edit_target_text);
+            gender_Image_Animation_start_page();
+        });
 
 
         onClickBackProfile(backProfile, profile_title_edit, scroll_Edit_Profile, edit_profile_age, edit_age_text, edit_profile_height, edit_height_text, edit_profile_weight, edit_weight_text, edit_profile_gender, edit_gender_text, edit_profile_activity_level, edit_activity_level_text, edit_profile_goal, edit_goal_text, edit_profile_bmr, edit_bmr_text, edit_profile_target, edit_target_text);
@@ -473,20 +472,20 @@ public class ProfileFragment extends Fragment {
 
 
     }
-
-    private void onClickEditProfile(TextView profile_title_edit, ScrollView scroll_Profile, TextView profile_Title, TextView profile_Desc_Title, TextView profile_Description, ImageView genderIconMale, ImageView genderIconFemale, Button editProfile, Button backProfile, ScrollView scroll_Edit_Profile, EditText edit_profile_age, TextView edit_age_text, EditText edit_profile_height, TextView edit_height_text, EditText edit_profile_weight, TextView edit_weight_text, TextView edit_profile_gender, TextView edit_gender_text, TextView edit_profile_activity_level, TextView edit_activity_level_text, TextView edit_profile_goal, TextView edit_goal_text, TextView edit_profile_bmr, TextView edit_bmr_text, TextView edit_profile_target, TextView edit_target_text) {
-
-        editProfile.setOnClickListener(v -> {
-            profile_Start_Page_fold(profile_title_edit, scroll_Profile, profile_Title, profile_Desc_Title, profile_Description, genderIconMale, genderIconFemale);
-            animate_Button_edit(editProfile);
-            animate_Button_back(backProfile);
-            profile_Edit_start(profile_title_edit, scroll_Edit_Profile, edit_profile_age, edit_age_text, edit_profile_height, edit_height_text, edit_profile_weight, edit_weight_text, edit_profile_gender, edit_gender_text, edit_profile_activity_level, edit_activity_level_text, edit_profile_goal, edit_goal_text, edit_profile_bmr, edit_bmr_text, edit_profile_target, edit_target_text);
-            gender_Image_Animation_start_page();
-        });
-
-
-
-    }
+//
+//    private void onClickEditProfile(TextView profile_title_edit, ScrollView scroll_Profile, TextView profile_Title, TextView profile_Desc_Title, TextView profile_Description, ImageView genderIconMale, ImageView genderIconFemale, Button editProfile, Button backProfile, ScrollView scroll_Edit_Profile, EditText edit_profile_age, TextView edit_age_text, EditText edit_profile_height, TextView edit_height_text, EditText edit_profile_weight, TextView edit_weight_text, TextView edit_profile_gender, TextView edit_gender_text, TextView edit_profile_activity_level, TextView edit_activity_level_text, TextView edit_profile_goal, TextView edit_goal_text, TextView edit_profile_bmr, TextView edit_bmr_text, TextView edit_profile_target, TextView edit_target_text) {
+//
+//        editProfile.setOnClickListener(v -> {
+//            profile_Start_Page_fold(profile_title_edit, scroll_Profile, profile_Title, profile_Desc_Title, profile_Description, genderIconMale, genderIconFemale);
+//            animate_Button_edit(editProfile);
+//            animate_Button_back(backProfile);
+//            profile_Edit_start(profile_title_edit, scroll_Edit_Profile, edit_profile_age, edit_age_text, edit_profile_height, edit_height_text, edit_profile_weight, edit_weight_text, edit_profile_gender, edit_gender_text, edit_profile_activity_level, edit_activity_level_text, edit_profile_goal, edit_goal_text, edit_profile_bmr, edit_bmr_text, edit_profile_target, edit_target_text);
+//            gender_Image_Animation_start_page();
+//        });
+//
+//
+//
+//    }
 
     private void profile_Edit_start(TextView profile_title_edit, ScrollView scroll_Edit_Profile, EditText edit_profile_age, TextView edit_age_text, EditText edit_profile_height, TextView edit_height_text, EditText edit_profile_weight, TextView edit_weight_text, TextView edit_profile_gender, TextView edit_gender_text, TextView edit_profile_activity_level, TextView edit_activity_level_text, TextView edit_profile_goal, TextView edit_goal_text, TextView edit_profile_bmr, TextView edit_bmr_text, TextView edit_profile_target, TextView edit_target_text) {
         Animation animation_Profile_Edit = new TranslateAnimation(-10000, 0, 0, 0);
