@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -21,7 +20,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +43,7 @@ public class MenuActivity extends AppCompatActivity {
     private MealPlansFragment mealPlansFragment;
     private AddFoodFragment addFoodFragment;
     private RecipesFragment recipesFragment;
-    private ProfileFragment profileFragment;
+    public static ProfileFragment profileFragment;
 
     private DatabaseFoodAdd databaseFoodAdd;
 
@@ -70,7 +68,7 @@ public class MenuActivity extends AppCompatActivity {
         mealPlansFragment = new MealPlansFragment();
         addFoodFragment = new AddFoodFragment();
         recipesFragment = new RecipesFragment();
-        profileFragment = new ProfileFragment();
+//        profileFragment = new ProfileFragment();
         databaseFoodAdd = new DatabaseFoodAdd();
 
         // Show MyDiaryFragment by default
@@ -93,6 +91,7 @@ public class MenuActivity extends AppCompatActivity {
                 selectedFragment = recipesFragment;
 
             } else if (item.getItemId() == R.id.profile) {
+                profileFragment = new ProfileFragment();
                 selectedFragment = profileFragment;
 
             }  else if (item.getItemId() == R.id.textView63){
@@ -112,7 +111,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
 
-    public void showFragment(Fragment fragment, FragmentManager fragmentManager) {
+    public static void showFragment(Fragment fragment, FragmentManager fragmentManager) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         List<Fragment> allFragments = fragmentManager.getFragments(); // Get all fragments
         for (Fragment frag : allFragments) {

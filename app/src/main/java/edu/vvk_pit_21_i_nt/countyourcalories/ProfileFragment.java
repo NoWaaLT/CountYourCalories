@@ -123,39 +123,40 @@ public class ProfileFragment extends Fragment {
         View view;
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         // Inflate the layout for this fragment
-        TextView profile_Title =  view.findViewById(R.id.profile_title);
-        TextView profile_title_edit =  view.findViewById(R.id.profile_title_edit);
+        TextView profile_Title = view.findViewById(R.id.profile_title);
+        TextView profile_title_edit = view.findViewById(R.id.profile_title_edit);
         ScrollView scroll_Profile = view.findViewById(R.id.scroll_view_profile);
-        ScrollView scroll_Edit_Profile =  view.findViewById(R.id.scroll_view_profile_edit);
-        EditText edit_profile_age =  view.findViewById(R.id.edit_profile_age);
-        EditText edit_profile_height =  view.findViewById(R.id.edit_profile_height);
-        EditText edit_profile_weight =  view.findViewById(R.id.edit_profile_weight);
-        TextView profile_Desc_Title =  view.findViewById(R.id.profile_desc_title);
-        TextView profile_Description =  view.findViewById(R.id.profile_description);
-        TextView edit_age_text =  view.findViewById(R.id.edit_age_text);
-        TextView edit_height_text =  view.findViewById(R.id.edit_height_text);
-        TextView edit_weight_text =  view.findViewById(R.id.edit_weight_text);
+        ScrollView scroll_Edit_Profile = view.findViewById(R.id.scroll_view_profile_edit);
+        EditText edit_profile_age = view.findViewById(R.id.edit_profile_age);
+        EditText edit_profile_height = view.findViewById(R.id.edit_profile_height);
+        EditText edit_profile_weight = view.findViewById(R.id.edit_profile_weight);
+        TextView profile_Desc_Title = view.findViewById(R.id.profile_desc_title);
+        TextView profile_Description = view.findViewById(R.id.profile_description);
+        TextView edit_age_text = view.findViewById(R.id.edit_age_text);
+        TextView edit_height_text = view.findViewById(R.id.edit_height_text);
+        TextView edit_weight_text = view.findViewById(R.id.edit_weight_text);
         TextView edit_profile_gender = view.findViewById(R.id.edit_profile_gender);
-        TextView edit_gender_text =  view.findViewById(R.id.edit_gender_text);
-        TextView edit_activity_level_text =  view.findViewById(R.id.edit_activity_level_text);
-        TextView edit_profile_activity_level =  view.findViewById(R.id.edit_profile_activity_level);
-        TextView edit_profile_goal =  view.findViewById(R.id.edit_profile_goal);
-        TextView edit_goal_text =  view.findViewById(R.id.edit_goal_text);
+        TextView edit_gender_text = view.findViewById(R.id.edit_gender_text);
+        TextView edit_activity_level_text = view.findViewById(R.id.edit_activity_level_text);
+        TextView edit_profile_activity_level = view.findViewById(R.id.edit_profile_activity_level);
+        TextView edit_profile_goal = view.findViewById(R.id.edit_profile_goal);
+        TextView edit_goal_text = view.findViewById(R.id.edit_goal_text);
         TextView edit_profile_target = view.findViewById(R.id.edit_profile_target);
         TextView edit_target_text = view.findViewById(R.id.edit_target_text);
-        TextView edit_bmr_text =  view.findViewById(R.id.edit_bmr_text);
-        TextView edit_profile_bmr =  view.findViewById(R.id.edit_profile_bmr);
+        TextView edit_bmr_text = view.findViewById(R.id.edit_bmr_text);
+        TextView edit_profile_bmr = view.findViewById(R.id.edit_profile_bmr);
 
-        Button editProfile =  view.findViewById(R.id.edit_profile);
+        Button editProfile = view.findViewById(R.id.edit_profile);
         profile_Title.setText(profile_Title());
         profile_title_edit.setText(profile_Edit());
-
+        Button backProfile = view.findViewById(R.id.back_profile);
+        backProfile.setVisibility(View.INVISIBLE);
 
         ImageView genderIconMale = view.findViewById(R.id.genderIconMale);
-        ImageView genderIconFemale =  view.findViewById(R.id.genderIconFemale);
-        genderIconMaleEdit =  view.findViewById(R.id.genderIconMale_date);
+        ImageView genderIconFemale = view.findViewById(R.id.genderIconFemale);
+        genderIconMaleEdit = view.findViewById(R.id.genderIconMale_date);
         genderIconMaleEdit.setVisibility(View.INVISIBLE);
-        genderIconFemaleEdit =  view.findViewById(R.id.genderIconFemale_date);
+        genderIconFemaleEdit = view.findViewById(R.id.genderIconFemale_date);
         genderIconFemaleEdit.setVisibility(View.INVISIBLE);
 
         scroll_Edit_Profile.setVisibility(View.INVISIBLE);
@@ -177,206 +178,22 @@ public class ProfileFragment extends Fragment {
         edit_target_text.setText("Target Calories");
         edit_profile_target.setText("" + myTarget);
 
-        Animation animation_profile_edit = new TranslateAnimation(10000, 10000, 0, 0);
-        animation_profile_edit.setDuration(animationDuration());
-        animation_profile_edit.setFillAfter(true);
-        profile_title_edit.startAnimation(animation_profile_edit);
+        profile_Start_Page(profile_title_edit, scroll_Profile, profile_Title, profile_Desc_Title, profile_Description, editProfile, genderIconMale, genderIconFemale);
 
-        Animation animation_Scroll_Profile = new TranslateAnimation(0, 0, 10000, 0);
-        animation_Scroll_Profile.setDuration(animationDuration());
-        animation_Scroll_Profile.setFillAfter(true);
-        scroll_Profile.startAnimation(animation_Scroll_Profile);
-
-        Animation animation_Prof = new TranslateAnimation(-10000, 0, 0, 0);
-        animation_Prof.setDuration(animationDuration());
-        animation_Prof.setFillAfter(true);
-        profile_Title.startAnimation(animation_Prof);
-
-        Animation animation_Prof_title = new TranslateAnimation(0, 0, 10000, 0);
-        animation_Prof_title.setDuration(animationDuration());
-        animation_Prof_title.setFillAfter(true);
-        profile_Desc_Title.startAnimation(animation_Prof_title);
-
-        Animation animation_Prof_desc = new TranslateAnimation(0, 0, 10000, 0);
-        animation_Prof_desc.setDuration(animationDuration());
-        animation_Prof_desc.setFillAfter(true);
-        profile_Description.startAnimation(animation_Prof_desc);
-
-        Animation animation_Button_Edit = new TranslateAnimation(10000, 0, 0, 0);
-        animation_Button_Edit.setDuration(animationDuration());
-        animation_Button_Edit.setFillAfter(true);
-        editProfile.startAnimation(animation_Button_Edit);
-
-        Animation animation_image = new TranslateAnimation(0, -300, -1000, 0);
-        animation_image.setDuration(animationDuration());
-        animation_image.setFillAfter(true);
-
-        if (Objects.equals(myGender, "A Man")) {
-            genderIconMale.setVisibility(View.VISIBLE);
-            genderIconFemale.setVisibility(View.INVISIBLE);
-            genderIconMale.startAnimation(animation_image);
-        } else {
-            genderIconMale.setVisibility(View.INVISIBLE);
-            genderIconFemale.setVisibility(View.VISIBLE);
-            genderIconFemale.startAnimation(animation_image);
-        }
+//        onClickEditProfile(profile_title_edit, scroll_Profile, profile_Title, profile_Desc_Title, profile_Description, genderIconMale, genderIconFemale, editProfile, backProfile, scroll_Edit_Profile, edit_profile_age, edit_age_text, edit_profile_height, edit_height_text, edit_profile_weight, edit_weight_text, edit_profile_gender, edit_gender_text, edit_profile_activity_level, edit_activity_level_text, edit_profile_goal, edit_goal_text, edit_profile_bmr, edit_bmr_text, edit_profile_target, edit_target_text);
 
         editProfile.setOnClickListener(v -> {
-            Animation animation_image_back = new TranslateAnimation(-300, 0, 0, -10000);
-            animation_image_back.setDuration(animationDuration());
-            animation_image_back.setFillAfter(true);
-
-            Animation animation_Prof_back = new TranslateAnimation(0, -10000, 0, 0);
-            animation_Prof_back.setDuration(animationDuration());
-            animation_Prof_back.setFillAfter(true);
-            profile_Title.startAnimation(animation_Prof_back);
-
-            Animation animation_Button_Edit_back = new TranslateAnimation(0, 10000, 0, 0);
-            animation_Button_Edit_back.setDuration(animationDuration());
-            animation_Button_Edit_back.setFillAfter(true);
-            editProfile.startAnimation(animation_Button_Edit_back);
-
-            Animation animation_Prof_desc_back = new TranslateAnimation(0, 0, 0, 10000);
-            animation_Prof_desc_back.setDuration(animationDuration());
-            animation_Prof_desc_back.setFillAfter(true);
-            profile_Description.startAnimation(animation_Prof_desc_back);
-
-            Animation animation_Prof_title_back = new TranslateAnimation(0, 0, 0, 10000);
-            animation_Prof_title_back.setDuration(animationDuration());
-            animation_Prof_title_back.setFillAfter(true);
-            profile_Desc_Title.startAnimation(animation_Prof_title_back);
-
-            Animation animation_Scroll_Profile_back = new TranslateAnimation(0, 0, 0, 10000);
-            animation_Scroll_Profile_back.setDuration(animationDuration());
-            animation_Scroll_Profile_back.setFillAfter(true);
-            scroll_Profile.startAnimation(animation_Scroll_Profile_back);
-
-            if (Objects.equals(myGender, "A Man")) {
-                genderIconMale.setVisibility(View.VISIBLE);
-                genderIconFemale.setVisibility(View.INVISIBLE);
-                genderIconMale.startAnimation(animation_image_back);
-            } else {
-                genderIconMale.setVisibility(View.INVISIBLE);
-                genderIconFemale.setVisibility(View.VISIBLE);
-                genderIconFemale.startAnimation(animation_image_back);
-            }
-
-            animationDuration = 1500;
-
-            Animation animation_Profile_Edit = new TranslateAnimation(-10000, 0, 0, 0);
-            animation_Profile_Edit.setDuration(animationDuration());
-            animation_Profile_Edit.setFillAfter(true);
-            profile_title_edit.startAnimation(animation_Profile_Edit);
-
-            Animation animation_Scroll_Profile_edit = new TranslateAnimation(3000, 0, 0, 0);
-            animation_Scroll_Profile_edit.setDuration(animationDuration());
-            animation_Scroll_Profile_edit.setFillAfter(true);
-            scroll_Edit_Profile.startAnimation(animation_Scroll_Profile_edit);
-
-            Animation animation_age_profile = new TranslateAnimation(3000, 0, 10000, 0);
-            animation_age_profile.setDuration(animationDuration());
-            animation_age_profile.setFillAfter(true);
-            edit_profile_age.startAnimation(animation_age_profile);
-
-            Animation animation_age_text = new TranslateAnimation(3000, 0, 10000, 0);
-            animation_age_text.setDuration(animationDuration());
-            animation_age_text.setFillAfter(true);
-            edit_age_text.startAnimation(animation_age_text);
-
-            Animation animation_height_profile = new TranslateAnimation(3000, 0, 10000, 0);
-            animation_height_profile.setDuration(animationDuration());
-            animation_height_profile.setFillAfter(true);
-            edit_profile_height.startAnimation(animation_height_profile);
-
-            Animation animation_height_text = new TranslateAnimation(3000, 0, 10000, 0);
-            animation_height_text.setDuration(animationDuration());
-            animation_height_text.setFillAfter(true);
-            edit_height_text.startAnimation(animation_height_text);
-
-            Animation animation_weight_profile = new TranslateAnimation(3000, 0, 10000, 0);
-            animation_weight_profile.setDuration(animationDuration());
-            animation_weight_profile.setFillAfter(true);
-            edit_profile_weight.startAnimation(animation_weight_profile);
-
-            Animation animation_weight_text = new TranslateAnimation(3000, 0, 10000, 0);
-            animation_weight_text.setDuration(animationDuration());
-            animation_weight_text.setFillAfter(true);
-            edit_weight_text.startAnimation(animation_weight_text);
-
-            Animation animation_gender_profile = new TranslateAnimation(3000, 0, 10000, 0);
-            animation_gender_profile.setDuration(animationDuration());
-            animation_gender_profile.setFillAfter(true);
-            edit_profile_gender.startAnimation(animation_gender_profile);
-
-            Animation animation_gender_text = new TranslateAnimation(3000, 0, 10000, 0);
-            animation_gender_text.setDuration(animationDuration());
-            animation_gender_text.setFillAfter(true);
-            edit_gender_text.startAnimation(animation_gender_text);
-
-            Animation animation_activity_level_profile = new TranslateAnimation(3000, 0, 10000, 0);
-            animation_activity_level_profile.setDuration(animationDuration());
-            animation_activity_level_profile.setFillAfter(true);
-            edit_profile_activity_level.startAnimation(animation_activity_level_profile);
-
-            Animation animation_activity_level_text = new TranslateAnimation(3000, 0, 10000, 0);
-            animation_activity_level_text.setDuration(animationDuration());
-            animation_activity_level_text.setFillAfter(true);
-            edit_activity_level_text.startAnimation(animation_activity_level_text);
-
-            Animation animation_goal_profile = new TranslateAnimation(3000, 0, 10000, 0);
-            animation_goal_profile.setDuration(animationDuration());
-            animation_goal_profile.setFillAfter(true);
-            edit_profile_goal.startAnimation(animation_goal_profile);
-
-            Animation animation_goal_text = new TranslateAnimation(3000, 0, 10000, 0);
-            animation_goal_text.setDuration(animationDuration());
-            animation_goal_text.setFillAfter(true);
-            edit_goal_text.startAnimation(animation_goal_text);
-
-            Animation animation_bmr_profile = new TranslateAnimation(3000, 0, 10000, 0);
-            animation_bmr_profile.setDuration(animationDuration());
-            animation_bmr_profile.setFillAfter(true);
-            edit_profile_bmr.startAnimation(animation_bmr_profile);
-
-            Animation animation_bmr_text = new TranslateAnimation(3000, 0, 10000, 0);
-            animation_bmr_text.setDuration(animationDuration());
-            animation_bmr_text.setFillAfter(true);
-            edit_bmr_text.startAnimation(animation_bmr_text);
-
-            Animation animation_target_profile = new TranslateAnimation(3000, 0, 10000, 0);
-            animation_target_profile.setDuration(animationDuration());
-            animation_target_profile.setFillAfter(true);
-            edit_profile_target.startAnimation(animation_target_profile);
-
-            Animation animation_target_text = new TranslateAnimation(3000, 0, 10000, 0);
-            animation_target_text.setDuration(animationDuration());
-            animation_target_text.setFillAfter(true);
-            edit_target_text.startAnimation(animation_target_text);
-
-            Animation animation_image_male_In = new TranslateAnimation(1000, -300, 0, 0);
-            Animation animation_image_female_In = new TranslateAnimation(1000, -300, 0, 0);
-
-            if (Objects.equals(myGender, "A Man")) {
-                animation_image_male_In.setDuration(1200);
-                animation_image_male_In.setFillAfter(true);
-                genderIconMaleEdit.startAnimation(animation_image_male_In);
-            } else {
-                animation_image_female_In.setDuration(1200);
-                animation_image_female_In.setFillAfter(true);
-                genderIconFemaleEdit.startAnimation(animation_image_female_In);
-            }
-
-            if (isEditing) {
-                isEditing = false;
-                editProfile.setText("Edit");
-                editProfile.setBackgroundTintList(getResources().getColorStateList(R.color.purple_200));
-
-            } else {
-                isEditing = true;
-//                editProfile.setText("Back");
-//                editProfile.setBackgroundTintList(getResources().getColorStateList(R.color.teal_700));
-            }
+            profile_Start_Page_fold(profile_title_edit, scroll_Profile, profile_Title, profile_Desc_Title, profile_Description, genderIconMale, genderIconFemale);
+            animate_Button_edit(editProfile);
+            animate_Button_back(backProfile);
+            profile_Edit_start(profile_title_edit, scroll_Edit_Profile, edit_profile_age, edit_age_text, edit_profile_height, edit_height_text, edit_profile_weight, edit_weight_text, edit_profile_gender, edit_gender_text, edit_profile_activity_level, edit_activity_level_text, edit_profile_goal, edit_goal_text, edit_profile_bmr, edit_bmr_text, edit_profile_target, edit_target_text);
+            gender_Image_Animation_start_page();
         });
+
+
+        onClickBackProfile(backProfile, profile_title_edit, scroll_Edit_Profile, edit_profile_age, edit_age_text, edit_profile_height, edit_height_text, edit_profile_weight, edit_weight_text, edit_profile_gender, edit_gender_text, edit_profile_activity_level, edit_activity_level_text, edit_profile_goal, edit_goal_text, edit_profile_bmr, edit_bmr_text, edit_profile_target, edit_target_text);
+
+
 
         edit_gender_text.setText("Edit Gender");
         if (Objects.equals(myGender, genders[0])) {
@@ -392,7 +209,6 @@ public class ProfileFragment extends Fragment {
                 edit_profile_activity_level.setText(myActivityLevelDescription[i]);
             }
         }
-
 
         edit_profile_age.setOnClickListener(v -> {
             edit_age_text.setText("Edit Age");
@@ -456,7 +272,9 @@ public class ProfileFragment extends Fragment {
 
         edit_profile_gender.setOnClickListener(v -> {
             edit_profile_bmr.setText(calcNewBmr());
+
             animate_gender_icon();
+
             if (newBmr != myBmr) {
                 userDataPut_Float("bmr", newBmr);
                 edit_profile_target.setText(calcNewTarget());
@@ -530,11 +348,284 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
+    private void onClickBackProfile(Button backProfile , TextView profile_title_edit, ScrollView scroll_Edit_Profile, EditText edit_profile_age, TextView edit_age_text, EditText edit_profile_height, TextView edit_height_text, EditText edit_profile_weight, TextView edit_weight_text, TextView edit_profile_gender, TextView edit_gender_text, TextView edit_profile_activity_level, TextView edit_activity_level_text, TextView edit_profile_goal, TextView edit_goal_text, TextView edit_profile_bmr, TextView edit_bmr_text, TextView edit_profile_target, TextView edit_target_text) {
+        backProfile.setOnClickListener(v -> {
+
+            animationDuration = 1500;
+            Animation animation_image_male_Out = new TranslateAnimation(-300, -300, 0, -10000);
+            Animation animation_image_female_Out = new TranslateAnimation(-300, -300, 0, -10000);
+            if (Objects.equals(myGender, "A Man")) {
+                animation_image_male_Out.setDuration(1200);
+                animation_image_male_Out.setFillAfter(true);
+                genderIconMaleEdit.startAnimation(animation_image_male_Out);
+
+            } else {
+                animation_image_female_Out.setDuration(1200);
+                animation_image_female_Out.setFillAfter(true);
+                genderIconFemaleEdit.startAnimation(animation_image_female_Out);
+            }
+
+            Animation animation_back_Profile = new TranslateAnimation(0, 10000, 0, 0);
+            animation_back_Profile.setDuration(animationDuration());
+            animation_back_Profile.setFillAfter(true);
+            backProfile.setText("Back");
+            backProfile.setBackgroundTintList(getResources().getColorStateList(R.color.teal_700));
+            backProfile.setVisibility(View.VISIBLE);
+            backProfile.startAnimation(animation_back_Profile);
+
+            Animation animation_Profile_Edit_back = new TranslateAnimation(0, -10000, 0, 0);
+            animation_Profile_Edit_back.setDuration(animationDuration());
+            animation_Profile_Edit_back.setFillAfter(true);
+            profile_title_edit.startAnimation(animation_Profile_Edit_back);
+
+            Animation animation_age_profile_back = new TranslateAnimation(0, -10000, 0, 0);
+            animation_age_profile_back.setDuration(animationDuration());
+            animation_age_profile_back.setFillAfter(true);
+            edit_profile_age.startAnimation(animation_age_profile_back);
+
+            Animation animation_age_text_back = new TranslateAnimation(0, -10000, 0, 0);
+            animation_age_text_back.setDuration(animationDuration());
+            animation_age_text_back.setFillAfter(true);
+            edit_age_text.startAnimation(animation_age_text_back);
+
+            Animation animation_height_profile_back = new TranslateAnimation(0, -10000, 0, 0);
+            animation_height_profile_back.setDuration(animationDuration());
+            animation_height_profile_back.setFillAfter(true);
+            edit_profile_height.startAnimation(animation_height_profile_back);
+
+            Animation animation_height_text_back = new TranslateAnimation(0, -10000, 0, 0);
+            animation_height_text_back.setDuration(animationDuration());
+            animation_height_text_back.setFillAfter(true);
+            edit_height_text.startAnimation(animation_height_text_back);
+
+            Animation animation_weight_profile_back = new TranslateAnimation(0, -10000, 0, 0);
+            animation_weight_profile_back.setDuration(animationDuration());
+            animation_weight_profile_back.setFillAfter(true);
+            edit_profile_weight.startAnimation(animation_weight_profile_back);
+
+            Animation animation_weight_text_back = new TranslateAnimation(0, -10000, 0, 0);
+            animation_weight_text_back.setDuration(animationDuration());
+            animation_weight_text_back.setFillAfter(true);
+            edit_weight_text.startAnimation(animation_weight_text_back);
+
+            Animation animation_gender_profile_back = new TranslateAnimation(0, -10000, 0, 0);
+            animation_gender_profile_back.setDuration(animationDuration());
+            animation_gender_profile_back.setFillAfter(true);
+            edit_profile_gender.startAnimation(animation_gender_profile_back);
+
+            Animation animation_gender_text_back = new TranslateAnimation(0, -10000, 0, 0);
+            animation_gender_text_back.setDuration(animationDuration());
+            animation_gender_text_back.setFillAfter(true);
+            edit_gender_text.startAnimation(animation_gender_text_back);
+
+            Animation animation_activity_level_profile_back = new TranslateAnimation(0, -10000, 0, 0);
+            animation_activity_level_profile_back.setDuration(animationDuration());
+            animation_activity_level_profile_back.setFillAfter(true);
+            edit_profile_activity_level.startAnimation(animation_activity_level_profile_back);
+
+            Animation animation_activity_level_text_back = new TranslateAnimation(0, -10000, 0, 0);
+            animation_activity_level_text_back.setDuration(animationDuration());
+            animation_activity_level_text_back.setFillAfter(true);
+            edit_activity_level_text.startAnimation(animation_activity_level_text_back);
+
+            Animation animation_goal_profile_back = new TranslateAnimation(0, -10000, 0, 0);
+            animation_goal_profile_back.setDuration(animationDuration());
+            animation_goal_profile_back.setFillAfter(true);
+            edit_profile_goal.startAnimation(animation_goal_profile_back);
+
+            Animation animation_goal_text_back = new TranslateAnimation(0, -10000, 0, 0);
+            animation_goal_text_back.setDuration(animationDuration());
+            animation_goal_text_back.setFillAfter(true);
+            edit_goal_text.startAnimation(animation_goal_text_back);
+
+            Animation animation_bmr_profile_back = new TranslateAnimation(0, -10000, 0, 0);
+            animation_bmr_profile_back.setDuration(animationDuration());
+            animation_bmr_profile_back.setFillAfter(true);
+            edit_profile_bmr.startAnimation(animation_bmr_profile_back);
+
+            Animation animation_bmr_text_back = new TranslateAnimation(0, -10000, 0, 0);
+            animation_bmr_text_back.setDuration(animationDuration());
+            animation_bmr_text_back.setFillAfter(true);
+            edit_bmr_text.startAnimation(animation_bmr_text_back);
+
+            Animation animation_target_profile_back = new TranslateAnimation(0, -10000, 0, 0);
+            animation_target_profile_back.setDuration(animationDuration());
+            animation_target_profile_back.setFillAfter(true);
+            edit_profile_target.startAnimation(animation_target_profile_back);
+
+            Animation animation_target_text_back = new TranslateAnimation(0, -10000, 0, 0);
+            animation_target_text_back.setDuration(animationDuration());
+            animation_target_text_back.setFillAfter(true);
+            edit_target_text.startAnimation(animation_target_text_back);
+
+            Animation animation_Scroll_Profile_edit_back = new TranslateAnimation(0, -10000, 0, 0);
+            animation_Scroll_Profile_edit_back.setDuration(animationDuration());
+            animation_Scroll_Profile_edit_back.setFillAfter(true);
+            scroll_Edit_Profile.startAnimation(animation_Scroll_Profile_edit_back);
+
+
+            animationDuration = 1500;
+//            profile_Start_Page(profile_title_edit, scroll_Profile, profile_Title, profile_Desc_Title, profile_Description, editProfile, genderIconMale, genderIconFemale);
+//            onClickEditProfile(profile_title_edit, scroll_Profile, profile_Title, profile_Desc_Title, profile_Description, genderIconMale, genderIconFemale, editProfile, backProfile, scroll_Edit_Profile, edit_profile_age, edit_age_text, edit_profile_height, edit_height_text, edit_profile_weight, edit_weight_text, edit_profile_gender, edit_gender_text, edit_profile_activity_level, edit_activity_level_text, edit_profile_goal, edit_goal_text, edit_profile_bmr, edit_bmr_text, edit_profile_target, edit_target_text);
+
+        });
+
+
+    }
+//
+//    private void onClickEditProfile(TextView profile_title_edit, ScrollView scroll_Profile, TextView profile_Title, TextView profile_Desc_Title, TextView profile_Description, ImageView genderIconMale, ImageView genderIconFemale, Button editProfile, Button backProfile, ScrollView scroll_Edit_Profile, EditText edit_profile_age, TextView edit_age_text, EditText edit_profile_height, TextView edit_height_text, EditText edit_profile_weight, TextView edit_weight_text, TextView edit_profile_gender, TextView edit_gender_text, TextView edit_profile_activity_level, TextView edit_activity_level_text, TextView edit_profile_goal, TextView edit_goal_text, TextView edit_profile_bmr, TextView edit_bmr_text, TextView edit_profile_target, TextView edit_target_text) {
+//
+//        editProfile.setOnClickListener(v -> {
+//            profile_Start_Page_fold(profile_title_edit, scroll_Profile, profile_Title, profile_Desc_Title, profile_Description, genderIconMale, genderIconFemale);
+//            animate_Button_edit(editProfile);
+//            animate_Button_back(backProfile);
+//            profile_Edit_start(profile_title_edit, scroll_Edit_Profile, edit_profile_age, edit_age_text, edit_profile_height, edit_height_text, edit_profile_weight, edit_weight_text, edit_profile_gender, edit_gender_text, edit_profile_activity_level, edit_activity_level_text, edit_profile_goal, edit_goal_text, edit_profile_bmr, edit_bmr_text, edit_profile_target, edit_target_text);
+//            gender_Image_Animation_start_page();
+//        });
+//
+//
+//
+//    }
+
+    private void profile_Edit_start(TextView profile_title_edit, ScrollView scroll_Edit_Profile, EditText edit_profile_age, TextView edit_age_text, EditText edit_profile_height, TextView edit_height_text, EditText edit_profile_weight, TextView edit_weight_text, TextView edit_profile_gender, TextView edit_gender_text, TextView edit_profile_activity_level, TextView edit_activity_level_text, TextView edit_profile_goal, TextView edit_goal_text, TextView edit_profile_bmr, TextView edit_bmr_text, TextView edit_profile_target, TextView edit_target_text) {
+        Animation animation_Profile_Edit = new TranslateAnimation(-10000, 0, 0, 0);
+        animation_Profile_Edit.setDuration(animationDuration());
+        animation_Profile_Edit.setFillAfter(true);
+        profile_title_edit.startAnimation(animation_Profile_Edit);
+
+        Animation animation_Scroll_Profile_edit = new TranslateAnimation(0, 0, 0, 0);
+        animation_Scroll_Profile_edit.setDuration(animationDuration());
+        animation_Scroll_Profile_edit.setFillAfter(true);
+        scroll_Edit_Profile.startAnimation(animation_Scroll_Profile_edit);
+
+        Animation animation_age_profile = new TranslateAnimation(0, 0, 10000, 0);
+        animation_age_profile.setDuration(animationDuration());
+        animation_age_profile.setFillAfter(true);
+        edit_profile_age.startAnimation(animation_age_profile);
+
+        Animation animation_age_text = new TranslateAnimation(0, 0, 10000, 0);
+        animation_age_text.setDuration(animationDuration());
+        animation_age_text.setFillAfter(true);
+        edit_age_text.startAnimation(animation_age_text);
+
+        Animation animation_height_profile = new TranslateAnimation(0, 0, 10000, 0);
+        animation_height_profile.setDuration(animationDuration());
+        animation_height_profile.setFillAfter(true);
+        edit_profile_height.startAnimation(animation_height_profile);
+
+        Animation animation_height_text = new TranslateAnimation(0, 0, 10000, 0);
+        animation_height_text.setDuration(animationDuration());
+        animation_height_text.setFillAfter(true);
+        edit_height_text.startAnimation(animation_height_text);
+
+        Animation animation_weight_profile = new TranslateAnimation(0, 0, 10000, 0);
+        animation_weight_profile.setDuration(animationDuration());
+        animation_weight_profile.setFillAfter(true);
+        edit_profile_weight.startAnimation(animation_weight_profile);
+
+        Animation animation_weight_text = new TranslateAnimation(0, 0, 10000, 0);
+        animation_weight_text.setDuration(animationDuration());
+        animation_weight_text.setFillAfter(true);
+        edit_weight_text.startAnimation(animation_weight_text);
+
+        Animation animation_gender_profile = new TranslateAnimation(0, 0, 10000, 0);
+        animation_gender_profile.setDuration(animationDuration());
+        animation_gender_profile.setFillAfter(true);
+        edit_profile_gender.startAnimation(animation_gender_profile);
+
+        Animation animation_gender_text = new TranslateAnimation(0, 0, 10000, 0);
+        animation_gender_text.setDuration(animationDuration());
+        animation_gender_text.setFillAfter(true);
+        edit_gender_text.startAnimation(animation_gender_text);
+
+        Animation animation_activity_level_profile = new TranslateAnimation(0, 0, 10000, 0);
+        animation_activity_level_profile.setDuration(animationDuration());
+        animation_activity_level_profile.setFillAfter(true);
+        edit_profile_activity_level.startAnimation(animation_activity_level_profile);
+
+        Animation animation_activity_level_text = new TranslateAnimation(0, 0, 10000, 0);
+        animation_activity_level_text.setDuration(animationDuration());
+        animation_activity_level_text.setFillAfter(true);
+        edit_activity_level_text.startAnimation(animation_activity_level_text);
+
+        Animation animation_goal_profile = new TranslateAnimation(0, 0, 10000, 0);
+        animation_goal_profile.setDuration(animationDuration());
+        animation_goal_profile.setFillAfter(true);
+        edit_profile_goal.startAnimation(animation_goal_profile);
+
+        Animation animation_goal_text = new TranslateAnimation(0, 0, 10000, 0);
+        animation_goal_text.setDuration(animationDuration());
+        animation_goal_text.setFillAfter(true);
+        edit_goal_text.startAnimation(animation_goal_text);
+
+        Animation animation_bmr_profile = new TranslateAnimation(0, 0, 10000, 0);
+        animation_bmr_profile.setDuration(animationDuration());
+        animation_bmr_profile.setFillAfter(true);
+        edit_profile_bmr.startAnimation(animation_bmr_profile);
+
+        Animation animation_bmr_text = new TranslateAnimation(0, 0, 10000, 0);
+        animation_bmr_text.setDuration(animationDuration());
+        animation_bmr_text.setFillAfter(true);
+        edit_bmr_text.startAnimation(animation_bmr_text);
+
+        Animation animation_target_profile = new TranslateAnimation(0, 0, 10000, 0);
+        animation_target_profile.setDuration(animationDuration());
+        animation_target_profile.setFillAfter(true);
+        edit_profile_target.startAnimation(animation_target_profile);
+
+        Animation animation_target_text = new TranslateAnimation(0, 0, 10000, 0);
+        animation_target_text.setDuration(animationDuration());
+        animation_target_text.setFillAfter(true);
+        edit_target_text.startAnimation(animation_target_text);
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void animate_Button_back(Button backProfile) {
+        animationDuration = 1500;
+        Animation animation_back_Profile = new TranslateAnimation(10000, 0, 0, 0);
+        animation_back_Profile.setDuration(animationDuration());
+        animation_back_Profile.setFillAfter(true);
+        backProfile.setText("Back");
+        backProfile.setBackgroundTintList(getResources().getColorStateList(R.color.teal_700));
+        backProfile.setVisibility(View.VISIBLE);
+        backProfile.startAnimation(animation_back_Profile);
+//        isEditing = false;
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void animate_Button_edit(Button editProfile) {
+        animationDuration = 1500;
+        Animation animation_Button_Edit_back = new TranslateAnimation(0, 10000, 0, 0);
+        animation_Button_Edit_back.setDuration(animationDuration());
+        animation_Button_Edit_back.setFillAfter(true);
+        editProfile.setText("Edit");
+        editProfile.setVisibility(View.VISIBLE);
+        editProfile.setBackgroundTintList(getResources().getColorStateList(R.color.purple_200));
+        editProfile.startAnimation(animation_Button_Edit_back);
+//        isEditing = true;
+    }
+
+    private void gender_Image_Animation_start_page() {
+        Animation animation_image_male_In = new TranslateAnimation(10000, -300, 0, 0);
+        Animation animation_image_female_In = new TranslateAnimation(10000, -300, 0, 0);
+
+        if (Objects.equals(myGender, "A Man")) {
+            animation_image_male_In.setDuration(1200);
+            animation_image_male_In.setFillAfter(true);
+            genderIconMaleEdit.startAnimation(animation_image_male_In);
+        } else {
+            animation_image_female_In.setDuration(1200);
+            animation_image_female_In.setFillAfter(true);
+            genderIconFemaleEdit.startAnimation(animation_image_female_In);
+        }
+    }
+
     private void animate_gender_icon() {
-        Animation animation_image_male_In = new TranslateAnimation(1000, -300, 0, 0);
-        Animation animation_image_male_Out = new TranslateAnimation(-300, -300, 0, -1000);
-        Animation animation_image_female_In = new TranslateAnimation(1000, -300, 0, 0);
-        Animation animation_image_female_Out = new TranslateAnimation(-300, -300, 0, -1000);
+        Animation animation_image_male_In = new TranslateAnimation(-300, -300, -10000, 0);
+        Animation animation_image_male_Out = new TranslateAnimation(-300, -300, 0, -10000);
+        Animation animation_image_female_In = new TranslateAnimation(-300, -300, -10000, 0);
+        Animation animation_image_female_Out = new TranslateAnimation(-300, -300, 0, -10000);
+
         if (Objects.equals(myGender, "A Man")) {
             animation_image_male_Out.setDuration(1200);
             animation_image_male_Out.setFillAfter(true);
@@ -609,4 +700,94 @@ public class ProfileFragment extends Fragment {
         userDataPut_Int("target", newTarget);
         return newTarget + "";
     }
+
+    private void profile_Start_Page(TextView profile_title_edit, ScrollView scroll_Profile, TextView profile_Title, TextView profile_Desc_Title, TextView profile_Description, Button editProfile, ImageView genderIconMale, ImageView genderIconFemale) {
+        animationDuration = 1500;
+        Animation animation_profile_edit = new TranslateAnimation(100000, 100000, 0, 0);
+        animation_profile_edit.setDuration(animationDuration());
+        animation_profile_edit.setFillAfter(true);
+        profile_title_edit.startAnimation(animation_profile_edit);
+
+        Animation animation_Scroll_Profile = new TranslateAnimation(0, 0, 100000, 0);
+        animation_Scroll_Profile.setDuration(animationDuration());
+        animation_Scroll_Profile.setFillAfter(true);
+        scroll_Profile.startAnimation(animation_Scroll_Profile);
+
+        Animation animation_Prof = new TranslateAnimation(-100000, 0, 0, 0);
+        animation_Prof.setDuration(animationDuration());
+        animation_Prof.setFillAfter(true);
+        profile_Title.startAnimation(animation_Prof);
+
+        Animation animation_Prof_title = new TranslateAnimation(0, 0, 100000, 0);
+        animation_Prof_title.setDuration(animationDuration());
+        animation_Prof_title.setFillAfter(true);
+        profile_Desc_Title.startAnimation(animation_Prof_title);
+
+        Animation animation_Prof_desc = new TranslateAnimation(0, 0, 100000, 0);
+        animation_Prof_desc.setDuration(animationDuration());
+        animation_Prof_desc.setFillAfter(true);
+        profile_Description.startAnimation(animation_Prof_desc);
+
+        Animation animation_Button_Edit = new TranslateAnimation(100000, 0, 0, 0);
+        animation_Button_Edit.setDuration(animationDuration());
+        animation_Button_Edit.setFillAfter(true);
+        editProfile.startAnimation(animation_Button_Edit);
+
+        Animation animation_image = new TranslateAnimation(0, -300, -10000, 0);
+        animation_image.setDuration(animationDuration());
+        animation_image.setFillAfter(true);
+
+        if (Objects.equals(myGender, "A Man")) {
+            genderIconMale.setVisibility(View.VISIBLE);
+            genderIconFemale.setVisibility(View.INVISIBLE);
+            genderIconMale.startAnimation(animation_image);
+        } else {
+            genderIconMale.setVisibility(View.INVISIBLE);
+            genderIconFemale.setVisibility(View.VISIBLE);
+            genderIconFemale.startAnimation(animation_image);
+        }
+    }
+
+    private void profile_Start_Page_fold(TextView profile_title_edit, ScrollView scrollProfile, TextView profileTitle, TextView profile_Desc_Title, TextView profile_Description, ImageView genderIconMale, ImageView genderIconFemale) {
+        animationDuration = 1500;
+        Animation animation_image_back = new TranslateAnimation(-300, 0, 0, -10000);
+        animation_image_back.setDuration(animationDuration());
+        animation_image_back.setFillAfter(true);
+
+        Animation animation_profile_edit = new TranslateAnimation(100000, 0, 0, 0);
+        animation_profile_edit.setDuration(animationDuration());
+        animation_profile_edit.setFillAfter(true);
+        profile_title_edit.startAnimation(animation_profile_edit);
+
+        Animation animation_Prof_back = new TranslateAnimation(0, -10000, 0, 0);
+        animation_Prof_back.setDuration(animationDuration());
+        animation_Prof_back.setFillAfter(true);
+        profileTitle.startAnimation(animation_Prof_back);
+
+        Animation animation_Prof_desc_back = new TranslateAnimation(0, 0, 0, 10000);
+        animation_Prof_desc_back.setDuration(animationDuration());
+        animation_Prof_desc_back.setFillAfter(true);
+        profile_Description.startAnimation(animation_Prof_desc_back);
+
+        Animation animation_Prof_title_back = new TranslateAnimation(0, 0, 0, 10000);
+        animation_Prof_title_back.setDuration(animationDuration());
+        animation_Prof_title_back.setFillAfter(true);
+        profile_Desc_Title.startAnimation(animation_Prof_title_back);
+
+        Animation animation_Scroll_Profile_back = new TranslateAnimation(0, 0, 0, 10000);
+        animation_Scroll_Profile_back.setDuration(animationDuration());
+        animation_Scroll_Profile_back.setFillAfter(true);
+        scrollProfile.startAnimation(animation_Scroll_Profile_back);
+
+        if (Objects.equals(myGender, "A Man")) {
+            genderIconMale.setVisibility(View.VISIBLE);
+            genderIconFemale.setVisibility(View.INVISIBLE);
+            genderIconMale.startAnimation(animation_image_back);
+        } else {
+            genderIconMale.setVisibility(View.INVISIBLE);
+            genderIconFemale.setVisibility(View.VISIBLE);
+            genderIconFemale.startAnimation(animation_image_back);
+        }
+    }
+
 }
