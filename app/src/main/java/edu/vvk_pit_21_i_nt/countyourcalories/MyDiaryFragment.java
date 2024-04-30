@@ -6,14 +6,17 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -70,6 +73,20 @@ public class MyDiaryFragment extends Fragment {
     private List<ImageView> waterCups;
     TextView Diena7;
 
+    public int setOrNot = 0;
+
+    TextView editTextText ;
+
+    private boolean timerRunning;
+
+
+
+    private CountDownTimer countDownTimer;
+    private long totalTimeInMillis = 16 * 60 * 60 * 1000;
+
+    private long timeLeftInMillis = totalTimeInMillis;
+
+
     public MyDiaryFragment() {
         // Required empty public constructor
     }
@@ -106,8 +123,7 @@ public class MyDiaryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //mDatabase = FirebaseDatabase.getInstance().getReference("Users/" + ((MenuActivity) requireActivity()).user.getUid());
-        //getUserData();
+
         View view = inflater.inflate(R.layout.fragment_my_diary, container, false);
         TextView textView2 = (TextView) view.findViewById(R.id.textView2);
         String timeOfDay = TimeOfDayDeterminer();
@@ -127,6 +143,13 @@ public class MyDiaryFragment extends Fragment {
         TextView Diena15 = (TextView)  view.findViewById(R.id.textView15);
         TextView Diena16 = (TextView)  view.findViewById(R.id.textView16);
         TextView Diena17 = (TextView)  view.findViewById(R.id.textView17);
+        ImageButton imgbtn = (ImageButton) view.findViewById(R.id.imageButton);
+        ImageButton imgbtn2 = (ImageButton) view.findViewById(R.id.imageButton2);
+        CardView crd3 = (CardView) view.findViewById(R.id.cardView3);
+        CardView crd2 = (CardView) view.findViewById(R.id.cardView2);
+        CardView crd5 = (CardView) view.findViewById(R.id.cardView5);
+        TextView textView36 = (TextView) view.findViewById(R.id.textView36);
+        editTextText = (TextView) view.findViewById(R.id.editTextText);
         int[] days = getLastSevenDaysOfMonth();
         Diena1.setText(Integer.toString(days[6]));
         Diena2.setText(Integer.toString(days[5]));
@@ -189,9 +212,112 @@ public class MyDiaryFragment extends Fragment {
         else {
             showHistory(Diena7);
         }
+
+        textView36.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (setOrNot == 0) {
+                    textView36.setText("In Progress..");
+                    textView36.setBackgroundResource(R.drawable.edittext_yellow);
+                    crd2.setCardBackgroundColor(getResources().getColor(R.color.yellow_light));
+                    editTextText.setVisibility(View.VISIBLE);
+                    editTextText.setBackgroundResource(R.drawable.edittext_yellow);
+                    startTimer(editTextText);
+                    editTextText.setVisibility(View.VISIBLE);
+                    setOrNot++;
+                }
+            }
+        });
+
+        imgbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imgbtn.setImageResource(R.drawable.add_complete);
+                imgbtn.setBackgroundResource(R.drawable.edittext_complete);
+                crd3.setCardBackgroundColor(getResources().getColor(R.color.UI_complete));
+
+            }
+        });
+
+        imgbtn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imgbtn2.setImageResource(R.drawable.add_complete);
+                imgbtn2.setBackgroundResource(R.drawable.edittext_complete);
+                crd5.setCardBackgroundColor(getResources().getColor(R.color.UI_complete));
+            }
+        });
+
         return view;
 
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (timerRunning) {
+            startTimer(editTextText);
+            editTextText.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            timerRunning = false;
+        }
+    }
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong("TimeLeftInMillis", timeLeftInMillis);
+        outState.putBoolean("TimerRunning", timerRunning);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            timeLeftInMillis = savedInstanceState.getLong("TimeLeftInMillis", totalTimeInMillis);
+            timerRunning = savedInstanceState.getBoolean("TimerRunning", false);
+            if (timerRunning) {
+                startTimer(editTextText);
+            }
+        }
+    }
+
+
+    private void startTimer(TextView data) {
+
+        countDownTimer = new CountDownTimer(totalTimeInMillis, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                timeLeftInMillis =  millisUntilFinished;
+                updateTimerText(millisUntilFinished,data);
+            }
+
+
+            @Override
+            public void onFinish() {
+                timerRunning = false;
+                data.setText("00:00:00");
+            }
+
+        }.start();
+
+        timerRunning = true;
+    }
+
+    private void updateTimerText(long millisUntilFinished, TextView og) {
+        int hours = (int) (millisUntilFinished / 1000) / 3600;
+        int minutes = (int) ((millisUntilFinished / 1000) % 3600) / 60;
+        int seconds = (int) (millisUntilFinished / 1000) % 60;
+
+        String timeLeftFormatted = String.format("%02d:%02d:%02d", hours, minutes, seconds);
+        og.setText(timeLeftFormatted);
+    }
+
 
 
     protected void showHistory(TextView txt) {
