@@ -826,7 +826,8 @@
                 android:layout_marginStart="-3dp"
                 android:layout_height="40dp"
                 android:rotation="-25"
-                android:src="@drawable/pppp" />
+
+                android:src="@drawable/image" />
 
             <TextView
                 android:id="@+id/textView68"
@@ -834,7 +835,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
                 android:textSize="20dp"
-                android:textColor="@color/black"
+                android:textColor="@color/UI_dark"
                 android:fontFamily="@font/kalambold"
                 android:layout_marginStart="34dp"
                 android:text="Click!" />

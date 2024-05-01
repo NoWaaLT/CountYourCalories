@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -41,10 +42,8 @@ public class MenuActivity extends AppCompatActivity {
 
     private MyDiaryFragment myDiaryFragment;
     private MealPlansFragment mealPlansFragment;
-    private AddFoodFragment addFoodFragment;
     private RecipesFragment recipesFragment;
     public static ProfileFragment profileFragment;
-
     private DatabaseFoodAdd databaseFoodAdd;
 
     @SuppressLint("NonConstantResourceId")
@@ -66,7 +65,6 @@ public class MenuActivity extends AppCompatActivity {
         FragmentManager managerOG = getSupportFragmentManager();
         myDiaryFragment = new MyDiaryFragment();
         mealPlansFragment = new MealPlansFragment();
-        addFoodFragment = new AddFoodFragment();
         recipesFragment = new RecipesFragment();
 //        profileFragment = new ProfileFragment();
         databaseFoodAdd = new DatabaseFoodAdd();
@@ -85,7 +83,7 @@ public class MenuActivity extends AppCompatActivity {
                 selectedFragment = mealPlansFragment;
 
             } else if (item.getItemId() == R.id.add_food) {
-                selectedFragment = addFoodFragment;
+                selectedFragment = databaseFoodAdd;
 
             } else if (item.getItemId() == R.id.recipes) {
                 selectedFragment = recipesFragment;
