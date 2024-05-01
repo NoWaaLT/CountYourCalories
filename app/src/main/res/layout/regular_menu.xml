@@ -568,6 +568,18 @@
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
+            <ImageView
+                android:id="@+id/imageView15"
+                android:layout_width="400dp"
+                android:layout_height="300dp"
+                android:layout_marginLeft="-10dp"
+                android:layout_marginTop="-30dp"
+                android:alpha="0.15"
+                android:src="@drawable/pngfinl"
+                app:tint="@color/Microsoft_blue">
+            </ImageView>
+
+
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
@@ -575,7 +587,6 @@
             android:layout_width="match_parent"
             android:layout_height="115dp"
             android:layout_marginTop="15dp"
-
             app:cardBackgroundColor="#E1F6FF"
             app:cardCornerRadius="20dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -617,6 +628,17 @@
                 android:layout_marginTop="35dp"
                 android:text="Unlock the power of intermittent fasting to lose weight and improve metabolism."
                 android:textSize="16dp" />
+
+            <ImageView
+                android:id="@+id/imageView20"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="-50dp"
+                android:layout_marginStart="240dp"
+                android:alpha="0.7"
+                android:src="@drawable/bubbles"
+                app:tint="@color/white" />
+
 
         </androidx.cardview.widget.CardView>
 
@@ -968,5 +990,6 @@
         android:id="@+id/konfettiView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 </FrameLayout>
 
