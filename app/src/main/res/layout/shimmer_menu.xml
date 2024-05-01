@@ -25,7 +25,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="My Diary "
-            android:background="#DDDDDD"
+            android:background="@drawable/shimmer_bg"
 
             android:textColor="#DDDDDD"
             android:textSize="28sp"
@@ -40,7 +40,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginBottom="16dp"
             android:text="Good Morning!"
-            android:background="#DDDDDD"
+            android:background="@drawable/shimmer_bg"
             android:textColor="#DDDDDD"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -107,7 +107,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView19"/>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView2"
+            android:id="@+id/cardView2shimmer"
             android:layout_width="match_parent"
             android:layout_height="115dp"
             android:layout_marginTop="15dp"
@@ -133,7 +133,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView3"
+            android:id="@+id/cardView3shimmer"
             android:layout_width="170dp"
             android:layout_height="50dp"
             android:layout_marginTop="16dp"
@@ -143,7 +143,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView2">
+            app:layout_constraintTop_toBottomOf="@+id/cardView2shimmer">
 
             <TextView
                 android:id="@+id/textView38"
@@ -173,7 +173,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView5"
+            android:id="@+id/cardView5shimmer"
             android:layout_width="170dp"
             android:layout_height="50dp"
             android:layout_marginTop="16dp"
@@ -181,7 +181,7 @@
             app:cardBackgroundColor="#DDDDDD"
             app:cardCornerRadius="20dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView2">
+            app:layout_constraintTop_toBottomOf="@+id/cardView2shimmer">
 
             <TextView
                 android:id="@+id/textView41"
@@ -218,7 +218,7 @@
             app:cardCornerRadius="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView3">
+            app:layout_constraintTop_toBottomOf="@+id/cardView3shimmer">
 
 
 
