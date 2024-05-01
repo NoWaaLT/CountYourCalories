@@ -2,6 +2,7 @@ package edu.vvk_pit_21_i_nt.countyourcalories;
 
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -79,6 +80,8 @@ public class MyDiaryFragment extends Fragment {
 
     private boolean timerRunning;
 
+    public int cupNumber = 0;
+
 
 
     private CountDownTimer countDownTimer;
@@ -148,6 +151,7 @@ public class MyDiaryFragment extends Fragment {
         CardView crd3 = (CardView) view.findViewById(R.id.cardView3);
         CardView crd2 = (CardView) view.findViewById(R.id.cardView2);
         CardView crd5 = (CardView) view.findViewById(R.id.cardView5);
+        CardView waterCard = (CardView) view.findViewById(R.id.waterCard) ;
         TextView textView36 = (TextView) view.findViewById(R.id.textView36);
         editTextText = (TextView) view.findViewById(R.id.editTextText);
         int[] days = getLastSevenDaysOfMonth();
@@ -193,12 +197,14 @@ public class MyDiaryFragment extends Fragment {
         listOfDays.add(Diena5);
         listOfDays.add(Diena6);
         listOfDays.add(Diena7);
+        ImageButton cup0 = view.findViewById(R.id.imageButton4);
         ImageView cup1 = view.findViewById(R.id.imageView);
         ImageView cup2 = view.findViewById(R.id.imageView2);
         ImageView cup3 = view.findViewById(R.id.imageView3);
         ImageView cup4 = view.findViewById(R.id.imageView4);
         ImageView cup5 = view.findViewById(R.id.imageView5);
         ImageView cup6 = view.findViewById(R.id.imageView6);
+        waterCups.add(cup0);
         waterCups.add(cup1);
         waterCups.add(cup2);
         waterCups.add(cup3);
@@ -212,6 +218,28 @@ public class MyDiaryFragment extends Fragment {
         else {
             showHistory(Diena7);
         }
+
+        cup0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(cupNumber <= 6){
+                waterCups.get(cupNumber).setImageResource(R.drawable.water_cup_blue);
+                cupNumber++;}
+            }
+        });
+
+        GradientDrawable gradientDrawable = new GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM,
+                new int[] {0xFFE1F6FF,0xE7F7FFFF});
+
+        gradientDrawable.setShape(GradientDrawable.RECTANGLE);
+        float topLeftCornerRadius = getResources().getDisplayMetrics().density * 20; // Convert 20% to pixels
+        float topRightCornerRadius = getResources().getDisplayMetrics().density * 20; // Convert 20% to pixels
+        float bottomRightCornerRadius = 0;
+        float bottomLeftCornerRadius = 0;
+        gradientDrawable.setCornerRadii(new float[] {topLeftCornerRadius, topLeftCornerRadius, topRightCornerRadius, topRightCornerRadius, bottomRightCornerRadius, bottomRightCornerRadius, bottomLeftCornerRadius, bottomLeftCornerRadius});
+        waterCard.setBackground(gradientDrawable);
 
         textView36.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -357,7 +385,7 @@ public class MyDiaryFragment extends Fragment {
         int targetProtein = calcTargetProtein(goal, target);
         int targetFat = calcTargetFat(goal, target);
         int targetWater = calcTargetWater(gender, weight);
-        String waterTargetText = String.format(Locale.UK, "/ %d ml", targetWater);
+        String waterTargetText = String.format(Locale.UK, " /%d ml", targetWater);
         waterTarget.setText(waterTargetText);
         if (uh != null) {
             String carboText = String.format(Locale.UK,"%d/%d g", uh.getCarbo(), targetCarbo);
@@ -454,6 +482,7 @@ public class MyDiaryFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 showHistory(day);
+                cupNumber = 0;
                 day.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.edittext_dark));
                 for (TextView txt : listOfDays) {
                     if (txt.getId() != day.getId()) {

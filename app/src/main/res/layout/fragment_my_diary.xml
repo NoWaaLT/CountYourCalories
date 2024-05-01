@@ -706,6 +706,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/waterCard"
             android:layout_width="match_parent"
             android:layout_height="140dp"
             android:layout_marginTop="15dp"
@@ -713,56 +714,32 @@
             app:cardCornerRadius="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView3" >
+            app:layout_constraintTop_toBottomOf="@+id/cardView3">
 
             <TextView
                 android:id="@+id/textView44"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Water Tracker"
-                android:layout_marginTop="13dp"
-                android:textColor="@color/black"
                 android:layout_marginLeft="15dp"
-                android:textStyle="bold"
-                android:drawableStart="@drawable/baseline_water_drop_24"
-                android:textSize="20dp"/>
-
-            <TextView
-                android:id="@+id/textView46"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="190dp"
-                android:layout_marginTop="20dp"
-                android:text="Goal: "
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView48"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="245dp"
-                android:layout_marginTop="20dp"
-                android:text="/2500 ml"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <ImageButton
-                android:id="@+id/imageButton3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="13dp"
-                android:layout_marginLeft="340dp"
-                android:background="#55FFFFFF"
-                android:src="@drawable/baseline_settings_suggest_24" />
+                android:drawableStart="@drawable/baseline_water_drop_24"
+                android:text="Water Tracker"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+
+
 
             <ImageButton
                 android:id="@+id/imageButton4"
                 android:layout_width="35dp"
                 android:layout_height="65dp"
                 android:layout_marginLeft="20dp"
-                android:background="#E1F6FF"
                 android:layout_marginTop="60dp"
+                android:background="#0000ffff"
+                android:foregroundTint="@color/white"
+                android:foregroundTintMode="src_over"
                 android:src="@drawable/water_cup" />
 
             <ImageView
@@ -770,8 +747,8 @@
                 android:layout_width="35dp"
                 android:layout_height="65dp"
                 android:layout_marginLeft="70dp"
-                android:background="#E1F6FF"
                 android:layout_marginTop="60dp"
+                android:background="#0000ffff"
                 android:src="@drawable/water_cup" />
 
             <ImageView
@@ -779,8 +756,8 @@
                 android:layout_width="35dp"
                 android:layout_height="65dp"
                 android:layout_marginLeft="120dp"
-                android:background="#E1F6FF"
                 android:layout_marginTop="60dp"
+                android:background="#0000ffff"
                 android:src="@drawable/water_cup" />
 
             <ImageView
@@ -788,8 +765,8 @@
                 android:layout_width="35dp"
                 android:layout_height="65dp"
                 android:layout_marginLeft="170dp"
-                android:background="#E1F6FF"
                 android:layout_marginTop="60dp"
+                android:background="#0000ffff"
                 android:src="@drawable/water_cup" />
 
             <ImageView
@@ -797,8 +774,8 @@
                 android:layout_width="35dp"
                 android:layout_height="65dp"
                 android:layout_marginLeft="220dp"
-                android:background="#E1F6FF"
                 android:layout_marginTop="60dp"
+                android:background="#0000ffff"
                 android:src="@drawable/water_cup" />
 
             <ImageView
@@ -806,8 +783,8 @@
                 android:layout_width="35dp"
                 android:layout_height="65dp"
                 android:layout_marginLeft="270dp"
-                android:background="#E1F6FF"
                 android:layout_marginTop="60dp"
+                android:background="#0000ffff"
                 android:src="@drawable/water_cup" />
 
             <ImageView
@@ -815,16 +792,16 @@
                 android:layout_width="35dp"
                 android:layout_height="65dp"
                 android:layout_marginLeft="320dp"
-                android:background="#E1F6FF"
                 android:layout_marginTop="60dp"
+                android:background="#0000ffff"
                 android:src="@drawable/water_cup" />
 
             <ImageView
                 android:id="@+id/imageView16"
                 android:layout_width="40dp"
-                android:layout_marginTop="45dp"
-                android:layout_marginStart="-3dp"
                 android:layout_height="40dp"
+                android:layout_marginStart="-3dp"
+                android:layout_marginTop="45dp"
                 android:rotation="-25"
 
                 android:src="@drawable/image" />
@@ -833,12 +810,49 @@
                 android:id="@+id/textView68"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="35dp"
-                android:textSize="20dp"
-                android:textColor="@color/UI_dark"
-                android:fontFamily="@font/kalambold"
                 android:layout_marginStart="34dp"
-                android:text="Click!" />
+                android:layout_marginTop="35dp"
+                android:fontFamily="@font/kalambold"
+                android:text="Click!"
+                android:textColor="@color/UI_dark"
+                android:textSize="20dp" />
+
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView48"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" /0ml"
+                    android:textSize="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/textView46"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.168" />
+
+                <TextView
+                    android:id="@+id/textView46"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/UI_dark"
+                    android:textSize="28dp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.639"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.156" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </androidx.cardview.widget.CardView>
@@ -924,9 +938,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
