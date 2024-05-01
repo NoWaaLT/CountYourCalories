@@ -19,9 +19,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -89,6 +91,9 @@ public class MyDiaryFragment extends Fragment {
 
     private long timeLeftInMillis = totalTimeInMillis;
 
+    ShimmerFrameLayout shimmerFrameLayout;
+    LinearLayout datalayout;
+
 
     public MyDiaryFragment() {
         // Required empty public constructor
@@ -127,10 +132,24 @@ public class MyDiaryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
         View view = inflater.inflate(R.layout.fragment_my_diary, container, false);
         TextView textView2 = (TextView) view.findViewById(R.id.textView2);
         String timeOfDay = TimeOfDayDeterminer();
         textView2.setText("Good " + timeOfDay + "!");
+
+        shimmerFrameLayout = view.findViewById(R.id.shimmer_view);
+        datalayout = view.findViewById(R.id.data_view);
+
+        datalayout.setVisibility(View.INVISIBLE);
+        shimmerFrameLayout.startShimmer();
+        Handler shimmerHandler = new Handler();
+        shimmerHandler.postDelayed(()->{
+            datalayout.setVisibility(View.VISIBLE);
+            shimmerFrameLayout.stopShimmer();
+            shimmerFrameLayout.setVisibility(View.INVISIBLE);
+        },3000);
+
 
         TextView Diena1 = (TextView)  view.findViewById(R.id.textView10);
         TextView Diena2 = (TextView)  view.findViewById(R.id.textView21);
