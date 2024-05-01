@@ -11,7 +11,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp"
 
@@ -47,35 +47,52 @@
             app:layout_constraintTop_toBottomOf="@+id/textView"
             app:layout_constraintVertical_bias="0.0" />
 
-        <TextView
-            android:id="@+id/editTextText"
-            android:layout_width="110dp"
-            android:layout_height="0dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="23dp"
-            android:background="@drawable/edittext_bg"
-            android:drawableStart="@drawable/baseline_timer_24"
-            android:drawablePadding="8dp"
-            android:ems="10"
-            android:gravity=""
-            android:padding="10dp"
-            android:text="FASTING"
-            android:textColor="@color/UI_dark"
-            android:textColorHint="@color/UI_dark"
-            android:visibility="invisible"
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:layout_width="250dp"
+            android:layout_height="70dp"
+            android:layout_marginBottom="10dp"
             app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
             app:layout_constraintEnd_toEndOf="parent"
+            app:shimmer_base_alpha="0.8"
+            app:shimmer_highlight_alpha="0.4"
+            app:shimmer_duration="1200"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="1.0" >
+
+            <TextView
+                android:id="@+id/editTextText"
+                android:layout_width="110dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="138dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="23dp"
+                android:background="@drawable/edittext_bg"
+                android:drawableStart="@drawable/baseline_timer_24"
+                android:drawablePadding="8dp"
+                android:ems="10"
+                android:gravity=""
+                android:padding="10dp"
+                android:text="FASTING"
+                android:textColor="@color/UI_dark"
+                android:textColorHint="@color/UI_dark"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="0dp"
             android:layout_height="70dp"
-            android:layout_marginStart="0dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/edittext_bg"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -931,7 +948,6 @@
             android:id="@+id/imageView17"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:layout_marginTop="0dp"
             android:alpha="0.5"
             android:src="@drawable/smaller"
             app:layout_constraintEnd_toEndOf="parent"
