@@ -254,7 +254,7 @@ public class MyDiaryFragment extends Fragment {
         });
 
         konfettiView = view.findViewById(R.id.konfettiView);
-        EmitterConfig emitterConfig = new Emitter(2L, TimeUnit.SECONDS).perSecond(100);
+        EmitterConfig emitterConfig = new Emitter(3L, TimeUnit.SECONDS).perSecond(100);
 
         Party party =
                 new PartyFactory(emitterConfig)
@@ -262,7 +262,7 @@ public class MyDiaryFragment extends Fragment {
                            .spread(360)
                             .sizes(new Size(8, 4f, 0.2f))
                            .setSpeedBetween(20f, 25f)
-                           .timeToLive(2500L)
+                           .timeToLive(3000L)
                           .position(540,-100)
                         .build();
 
