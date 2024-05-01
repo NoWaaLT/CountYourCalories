@@ -34,7 +34,7 @@ public class ProfileFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    public static boolean isEditing;
+    public static boolean isEditing = false;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -180,28 +180,32 @@ public class ProfileFragment extends Fragment {
 
         profile_Start_Page(profile_title_edit, scroll_Profile, profile_Title, profile_Desc_Title, profile_Description, editProfile, genderIconMale, genderIconFemale);
 
-//        onClickEditProfile(profile_title_edit, scroll_Profile, profile_Title, profile_Desc_Title, profile_Description, genderIconMale, genderIconFemale, editProfile, backProfile, scroll_Edit_Profile, edit_profile_age, edit_age_text, edit_profile_height, edit_height_text, edit_profile_weight, edit_weight_text, edit_profile_gender, edit_gender_text, edit_profile_activity_level, edit_activity_level_text, edit_profile_goal, edit_goal_text, edit_profile_bmr, edit_bmr_text, edit_profile_target, edit_target_text);
-
-        editProfile.setOnClickListener(v -> {
-            profile_Start_Page_fold(profile_title_edit, scroll_Profile, profile_Title, profile_Desc_Title, profile_Description, genderIconMale, genderIconFemale);
-            animate_Button_edit(editProfile);
-            animate_Button_back(backProfile);
-            profile_Edit_start(profile_title_edit, scroll_Edit_Profile, edit_profile_age, edit_age_text, edit_profile_height, edit_height_text, edit_profile_weight, edit_weight_text, edit_profile_gender, edit_gender_text, edit_profile_activity_level, edit_activity_level_text, edit_profile_goal, edit_goal_text, edit_profile_bmr, edit_bmr_text, edit_profile_target, edit_target_text);
-            gender_Image_Animation_start_page();
-        });
-
-
+        onClickEditProfile(profile_title_edit, scroll_Profile, profile_Title, profile_Desc_Title, profile_Description, genderIconMale, genderIconFemale, editProfile, backProfile, scroll_Edit_Profile, edit_profile_age, edit_age_text, edit_profile_height, edit_height_text, edit_profile_weight, edit_weight_text, edit_profile_gender, edit_gender_text, edit_profile_activity_level, edit_activity_level_text, edit_profile_goal, edit_goal_text, edit_profile_bmr, edit_bmr_text, edit_profile_target, edit_target_text);
         onClickBackProfile(backProfile, profile_title_edit, scroll_Edit_Profile, edit_profile_age, edit_age_text, edit_profile_height, edit_height_text, edit_profile_weight, edit_weight_text, edit_profile_gender, edit_gender_text, edit_profile_activity_level, edit_activity_level_text, edit_profile_goal, edit_goal_text, edit_profile_bmr, edit_bmr_text, edit_profile_target, edit_target_text);
 
+        editGenderDescription(edit_gender_text, edit_profile_gender);
+        editActivityDescription(edit_profile_activity_level, edit_activity_level_text);
+        editAge(edit_profile_age, edit_age_text, edit_profile_bmr, edit_profile_target);
+        editHeight(edit_profile_height, edit_height_text, edit_profile_bmr, edit_profile_target);
+        editWeight(edit_profile_weight, edit_weight_text, edit_profile_bmr, edit_profile_target);
+        editGender(edit_profile_gender, edit_profile_bmr, edit_profile_target);
+        editActivityLevel(edit_profile_activity_level, edit_profile_target);
+        calcGoal(edit_profile_goal, edit_profile_target);
+        calcTarget(edit_profile_target);
 
+        return view;
+    }
 
+    private void editGenderDescription(TextView edit_gender_text, TextView edit_profile_gender) {
         edit_gender_text.setText("Edit Gender");
         if (Objects.equals(myGender, genders[0])) {
             edit_profile_gender.setText(genderName[0]);
         } else {
             edit_profile_gender.setText(genderName[1]);
         }
+    }
 
+    private void editActivityDescription(TextView edit_activity_level_text, TextView edit_profile_activity_level) {
         edit_activity_level_text.setText("Edit Activity Level");
         edit_profile_activity_level.setText("" + myActivityLevel);
         for (int i = 0; i < myActivityLevels.length; i++) {
@@ -209,7 +213,9 @@ public class ProfileFragment extends Fragment {
                 edit_profile_activity_level.setText(myActivityLevelDescription[i]);
             }
         }
+    }
 
+    private void editAge(EditText edit_profile_age, TextView edit_age_text, TextView edit_profile_bmr, TextView edit_profile_target) {
         edit_profile_age.setOnClickListener(v -> {
             edit_age_text.setText("Edit Age");
             String content = edit_profile_age.getText().toString();
@@ -229,7 +235,9 @@ public class ProfileFragment extends Fragment {
             }
             edit_profile_age.setSelection(edit_profile_age.getText().length());
         });
+    }
 
+    private void editHeight(EditText edit_profile_height, TextView edit_height_text, TextView edit_profile_bmr, TextView edit_profile_target) {
         edit_profile_height.setOnClickListener(v -> {
             edit_height_text.setText("Edit Height (cm)");
             String content = edit_profile_height.getText().toString();
@@ -249,7 +257,9 @@ public class ProfileFragment extends Fragment {
             }
             edit_profile_height.setSelection(edit_profile_height.getText().length());
         });
+    }
 
+    private void editWeight(EditText edit_profile_weight, TextView edit_weight_text, TextView edit_profile_bmr, TextView edit_profile_target) {
         edit_profile_weight.setOnClickListener(v -> {
             edit_weight_text.setText("Edit Weight (kg)");
             String content = edit_profile_weight.getText().toString();
@@ -269,12 +279,12 @@ public class ProfileFragment extends Fragment {
             }
             edit_profile_weight.setSelection(edit_profile_weight.getText().length());
         });
+    }
 
+    private void editGender(TextView edit_profile_gender, TextView edit_profile_bmr, TextView edit_profile_target) {
         edit_profile_gender.setOnClickListener(v -> {
             edit_profile_bmr.setText(calcNewBmr());
-
             animate_gender_icon();
-
             if (newBmr != myBmr) {
                 userDataPut_Float("bmr", newBmr);
                 edit_profile_target.setText(calcNewTarget());
@@ -290,7 +300,9 @@ public class ProfileFragment extends Fragment {
                 edit_profile_bmr.setText(calcNewBmr());
             }
         });
+    }
 
+    private void editActivityLevel(TextView edit_profile_activity_level, TextView edit_profile_target) {
         edit_profile_activity_level.setOnClickListener(v -> {
             edit_profile_target.setText(calcNewTarget());
             for (int i = 0; i < myActivityLevels.length; i++) {
@@ -307,7 +319,9 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
+    }
 
+    private void calcGoal(TextView edit_profile_goal, TextView edit_profile_target) {
         edit_profile_goal.setOnClickListener(v -> {
             for (int i = 0; i < myGoalDescription.length; i++) {
                 if (Objects.equals(gal_Description(), myGoalDescription[i])) {
@@ -326,7 +340,9 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
+    }
 
+    private void calcTarget(TextView edit_profile_target) {
         edit_profile_target.setOnClickListener(v -> {
             for (int i = 0; i < myDifference.length; i++) {
                 if (myTarget == myBmr * myActivityLevel + myDifference[i]) {
@@ -345,26 +361,11 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
-        return view;
     }
 
-    private void onClickBackProfile(Button backProfile , TextView profile_title_edit, ScrollView scroll_Edit_Profile, EditText edit_profile_age, TextView edit_age_text, EditText edit_profile_height, TextView edit_height_text, EditText edit_profile_weight, TextView edit_weight_text, TextView edit_profile_gender, TextView edit_gender_text, TextView edit_profile_activity_level, TextView edit_activity_level_text, TextView edit_profile_goal, TextView edit_goal_text, TextView edit_profile_bmr, TextView edit_bmr_text, TextView edit_profile_target, TextView edit_target_text) {
+    private void onClickBackProfile(Button backProfile, TextView profile_title_edit, ScrollView scroll_Edit_Profile, EditText edit_profile_age, TextView edit_age_text, EditText edit_profile_height, TextView edit_height_text, EditText edit_profile_weight, TextView edit_weight_text, TextView edit_profile_gender, TextView edit_gender_text, TextView edit_profile_activity_level, TextView edit_activity_level_text, TextView edit_profile_goal, TextView edit_goal_text, TextView edit_profile_bmr, TextView edit_bmr_text, TextView edit_profile_target, TextView edit_target_text) {
         backProfile.setOnClickListener(v -> {
-
-            animationDuration = 1500;
-            Animation animation_image_male_Out = new TranslateAnimation(-300, -300, 0, -10000);
-            Animation animation_image_female_Out = new TranslateAnimation(-300, -300, 0, -10000);
-            if (Objects.equals(myGender, "A Man")) {
-                animation_image_male_Out.setDuration(1200);
-                animation_image_male_Out.setFillAfter(true);
-                genderIconMaleEdit.startAnimation(animation_image_male_Out);
-
-            } else {
-                animation_image_female_Out.setDuration(1200);
-                animation_image_female_Out.setFillAfter(true);
-                genderIconFemaleEdit.startAnimation(animation_image_female_Out);
-            }
-
+            imageAnimationOut();
             Animation animation_back_Profile = new TranslateAnimation(0, 10000, 0, 0);
             animation_back_Profile.setDuration(animationDuration());
             animation_back_Profile.setFillAfter(true);
@@ -462,32 +463,39 @@ public class ProfileFragment extends Fragment {
             animation_Scroll_Profile_edit_back.setDuration(animationDuration());
             animation_Scroll_Profile_edit_back.setFillAfter(true);
             scroll_Edit_Profile.startAnimation(animation_Scroll_Profile_edit_back);
-
-
-            animationDuration = 1500;
-//            profile_Start_Page(profile_title_edit, scroll_Profile, profile_Title, profile_Desc_Title, profile_Description, editProfile, genderIconMale, genderIconFemale);
-//            onClickEditProfile(profile_title_edit, scroll_Profile, profile_Title, profile_Desc_Title, profile_Description, genderIconMale, genderIconFemale, editProfile, backProfile, scroll_Edit_Profile, edit_profile_age, edit_age_text, edit_profile_height, edit_height_text, edit_profile_weight, edit_weight_text, edit_profile_gender, edit_gender_text, edit_profile_activity_level, edit_activity_level_text, edit_profile_goal, edit_goal_text, edit_profile_bmr, edit_bmr_text, edit_profile_target, edit_target_text);
-
+            isEditing = false;
+//            MenuActivity.profileFragment = new ProfileFragment();
         });
-
-
     }
-//
-//    private void onClickEditProfile(TextView profile_title_edit, ScrollView scroll_Profile, TextView profile_Title, TextView profile_Desc_Title, TextView profile_Description, ImageView genderIconMale, ImageView genderIconFemale, Button editProfile, Button backProfile, ScrollView scroll_Edit_Profile, EditText edit_profile_age, TextView edit_age_text, EditText edit_profile_height, TextView edit_height_text, EditText edit_profile_weight, TextView edit_weight_text, TextView edit_profile_gender, TextView edit_gender_text, TextView edit_profile_activity_level, TextView edit_activity_level_text, TextView edit_profile_goal, TextView edit_goal_text, TextView edit_profile_bmr, TextView edit_bmr_text, TextView edit_profile_target, TextView edit_target_text) {
-//
-//        editProfile.setOnClickListener(v -> {
-//            profile_Start_Page_fold(profile_title_edit, scroll_Profile, profile_Title, profile_Desc_Title, profile_Description, genderIconMale, genderIconFemale);
-//            animate_Button_edit(editProfile);
+
+    private void imageAnimationOut() {
+        animationDuration = 500;
+        Animation animation_image_male_Out = new TranslateAnimation(-300, -300, 0, -10000);
+        Animation animation_image_female_Out = new TranslateAnimation(-300, -300, 0, -10000);
+        if (Objects.equals(myGender, "A Man")) {
+            animation_image_male_Out.setDuration(1200);
+            animation_image_male_Out.setFillAfter(true);
+            genderIconMaleEdit.startAnimation(animation_image_male_Out);
+        } else {
+            animation_image_female_Out.setDuration(1200);
+            animation_image_female_Out.setFillAfter(true);
+            genderIconFemaleEdit.startAnimation(animation_image_female_Out);
+        }
+    }
+
+    private void onClickEditProfile(TextView profile_title_edit, ScrollView scroll_Profile, TextView profile_Title, TextView profile_Desc_Title, TextView profile_Description, ImageView genderIconMale, ImageView genderIconFemale, Button editProfile, Button backProfile, ScrollView scroll_Edit_Profile, EditText edit_profile_age, TextView edit_age_text, EditText edit_profile_height, TextView edit_height_text, EditText edit_profile_weight, TextView edit_weight_text, TextView edit_profile_gender, TextView edit_gender_text, TextView edit_profile_activity_level, TextView edit_activity_level_text, TextView edit_profile_goal, TextView edit_goal_text, TextView edit_profile_bmr, TextView edit_bmr_text, TextView edit_profile_target, TextView edit_target_text) {
+        editProfile.setOnClickListener(v -> {
+            profile_Start_Page_fold(profile_title_edit, scroll_Profile, profile_Title, profile_Desc_Title, profile_Description, genderIconMale, genderIconFemale);
+            animate_Button_edit(editProfile);
 //            animate_Button_back(backProfile);
-//            profile_Edit_start(profile_title_edit, scroll_Edit_Profile, edit_profile_age, edit_age_text, edit_profile_height, edit_height_text, edit_profile_weight, edit_weight_text, edit_profile_gender, edit_gender_text, edit_profile_activity_level, edit_activity_level_text, edit_profile_goal, edit_goal_text, edit_profile_bmr, edit_bmr_text, edit_profile_target, edit_target_text);
-//            gender_Image_Animation_start_page();
-//        });
-//
-//
-//
-//    }
+            profile_Edit_start(profile_title_edit, scroll_Edit_Profile, edit_profile_age, edit_age_text, edit_profile_height, edit_height_text, edit_profile_weight, edit_weight_text, edit_profile_gender, edit_gender_text, edit_profile_activity_level, edit_activity_level_text, edit_profile_goal, edit_goal_text, edit_profile_bmr, edit_bmr_text, edit_profile_target, edit_target_text);
+            gender_Image_Animation_start_page();
+            isEditing = true;
+        });
+    }
 
     private void profile_Edit_start(TextView profile_title_edit, ScrollView scroll_Edit_Profile, EditText edit_profile_age, TextView edit_age_text, EditText edit_profile_height, TextView edit_height_text, EditText edit_profile_weight, TextView edit_weight_text, TextView edit_profile_gender, TextView edit_gender_text, TextView edit_profile_activity_level, TextView edit_activity_level_text, TextView edit_profile_goal, TextView edit_goal_text, TextView edit_profile_bmr, TextView edit_bmr_text, TextView edit_profile_target, TextView edit_target_text) {
+
         Animation animation_Profile_Edit = new TranslateAnimation(-10000, 0, 0, 0);
         animation_Profile_Edit.setDuration(animationDuration());
         animation_Profile_Edit.setFillAfter(true);
@@ -581,7 +589,7 @@ public class ProfileFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     private void animate_Button_back(Button backProfile) {
-        animationDuration = 1500;
+        animationDuration = 500;
         Animation animation_back_Profile = new TranslateAnimation(10000, 0, 0, 0);
         animation_back_Profile.setDuration(animationDuration());
         animation_back_Profile.setFillAfter(true);
@@ -594,7 +602,7 @@ public class ProfileFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     private void animate_Button_edit(Button editProfile) {
-        animationDuration = 1500;
+        animationDuration = 500;
         Animation animation_Button_Edit_back = new TranslateAnimation(0, 10000, 0, 0);
         animation_Button_Edit_back.setDuration(animationDuration());
         animation_Button_Edit_back.setFillAfter(true);
@@ -702,7 +710,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void profile_Start_Page(TextView profile_title_edit, ScrollView scroll_Profile, TextView profile_Title, TextView profile_Desc_Title, TextView profile_Description, Button editProfile, ImageView genderIconMale, ImageView genderIconFemale) {
-        animationDuration = 1500;
+        animationDuration = 500;
         Animation animation_profile_edit = new TranslateAnimation(100000, 100000, 0, 0);
         animation_profile_edit.setDuration(animationDuration());
         animation_profile_edit.setFillAfter(true);
@@ -749,7 +757,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void profile_Start_Page_fold(TextView profile_title_edit, ScrollView scrollProfile, TextView profileTitle, TextView profile_Desc_Title, TextView profile_Description, ImageView genderIconMale, ImageView genderIconFemale) {
-        animationDuration = 1500;
+        animationDuration = 500;
         Animation animation_image_back = new TranslateAnimation(-300, 0, 0, -10000);
         animation_image_back.setDuration(animationDuration());
         animation_image_back.setFillAfter(true);

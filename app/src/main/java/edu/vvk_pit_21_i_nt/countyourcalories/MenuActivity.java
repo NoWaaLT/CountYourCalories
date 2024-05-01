@@ -3,7 +3,6 @@ package edu.vvk_pit_21_i_nt.countyourcalories;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -89,6 +88,9 @@ public class MenuActivity extends AppCompatActivity {
                 selectedFragment = recipesFragment;
 
             } else if (item.getItemId() == R.id.profile) {
+//                if(ProfileFragment.isEditing==false){
+//                    profileFragment = new ProfileFragment();
+//                }
                 profileFragment = new ProfileFragment();
                 selectedFragment = profileFragment;
 
@@ -189,7 +191,7 @@ public class MenuActivity extends AppCompatActivity {
             userDb.setWeight(val);
         }
         else if (Objects.equals(key, "activityLevel")) {
-            userDb.setActivityLevel(val);;
+            userDb.setActivityLevel(val);
         }
         else if (Objects.equals(key, "bmr")) {
             userDb.setBmr(val);
