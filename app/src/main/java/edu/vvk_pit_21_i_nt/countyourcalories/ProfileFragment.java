@@ -196,6 +196,7 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
+    @SuppressLint("SetTextI18n")
     private void editGenderDescription(TextView edit_gender_text, TextView edit_profile_gender) {
         edit_gender_text.setText("Edit Gender");
         if (Objects.equals(myGender, genders[0])) {
@@ -205,6 +206,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void editActivityDescription(TextView edit_activity_level_text, TextView edit_profile_activity_level) {
         edit_activity_level_text.setText("Edit Activity Level");
         edit_profile_activity_level.setText("" + myActivityLevel);
@@ -215,6 +217,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void editAge(EditText edit_profile_age, TextView edit_age_text, TextView edit_profile_bmr, TextView edit_profile_target) {
         edit_profile_age.setOnClickListener(v -> {
             edit_age_text.setText("Edit Age");
@@ -237,6 +240,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void editHeight(EditText edit_profile_height, TextView edit_height_text, TextView edit_profile_bmr, TextView edit_profile_target) {
         edit_profile_height.setOnClickListener(v -> {
             edit_height_text.setText("Edit Height (cm)");
@@ -259,6 +263,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void editWeight(EditText edit_profile_weight, TextView edit_weight_text, TextView edit_profile_bmr, TextView edit_profile_target) {
         edit_profile_weight.setOnClickListener(v -> {
             edit_weight_text.setText("Edit Weight (kg)");
