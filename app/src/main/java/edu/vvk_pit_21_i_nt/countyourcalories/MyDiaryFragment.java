@@ -42,6 +42,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+
+import nl.dionsegijn.konfetti.core.Angle;
+import nl.dionsegijn.konfetti.core.Party;
+import nl.dionsegijn.konfetti.core.PartyFactory;
+import nl.dionsegijn.konfetti.core.emitter.Emitter;
+import nl.dionsegijn.konfetti.core.emitter.EmitterConfig;
+import nl.dionsegijn.konfetti.core.models.Size;
+import nl.dionsegijn.konfetti.xml.KonfettiView;
 
 
 /**
@@ -83,6 +92,11 @@ public class MyDiaryFragment extends Fragment {
     private boolean timerRunning;
 
     public int cupNumber = 0;
+
+    private KonfettiView konfettiView = null;
+
+    public int buttonOne = 0;
+    public int buttonTwo = 0;
 
 
 
@@ -148,7 +162,7 @@ public class MyDiaryFragment extends Fragment {
             datalayout.setVisibility(View.VISIBLE);
             shimmerFrameLayout.stopShimmer();
             shimmerFrameLayout.setVisibility(View.INVISIBLE);
-        },3000);
+        },3500);
 
 
         TextView Diena1 = (TextView)  view.findViewById(R.id.textView10);
@@ -165,6 +179,7 @@ public class MyDiaryFragment extends Fragment {
         TextView Diena15 = (TextView)  view.findViewById(R.id.textView15);
         TextView Diena16 = (TextView)  view.findViewById(R.id.textView16);
         TextView Diena17 = (TextView)  view.findViewById(R.id.textView17);
+        TextView edit = (TextView) view.findViewById(R.id.textView3);
         ImageButton imgbtn = (ImageButton) view.findViewById(R.id.imageButton);
         ImageButton imgbtn2 = (ImageButton) view.findViewById(R.id.imageButton2);
         CardView crd3 = (CardView) view.findViewById(R.id.cardView3);
@@ -230,6 +245,28 @@ public class MyDiaryFragment extends Fragment {
         waterCups.add(cup4);
         waterCups.add(cup5);
         waterCups.add(cup6);
+
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MenuActivity) getActivity()).selectMenuItem(R.id.profile);
+            }
+        });
+
+        konfettiView = view.findViewById(R.id.konfettiView);
+        EmitterConfig emitterConfig = new Emitter(3L, TimeUnit.SECONDS).perSecond(100);
+
+        Party party =
+                new PartyFactory(emitterConfig)
+                           .angle(Angle.BOTTOM)
+                           .spread(360)
+                            .sizes(new Size(8, 4f, 0.2f))
+                           .setSpeedBetween(20f, 25f)
+                           .timeToLive(3000L)
+                          .position(540,-100)
+                        .build();
+
+
         if (((MenuActivity) requireActivity()).userDb == null) {
             Handler handler = new Handler();
             handler.postDelayed(()->showHistory(Diena7),3000);
@@ -265,6 +302,7 @@ public class MyDiaryFragment extends Fragment {
             public void onClick(View v) {
                 if (setOrNot == 0) {
                     textView36.setText("In Progress..");
+                    konfettiView.start(party);
                     textView36.setBackgroundResource(R.drawable.edittext_yellow);
                     crd2.setCardBackgroundColor(getResources().getColor(R.color.yellow_light));
                     editTextText.setVisibility(View.VISIBLE);
@@ -279,9 +317,13 @@ public class MyDiaryFragment extends Fragment {
         imgbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imgbtn.setImageResource(R.drawable.add_complete);
-                imgbtn.setBackgroundResource(R.drawable.edittext_complete);
-                crd3.setCardBackgroundColor(getResources().getColor(R.color.UI_complete));
+                if (buttonOne == 0) {
+                    imgbtn.setImageResource(R.drawable.add_complete);
+                    imgbtn.setBackgroundResource(R.drawable.edittext_complete);
+                    crd3.setCardBackgroundColor(getResources().getColor(R.color.UI_complete));
+                    konfettiView.start(party);
+                    buttonOne ++;
+                }
 
             }
         });
@@ -289,9 +331,13 @@ public class MyDiaryFragment extends Fragment {
         imgbtn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imgbtn2.setImageResource(R.drawable.add_complete);
-                imgbtn2.setBackgroundResource(R.drawable.edittext_complete);
-                crd5.setCardBackgroundColor(getResources().getColor(R.color.UI_complete));
+                if (buttonTwo == 0) {
+                    imgbtn2.setImageResource(R.drawable.add_complete);
+                    imgbtn2.setBackgroundResource(R.drawable.edittext_complete);
+                    crd5.setCardBackgroundColor(getResources().getColor(R.color.UI_complete));
+                    konfettiView.start(party);
+                    buttonTwo++;
+                }
             }
         });
 
@@ -495,6 +541,7 @@ public class MyDiaryFragment extends Fragment {
 
 
     }
+
 
     protected void addDayListeners(TextView day) {
         day.setOnClickListener(new View.OnClickListener() {
