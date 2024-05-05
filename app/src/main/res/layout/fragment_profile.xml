@@ -51,7 +51,8 @@
         android:layout_gravity="top|right"
         android:layout_margin="25dp"
         android:foregroundGravity="center"
-        android:src="@drawable/male_symbol_2239" />
+        android:src="@drawable/male_symbol_2239"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/genderIconFemale"
