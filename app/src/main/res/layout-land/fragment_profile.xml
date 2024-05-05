@@ -6,11 +6,25 @@
     android:layout_height="match_parent"
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="-1dp"
-    android:background="@drawable/gradient_background"
+    android:background="@color/white"
     tools:context=".ProfileFragment">
+<!--    android:background="@drawable/gradient_background"-->
 
     <TextView
         android:id="@+id/profile_title"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/profile_title"
+        android:textColor="@color/black"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/profile_title_edit"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginStart="20dp"
@@ -32,6 +46,15 @@
         android:src="@drawable/male_symbol_2239" />
 
     <ImageView
+        android:id="@+id/genderIconMale_date"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="top|right"
+        android:layout_margin="25dp"
+        android:foregroundGravity="center"
+        android:src="@drawable/male_symbol_2239" />
+
+    <ImageView
         android:id="@+id/genderIconFemale"
         android:layout_width="30dp"
         android:layout_height="30dp"
@@ -40,6 +63,14 @@
         android:foregroundGravity="center"
         android:src="@drawable/female_symbol_2240" />
 
+    <ImageView
+        android:id="@+id/genderIconFemale_date"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="top|right"
+        android:layout_margin="25dp"
+        android:foregroundGravity="center"
+        android:src="@drawable/female_symbol_2240" />
 
     <Button
         android:id="@+id/edit_profile"
@@ -49,6 +80,16 @@
         android:layout_margin="16dp"
         android:background="@drawable/round_button"
         android:text="@string/edit"
+        android:textColor="@color/white"
+        />
+    <Button
+        android:id="@+id/back_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:layout_margin="16dp"
+        android:background="@drawable/round_button"
+        android:text="@string/back"
         android:textColor="@color/white"
         />
 
@@ -154,7 +195,7 @@
                 android:autofillHints=""
                 android:background="@drawable/profile_edit_circle"
                 android:gravity="center"
-                android:hint="@string/value_hint"
+                android:hint="@string/enter_your_age"
                 android:inputType="numberSigned"
                 android:text="@string/edit_age_text"
                 android:textAlignment="center"
@@ -179,7 +220,7 @@
                 android:autofillHints=""
                 android:background="@drawable/profile_edit_circle"
                 android:gravity="center"
-                android:hint="@string/value_hint"
+                android:hint="@string/enter_your_height_in_cm"
                 android:inputType="numberSigned"
                 android:text="@string/edit_age_text"
                 android:textAlignment="center"
@@ -205,7 +246,7 @@
                 android:autofillHints=""
                 android:background="@drawable/profile_edit_circle"
                 android:gravity="center"
-                android:hint="@string/value_hint"
+                android:hint="@string/enter_your_weight_in_kg"
                 android:inputType="numberDecimal"
                 android:text="@string/edit_age_text"
                 android:textAlignment="center"
@@ -342,7 +383,6 @@
                 android:text="@string/app_name"
                 android:textAlignment="center"
                 android:textSize="20sp" />
-
 
         </LinearLayout>
     </ScrollView>

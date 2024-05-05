@@ -2,38 +2,269 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fatText"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DatabaseFoodAdd">
 
 
-    <TextView
-        android:id="@+id/textView68"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="DOVILES"
-        android:textSize="30dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.slider.Slider
-        android:id="@+id/vienas"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView6"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
+        app:cardBackgroundColor="#E1F6FF"
+        app:cardCornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        android:value="1"
-        android:valueFrom="0"
-        android:valueTo="100"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.453">
+        app:layout_constraintVertical_bias="0.007">
 
-    </com.google.android.material.slider.Slider>
+        <TextView
+            android:id="@+id/textView74"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="20dp"
+            android:text="Create New Food"
+            android:textAlignment="center"
+            android:textSize="38sp" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView8"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        app:cardBackgroundColor="#E1F6FF"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView6"
+        app:layout_constraintVertical_bias="0.036" >
+
+        <TextView
+            android:id="@+id/textView75"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:text="Name:"
+            android:textSize="34sp" />
+
+        <EditText
+            android:id="@+id/editTextText2"
+            android:layout_width="247dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="120dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:ems="10"
+            android:inputType="text"
+            android:text="add name"
+            android:textSize="24sp" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView7"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="20dp"
+        app:cardBackgroundColor="#E1F6FF"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView8"
+        app:layout_constraintVertical_bias="0.15">
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/keturi"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="105dp"
+            android:layout_marginTop="180dp"
+            android:value="1"
+            android:valueFrom="0"
+            android:valueTo="50">
+
+        </com.google.android.material.slider.Slider>
+
+        <TextView
+            android:id="@+id/textView70"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:text="Unit"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/textView71"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="85dp"
+            android:text="Calories"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/textView72"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="185dp"
+            android:text="Carbs"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/textView69"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="130dp"
+            android:text="Fat"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/textView73"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="235dp"
+            android:text="Protein"
+            android:textSize="24sp" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/vienas"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="105dp"
+            android:layout_marginTop="125dp"
+            android:value="1"
+            android:valueFrom="0"
+            android:valueTo="50">
+
+        </com.google.android.material.slider.Slider>
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/du"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="105dp"
+            android:layout_marginTop="25dp"
+            android:value="1"
+            android:valueFrom="0"
+            android:valueTo="50">
+
+        </com.google.android.material.slider.Slider>
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/trys"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="105dp"
+            android:layout_marginTop="80dp"
+            android:value="1"
+            android:valueFrom="0"
+            android:valueTo="300">
+
+        </com.google.android.material.slider.Slider>
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/penki"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="105dp"
+            android:layout_marginTop="233dp"
+            android:value="1"
+            android:valueFrom="0"
+            android:valueTo="50">
+
+        </com.google.android.material.slider.Slider>
+
+        <EditText
+            android:id="@+id/editTextNumber"
+            android:layout_width="115dp"
+            android:layout_height="52dp"
+            android:layout_marginLeft="265dp"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:inputType="number"
+            android:text="0"
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/editTextNumber2"
+            android:layout_width="115dp"
+            android:layout_height="52dp"
+            android:layout_marginLeft="265dp"
+            android:layout_marginTop="70dp"
+            android:ems="10"
+            android:inputType="number"
+            android:text="0"
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/editTextNumber3"
+            android:layout_width="115dp"
+            android:layout_height="52dp"
+            android:layout_marginLeft="265dp"
+            android:layout_marginTop="177dp"
+            android:ems="10"
+            android:inputType="number"
+            android:text="0"
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/editTextNumber4"
+            android:layout_width="115dp"
+            android:layout_height="52dp"
+            android:layout_marginLeft="265dp"
+            android:layout_marginTop="228dp"
+            android:ems="10"
+            android:inputType="number"
+            android:text="0"
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/editTextNumber5"
+            android:layout_width="115dp"
+            android:layout_height="52dp"
+            android:layout_marginLeft="265dp"
+            android:layout_marginTop="123dp"
+            android:ems="10"
+            android:inputType="number"
+            android:text="0"
+            android:textSize="24sp" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:cardBackgroundColor="#E1F6FF"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.924"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView7"
+        app:layout_constraintVertical_bias="0.0">
+
+        <ImageView
+            android:id="@+id/imageView14"
+            android:layout_width="76dp"
+            android:layout_height="55dp"
+            android:layout_marginLeft="110dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:src="@drawable/adddov" />
+    </androidx.cardview.widget.CardView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

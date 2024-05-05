@@ -2,10 +2,12 @@ package edu.vvk_pit_21_i_nt.countyourcalories;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -119,18 +121,30 @@ public class MealPlansFragment extends Fragment {
         TextView tempFat = (TextView) view.findViewById(R.id.textView67);
         ImageButton imgbtn = (ImageButton) view.findViewById(R.id.imageButton5);
         ImageView imgvw = (ImageView) view.findViewById(R.id.imageView13);
+        CardView cardView4 = (CardView)view.findViewById(R.id.cardView4);
 
 
         dovile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frame_layout,new DatabaseFoodAdd());
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                ((MenuActivity) getActivity()).selectMenuItem(R.id.add_food);
             }
         });
+
+
+        GradientDrawable gradientDrawable = new GradientDrawable(
+        GradientDrawable.Orientation.TOP_BOTTOM,
+                new int[] {0xFFE1F6FF,0xFFFFFFFF});
+
+        gradientDrawable.setShape(GradientDrawable.RECTANGLE);
+        float topLeftCornerRadius = getResources().getDisplayMetrics().density * 20; // Convert 20% to pixels
+        float topRightCornerRadius = getResources().getDisplayMetrics().density * 20; // Convert 20% to pixels
+        float bottomRightCornerRadius = 0;
+        float bottomLeftCornerRadius = 0;
+        gradientDrawable.setCornerRadii(new float[] {topLeftCornerRadius, topLeftCornerRadius, topRightCornerRadius, topRightCornerRadius, bottomRightCornerRadius, bottomRightCornerRadius, bottomLeftCornerRadius, bottomLeftCornerRadius});
+        cardView4.setBackground(gradientDrawable);
+
+
 
 
         ScrollView scrollView = view.findViewById(R.id.scrview);
@@ -161,9 +175,10 @@ public class MealPlansFragment extends Fragment {
                     calcc = Double.parseDouble(df.format(calcc));
                     calcp = Double.parseDouble(df.format(calcp));
                     calcf = Double.parseDouble(df.format(calcf));
+                    int updated = (int)calcc;
 
                     calories.setText(Integer.toString(inted));
-                    carbs.setText(Double.toString(calcc));
+                    carbs.setText(Integer.toString(updated));
                     protein.setText(Double.toString(calcp));
                     fats.setText(Double.toString(calcf));
 
@@ -191,9 +206,18 @@ public class MealPlansFragment extends Fragment {
 
 
 
+
         return view;
     }
 
+
+
+
+    private void navigateToNewFragment() {
+        if (getActivity() instanceof MenuActivity) {
+            ((MenuActivity) getActivity()).showFragment(new MealPlansFragment(), ((MenuActivity) getActivity()).getSupportFragmentManager());
+        }
+    }
 
 
     private void searchFood(String data, TextView title,TextView calories,TextView carbs,TextView protein, TextView fats,TextView temp,TextView temp2,TextView temp3, TextView temp4, ScrollView scrollView){

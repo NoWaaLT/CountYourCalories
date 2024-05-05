@@ -22,10 +22,17 @@
     <string name="profile_description">profile_Description</string>
     <string name="profile_desc_title" />
     <string name="profile_desc_summary" />
+    <string name="recipes_title">Enter recipe name</string>
+    <string name="recipes_select_item">Select Item</string>
+    <string name="recipes_add_item">Add Item</string>
+    <string name="recipes_create_recipe">Create Recipe</string>
     <string name="edit_profile">edit_profile</string>
     <string name="edit_age_text">edit_age_text</string>
     <string name="value_hint" />
     <string name="value" />
     <string name="edit_eight_text" />
     <string name="edit">EDIT</string>
+    <string name="enter_your_age">Enter your age</string>
+    <string name="enter_your_height_in_cm">Enter your height in cm</string>
+    <string name="enter_your_weight_in_kg">Enter your weight in kg</string>
 </resources>

@@ -16,10 +16,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -33,97 +33,152 @@ public class MenuActivity extends AppCompatActivity {
 
     ActivityMenuBinding binding;
     public DatabaseReference mDatabase;
+
+    public DatabaseReference historyRef;
    HashMap<String, UserHistory> userHistoryHashMap;
     public UserDb userDb;
     public FirebaseUser user;
+
+    private MyDiaryFragment myDiaryFragment;
+    private MealPlansFragment mealPlansFragment;
+    private RecipesFragment recipesFragment;
+    public static ProfileFragment profileFragment;
+    private DatabaseFoodAdd databaseFoodAdd;
 
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         getSupportActionBar().hide();
         binding = ActivityMenuBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        replaceFragment(new MyDiaryFragment());
         user = FirebaseAuth.getInstance().getCurrentUser();
-        //firebaseDb = FirebaseDatabase.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference("Users/"+ user.getUid());
 
+        historyRef = FirebaseDatabase.getInstance().getReference("History/" + user.getUid());
+        mDatabase = FirebaseDatabase.getInstance().getReference("Users/"+ user.getUid());
         userHistoryHashMap = new HashMap<>();
         getUserData();
-        //UserHistory uh = new UserHistory(1890, 213, 256, 452, 2300);
-        //addUserHistory("2024-04-22", uh);
-        binding.bottomNavigationView.setOnItemSelectedListener(Item -> {
+        getUserHistory();
+        //UserHistory uh = new UserHistory(1500, 386, 280, 410, 1750);
+       // addUserHistory("2024-04-29", uh);
+        FragmentManager managerOG = getSupportFragmentManager();
+        myDiaryFragment = new MyDiaryFragment();
+        mealPlansFragment = new MealPlansFragment();
+        recipesFragment = new RecipesFragment();
+//        profileFragment = new ProfileFragment();
+        databaseFoodAdd = new DatabaseFoodAdd();
 
-            int itemId = Item.getItemId();
-            if (itemId == R.id.diary) {
-                ;
-                replaceFragment(new MyDiaryFragment());
-            } else if (itemId == R.id.meal_plans) {
-                ;
-                replaceFragment(new MealPlansFragment());
-            } else if (itemId == R.id.add_food) {
-                ;
-                replaceFragment(new AddFoodFragment());
-            } else if (itemId == R.id.recipes) {
-                ;
-                replaceFragment(new RecipesFragment());
-            } else if (itemId == R.id.profile) {
-                ;
-                replaceFragment(new ProfileFragment());
+        // Show MyDiaryFragment by default
+        showFragment(myDiaryFragment,managerOG);
+
+        // Bottom navigation view listener
+        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment;
+
+            if (item.getItemId() == R.id.diary) {
+                selectedFragment = myDiaryFragment;
+
+            } else if (item.getItemId() == R.id.meal_plans) {
+                selectedFragment = mealPlansFragment;
+
+            } else if (item.getItemId() == R.id.add_food) {
+                selectedFragment = databaseFoodAdd;
+
+            } else if (item.getItemId() == R.id.recipes) {
+                selectedFragment = recipesFragment;
+
+            } else if (item.getItemId() == R.id.profile) {
+//                if(ProfileFragment.isEditing==false){
+//                    profileFragment = new ProfileFragment();
+//                }
+                profileFragment = new ProfileFragment();
+                selectedFragment = profileFragment;
+
+            }  else if (item.getItemId() == R.id.textView63){
+                selectedFragment = databaseFoodAdd;
             }
-
+            else {
+                return false;
+            }
+            showFragment(selectedFragment,managerOG);
             return true;
         });
 
+        }
 
-//
-//         EdgeToEdge.enable(this);
-//        setContentView(R.layout.activity_menu);
-//
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-//            return insets;
-//        });
-//
-//        Toast.makeText(MenuActivity.this,  "Įšsaugota", Toast.LENGTH_LONG).show();
+    public void selectMenuItem(int itemId) {
+        binding.bottomNavigationView.setSelectedItemId(itemId);
     }
 
 
-    public  void replaceFragment(Fragment fragment){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout,fragment);
-        fragmentTransaction.commit();
+    public static void showFragment(Fragment fragment, FragmentManager fragmentManager) {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        List<Fragment> allFragments = fragmentManager.getFragments(); // Get all fragments
+        for (Fragment frag : allFragments) {
+            if (frag != null && frag.isVisible()) {
+                transaction.hide(frag); // Hide all other fragments
+            }
+        }
+// Now, show the intended fragment or add it if not already added
+        if (!fragment.isAdded()) {
+            transaction.add(R.id.frame_layout, fragment);
+        } else {
+            transaction.show(fragment);
+        }
+        transaction.commit();
+    }
+
+    public void replaceFragmentWithBackStack(Fragment fragment, FragmentManager fragmentManager) {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.frame_layout, fragment);
+        transaction.addToBackStack(null); // Adds transaction to the back stack
+        transaction.commit();
+    }
+
+    public void clearBackStack(FragmentManager fragmentManager) {
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            FragmentManager.BackStackEntry first = fragmentManager.getBackStackEntryAt(0);
+            fragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
+    }
+    public void replaceFragment(Fragment fragment,FragmentManager OG) {
+
+        // Hide the current fragment if there's any
+        FragmentTransaction transactionLOC = OG.beginTransaction();
+        Fragment currentFragment = OG.findFragmentById(R.id.frame_layout);
+        transactionLOC.hide(currentFragment);
+        transactionLOC.show(fragment);
+
+        // Add the new fragment if it's not added already
+        if (!fragment.isAdded()) {
+            transactionLOC.add(R.id.frame_layout, fragment);
+        }
+        transactionLOC.commit();
+    }
+
+    public  void replaceFragmentStatic(Fragment fragment,FragmentManager OG){
+        FragmentTransaction transactionLOC = OG.beginTransaction();
+        transactionLOC.replace(R.id.frame_layout,fragment);
+        transactionLOC.commit();
 
     }
+
     protected void getUserData() {
-        ValueEventListener userListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                userDb = dataSnapshot.getValue(UserDb.class);
-                if (userDb != null) {
-                    Log.d("Naudotojo duomenys", userDb.getDisplayName());
-                }
-                for (DataSnapshot userSnapshot: dataSnapshot.child("History").getChildren()) {
-                    String key = userSnapshot.getKey();
-                    if(key != null) {
-                        userHistoryHashMap.put(key, userSnapshot.getValue(UserHistory.class));
-                        //Log.d("Istorijos raktas", key);
+       mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
 
-                    }
-                }
-            }
+           @Override
+           public void onDataChange(@NonNull DataSnapshot snapshot) {
+               userDb = snapshot.getValue(UserDb.class);
+               if (userDb != null) {
+                   Log.d("Naudotojo duomenys", userDb.getDisplayName());
+               }
+           }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("Firebase klaida", "loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        mDatabase.addValueEventListener(userListener);
+           @Override
+           public void onCancelled(@NonNull DatabaseError error) {
+               Log.w("Firebase klaida", "loadPost:onCancelled", error.toException());
+           }
+       });
     }
     protected void updateUserData(String key, String val) {
         if (Objects.equals(key, "gender")) {
@@ -136,7 +191,7 @@ public class MenuActivity extends AppCompatActivity {
             userDb.setWeight(val);
         }
         else if (Objects.equals(key, "activityLevel")) {
-            userDb.setActivityLevel(val);;
+            userDb.setActivityLevel(val);
         }
         else if (Objects.equals(key, "bmr")) {
             userDb.setBmr(val);
@@ -158,18 +213,44 @@ public class MenuActivity extends AppCompatActivity {
         }
         mDatabase.child(key).setValue(val);
     }
+    protected void getUserHistory() {
+        Query userHistoryQuery = historyRef.limitToLast(7);
+        userHistoryQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot daySnapshot : snapshot.getChildren()) {
+                    String key = daySnapshot.getKey();
+                    if(key != null) {
+                        userHistoryHashMap.put(key, daySnapshot.getValue(UserHistory.class));
+                    }
+                }
+                Log.d("Naudotojo istorija", "gauta");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("Firebase klaida", error.getMessage());
+            }
+        });
+    }
     protected void addUserHistory() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
         String currentDate = sdf.format(new Date());
         UserHistory uh = new UserHistory();
-        mDatabase.child("History").child(currentDate).setValue(uh);
+        historyRef.child(currentDate).setValue(uh);
+    }
+    protected void addUserHistory(UserHistory uh) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
+        String currentDate = sdf.format(new Date());
+        historyRef.child(currentDate).setValue(uh);
     }
 
     protected void updateUserHistory(String date, String key, int val) {
-        mDatabase.child("History").child(date).child(key).setValue(val);
+        historyRef.child(date).child(key).setValue(val);
     }
     protected void addUserHistory(String date, UserHistory uh) {
-        mDatabase.child("History").child(date).setValue(uh);
+        historyRef.child(date).setValue(uh);
     }
 
     private int calcTargetProtein(int goal, int targetKcal) {
