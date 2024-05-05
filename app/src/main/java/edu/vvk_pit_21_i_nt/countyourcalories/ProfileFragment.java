@@ -2,7 +2,9 @@ package edu.vvk_pit_21_i_nt.countyourcalories;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,9 +60,11 @@ public class ProfileFragment extends Fragment {
     static int animationDuration = 500;
     private View genderIconMaleEdit;
     private View genderIconFemaleEdit;
+    private final String btnTextBack = "OK";
 
     public ProfileFragment() {
         // Required empty public constructor
+
     }
 
     /**
@@ -374,7 +378,7 @@ public class ProfileFragment extends Fragment {
             Animation animation_back_Profile = new TranslateAnimation(0, 10000, 0, 0);
             animation_back_Profile.setDuration(animationDuration());
             animation_back_Profile.setFillAfter(true);
-            backProfile.setText("Back");
+            backProfile.setText(btnTextBack);
             backProfile.setBackgroundTintList(getResources().getColorStateList(R.color.teal_700));
             backProfile.setVisibility(View.VISIBLE);
             backProfile.startAnimation(animation_back_Profile);
@@ -468,8 +472,13 @@ public class ProfileFragment extends Fragment {
             animation_Scroll_Profile_edit_back.setDuration(animationDuration());
             animation_Scroll_Profile_edit_back.setFillAfter(true);
             scroll_Edit_Profile.startAnimation(animation_Scroll_Profile_edit_back);
+
+            new Handler().postDelayed(() -> {
+                startActivity(new Intent(getActivity(), MenuActivity.class));
+            }, 1500);
             isEditing = false;
-//            MenuActivity.profileFragment = new ProfileFragment();
+//            startActivity(new Intent(getActivity(), ProfileFragment.class));
+//            startActivity(new Intent(getActivity(), MenuActivity.class));
         });
     }
 
@@ -492,7 +501,7 @@ public class ProfileFragment extends Fragment {
         editProfile.setOnClickListener(v -> {
             profile_Start_Page_fold(profile_title_edit, scroll_Profile, profile_Title, profile_Desc_Title, profile_Description, genderIconMale, genderIconFemale);
             animate_Button_edit(editProfile);
-//            animate_Button_back(backProfile);
+            animate_Button_back(backProfile);
             profile_Edit_start(profile_title_edit, scroll_Edit_Profile, edit_profile_age, edit_age_text, edit_profile_height, edit_height_text, edit_profile_weight, edit_weight_text, edit_profile_gender, edit_gender_text, edit_profile_activity_level, edit_activity_level_text, edit_profile_goal, edit_goal_text, edit_profile_bmr, edit_bmr_text, edit_profile_target, edit_target_text);
             gender_Image_Animation_start_page();
             isEditing = true;
@@ -500,7 +509,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void profile_Edit_start(TextView profile_title_edit, ScrollView scroll_Edit_Profile, EditText edit_profile_age, TextView edit_age_text, EditText edit_profile_height, TextView edit_height_text, EditText edit_profile_weight, TextView edit_weight_text, TextView edit_profile_gender, TextView edit_gender_text, TextView edit_profile_activity_level, TextView edit_activity_level_text, TextView edit_profile_goal, TextView edit_goal_text, TextView edit_profile_bmr, TextView edit_bmr_text, TextView edit_profile_target, TextView edit_target_text) {
-
+        animationDuration = 500;
         Animation animation_Profile_Edit = new TranslateAnimation(-10000, 0, 0, 0);
         animation_Profile_Edit.setDuration(animationDuration());
         animation_Profile_Edit.setFillAfter(true);
@@ -598,11 +607,11 @@ public class ProfileFragment extends Fragment {
         Animation animation_back_Profile = new TranslateAnimation(10000, 0, 0, 0);
         animation_back_Profile.setDuration(animationDuration());
         animation_back_Profile.setFillAfter(true);
-        backProfile.setText("Back");
+        backProfile.setText(btnTextBack);
         backProfile.setBackgroundTintList(getResources().getColorStateList(R.color.teal_700));
         backProfile.setVisibility(View.VISIBLE);
         backProfile.startAnimation(animation_back_Profile);
-//        isEditing = false;
+        isEditing = false;
     }
 
     @SuppressLint("SetTextI18n")
@@ -611,7 +620,8 @@ public class ProfileFragment extends Fragment {
         Animation animation_Button_Edit_back = new TranslateAnimation(0, 10000, 0, 0);
         animation_Button_Edit_back.setDuration(animationDuration());
         animation_Button_Edit_back.setFillAfter(true);
-        editProfile.setText("Edit");
+        String btnTextEdit = "Edit";
+        editProfile.setText(btnTextEdit);
         editProfile.setVisibility(View.VISIBLE);
         editProfile.setBackgroundTintList(getResources().getColorStateList(R.color.purple_200));
         editProfile.startAnimation(animation_Button_Edit_back);
@@ -619,6 +629,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void gender_Image_Animation_start_page() {
+        animationDuration = 500;
         Animation animation_image_male_In = new TranslateAnimation(10000, -300, 0, 0);
         Animation animation_image_female_In = new TranslateAnimation(10000, -300, 0, 0);
 
