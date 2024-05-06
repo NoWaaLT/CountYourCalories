@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Random;
 
 import edu.vvk_pit_21_i_nt.countyourcalories.databinding.ActivityMenuBinding;
 
@@ -59,8 +60,19 @@ public class MenuActivity extends AppCompatActivity {
         userHistoryHashMap = new HashMap<>();
         getUserData();
         getUserHistory();
-        //UserHistory uh = new UserHistory(1000, 326, 480, 270, 2500);
-        //addUserHistory("2024-05-01", uh);
+
+        Random rand = new Random();
+        for(int i = 0; i < 7; i++) {
+            int setProteins= rand.nextInt(100) + 600;
+            int setCarbs = rand.nextInt(100) + 600;
+            int setFat= rand.nextInt(100) + 600;
+            int setCalories = rand.nextInt(1000) + 2000;
+            int setWater = rand.nextInt(1000) + 3000;
+            UserHistory uh = new UserHistory(setCalories, setProteins, setCarbs, setFat, setWater);
+            String day = "2024-05-0" + (i + 1);
+            addUserHistory(day, uh);
+        }
+
         FragmentManager managerOG = getSupportFragmentManager();
         myDiaryFragment = new MyDiaryFragment();
         mealPlansFragment = new MealPlansFragment();
