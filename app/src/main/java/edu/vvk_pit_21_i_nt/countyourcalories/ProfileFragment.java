@@ -637,8 +637,8 @@ public class ProfileFragment extends Fragment {
 
     private void gender_Image_Animation_start_page() {
         animationDuration = 500;
-        Animation animation_image_male_In = new TranslateAnimation(10000, -300, 0, 0);
-        Animation animation_image_female_In = new TranslateAnimation(10000, -300, 0, 0);
+        Animation animation_image_male_In = new TranslateAnimation(0, -300, -10000, 0);
+        Animation animation_image_female_In = new TranslateAnimation(0, -300, -10000, 0);
 
         if (Objects.equals(myGender, "A Man")) {
             animation_image_male_In.setDuration(1200);
