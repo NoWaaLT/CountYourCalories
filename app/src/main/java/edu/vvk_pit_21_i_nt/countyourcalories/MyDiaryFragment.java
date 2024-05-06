@@ -2,6 +2,7 @@ package edu.vvk_pit_21_i_nt.countyourcalories;
 
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,9 +19,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,6 +42,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+
+import nl.dionsegijn.konfetti.core.Angle;
+import nl.dionsegijn.konfetti.core.Party;
+import nl.dionsegijn.konfetti.core.PartyFactory;
+import nl.dionsegijn.konfetti.core.emitter.Emitter;
+import nl.dionsegijn.konfetti.core.emitter.EmitterConfig;
+import nl.dionsegijn.konfetti.core.models.Size;
+import nl.dionsegijn.konfetti.xml.KonfettiView;
 
 
 /**
@@ -72,7 +84,6 @@ public class MyDiaryFragment extends Fragment {
     private ProgressBar fatBar;
     private List<ImageView> waterCups;
     TextView Diena7;
-    private List<ImageView> arrows;
 
     public int setOrNot = 0;
 
@@ -80,12 +91,22 @@ public class MyDiaryFragment extends Fragment {
 
     private boolean timerRunning;
 
+    public int cupNumber = 0;
+
+    private KonfettiView konfettiView = null;
+
+    public int buttonOne = 0;
+    public int buttonTwo = 0;
+
 
 
     private CountDownTimer countDownTimer;
     private long totalTimeInMillis = 16 * 60 * 60 * 1000;
 
     private long timeLeftInMillis = totalTimeInMillis;
+
+    ShimmerFrameLayout shimmerFrameLayout;
+    LinearLayout datalayout;
 
 
     public MyDiaryFragment() {
@@ -125,10 +146,24 @@ public class MyDiaryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
         View view = inflater.inflate(R.layout.fragment_my_diary, container, false);
         TextView textView2 = (TextView) view.findViewById(R.id.textView2);
         String timeOfDay = TimeOfDayDeterminer();
         textView2.setText("Good " + timeOfDay + "!");
+
+        shimmerFrameLayout = view.findViewById(R.id.shimmer_view);
+        datalayout = view.findViewById(R.id.data_view);
+
+        datalayout.setVisibility(View.INVISIBLE);
+        shimmerFrameLayout.startShimmer();
+        Handler shimmerHandler = new Handler();
+        shimmerHandler.postDelayed(()->{
+            datalayout.setVisibility(View.VISIBLE);
+            shimmerFrameLayout.stopShimmer();
+            shimmerFrameLayout.setVisibility(View.INVISIBLE);
+        },3500);
+
 
         TextView Diena1 = (TextView)  view.findViewById(R.id.textView10);
         TextView Diena2 = (TextView)  view.findViewById(R.id.textView21);
@@ -144,11 +179,13 @@ public class MyDiaryFragment extends Fragment {
         TextView Diena15 = (TextView)  view.findViewById(R.id.textView15);
         TextView Diena16 = (TextView)  view.findViewById(R.id.textView16);
         TextView Diena17 = (TextView)  view.findViewById(R.id.textView17);
+        TextView edit = (TextView) view.findViewById(R.id.textView3);
         ImageButton imgbtn = (ImageButton) view.findViewById(R.id.imageButton);
         ImageButton imgbtn2 = (ImageButton) view.findViewById(R.id.imageButton2);
         CardView crd3 = (CardView) view.findViewById(R.id.cardView3);
         CardView crd2 = (CardView) view.findViewById(R.id.cardView2);
         CardView crd5 = (CardView) view.findViewById(R.id.cardView5);
+        CardView waterCard = (CardView) view.findViewById(R.id.waterCard) ;
         TextView textView36 = (TextView) view.findViewById(R.id.textView36);
         editTextText = (TextView) view.findViewById(R.id.editTextText);
         int[] days = getLastSevenDaysOfMonth();
@@ -180,7 +217,6 @@ public class MyDiaryFragment extends Fragment {
         waterTarget = view.findViewById(R.id.textView48);
         listOfDays = new ArrayList<>();
         waterCups = new ArrayList<>();
-        arrows = new ArrayList<>();
         addDayListeners(Diena1);
         addDayListeners(Diena2);
         addDayListeners(Diena3);
@@ -195,37 +231,78 @@ public class MyDiaryFragment extends Fragment {
         listOfDays.add(Diena5);
         listOfDays.add(Diena6);
         listOfDays.add(Diena7);
+        ImageButton cup0 = view.findViewById(R.id.imageButton4);
         ImageView cup1 = view.findViewById(R.id.imageView);
         ImageView cup2 = view.findViewById(R.id.imageView2);
         ImageView cup3 = view.findViewById(R.id.imageView3);
         ImageView cup4 = view.findViewById(R.id.imageView4);
         ImageView cup5 = view.findViewById(R.id.imageView5);
         ImageView cup6 = view.findViewById(R.id.imageView6);
+        waterCups.add(cup0);
         waterCups.add(cup1);
         waterCups.add(cup2);
         waterCups.add(cup3);
         waterCups.add(cup4);
         waterCups.add(cup5);
         waterCups.add(cup6);
-        arrows.add(view.findViewById(R.id.imageView7));
-        arrows.add(view.findViewById(R.id.imageView8));
-        arrows.add(view.findViewById(R.id.imageView9));
-        arrows.add(view.findViewById(R.id.imageView10));
-        arrows.add(view.findViewById(R.id.imageView11));
-        arrows.add(view.findViewById(R.id.imageView12));
-        //if (((MenuActivity) requireActivity()).userDb == null) {
-            //Handler handler = new Handler();
-            //handler.postDelayed(this::showUI,3000);
-        //}
-        //else {
-            //showHistory(Diena7);
-        //}
+
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MenuActivity) getActivity()).selectMenuItem(R.id.profile);
+            }
+        });
+
+        konfettiView = view.findViewById(R.id.konfettiView);
+        EmitterConfig emitterConfig = new Emitter(3L, TimeUnit.SECONDS).perSecond(100);
+
+        Party party =
+                new PartyFactory(emitterConfig)
+                           .angle(Angle.BOTTOM)
+                           .spread(360)
+                            .sizes(new Size(8, 4f, 0.2f))
+                           .setSpeedBetween(20f, 25f)
+                           .timeToLive(3000L)
+                          .position(540,-100)
+                        .build();
+
+
+        if (((MenuActivity) requireActivity()).userDb == null) {
+            Handler handler = new Handler();
+            handler.postDelayed(()->showHistory(Diena7),3000);
+        }
+        else {
+            showHistory(Diena7);
+        }
+
+        cup0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(cupNumber <= 6){
+                waterCups.get(cupNumber).setImageResource(R.drawable.water_cup_blue);
+                cupNumber++;}
+            }
+        });
+
+        GradientDrawable gradientDrawable = new GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM,
+                new int[] {0xFFE1F6FF,0xE7F7FFFF});
+
+        gradientDrawable.setShape(GradientDrawable.RECTANGLE);
+        float topLeftCornerRadius = getResources().getDisplayMetrics().density * 20; // Convert 20% to pixels
+        float topRightCornerRadius = getResources().getDisplayMetrics().density * 20; // Convert 20% to pixels
+        float bottomRightCornerRadius = 0;
+        float bottomLeftCornerRadius = 0;
+        gradientDrawable.setCornerRadii(new float[] {topLeftCornerRadius, topLeftCornerRadius, topRightCornerRadius, topRightCornerRadius, bottomRightCornerRadius, bottomRightCornerRadius, bottomLeftCornerRadius, bottomLeftCornerRadius});
+        waterCard.setBackground(gradientDrawable);
 
         textView36.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (setOrNot == 0) {
                     textView36.setText("In Progress..");
+                    konfettiView.start(party);
                     textView36.setBackgroundResource(R.drawable.edittext_yellow);
                     crd2.setCardBackgroundColor(getResources().getColor(R.color.yellow_light));
                     editTextText.setVisibility(View.VISIBLE);
@@ -240,9 +317,13 @@ public class MyDiaryFragment extends Fragment {
         imgbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imgbtn.setImageResource(R.drawable.add_complete);
-                imgbtn.setBackgroundResource(R.drawable.edittext_complete);
-                crd3.setCardBackgroundColor(getResources().getColor(R.color.UI_complete));
+                if (buttonOne == 0) {
+                    imgbtn.setImageResource(R.drawable.add_complete);
+                    imgbtn.setBackgroundResource(R.drawable.edittext_complete);
+                    crd3.setCardBackgroundColor(getResources().getColor(R.color.UI_complete));
+                    //konfettiView.start(party);
+                    buttonOne ++;
+                }
 
             }
         });
@@ -250,9 +331,13 @@ public class MyDiaryFragment extends Fragment {
         imgbtn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imgbtn2.setImageResource(R.drawable.add_complete);
-                imgbtn2.setBackgroundResource(R.drawable.edittext_complete);
-                crd5.setCardBackgroundColor(getResources().getColor(R.color.UI_complete));
+                if (buttonTwo == 0) {
+                    imgbtn2.setImageResource(R.drawable.add_complete);
+                    imgbtn2.setBackgroundResource(R.drawable.edittext_complete);
+                    crd5.setCardBackgroundColor(getResources().getColor(R.color.UI_complete));
+                    //konfettiView.start(party);
+                    buttonTwo++;
+                }
             }
         });
 
@@ -334,12 +419,12 @@ public class MyDiaryFragment extends Fragment {
         UserHistory uh = null;
         for (Map.Entry<String, UserHistory> set: ((MenuActivity) requireActivity()).userHistoryHashMap.entrySet()) {
             String date = set.getKey();
-            //String month = date.substring(5, 7);
-            //SimpleDateFormat sdf = new SimpleDateFormat("MM", Locale.UK);
-            //String currentDate = sdf.format(new Date());
-            if (date.endsWith(day)) {
+            String month = date.substring(5, 7);
+            SimpleDateFormat sdf = new SimpleDateFormat("MM", Locale.UK);
+            String currentDate = sdf.format(new Date());
+            if (date.endsWith(day) && month.equals(currentDate)) {
                 uh = set.getValue();
-                //break;
+                break;
             }
         }
         int target;
@@ -365,7 +450,7 @@ public class MyDiaryFragment extends Fragment {
         int targetProtein = calcTargetProtein(goal, target);
         int targetFat = calcTargetFat(goal, target);
         int targetWater = calcTargetWater(gender, weight);
-        String waterTargetText = String.format(Locale.UK, "/ %d ml", targetWater);
+        String waterTargetText = String.format(Locale.UK, " /%d ml", targetWater);
         waterTarget.setText(waterTargetText);
         if (uh != null) {
             String carboText = String.format(Locale.UK,"%d/%d g", uh.getCarbo(), targetCarbo);
@@ -457,11 +542,13 @@ public class MyDiaryFragment extends Fragment {
 
     }
 
+
     protected void addDayListeners(TextView day) {
         day.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showHistory(day);
+                cupNumber = 0;
                 day.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.edittext_dark));
                 for (TextView txt : listOfDays) {
                     if (txt.getId() != day.getId()) {
@@ -492,42 +579,6 @@ public class MyDiaryFragment extends Fragment {
             }
         }
     }
-    protected void setArrows() {
-        int goal = ((MenuActivity) requireActivity()).userDb.getGoal();
-        int target = ((MenuActivity) requireActivity()).userDb.getTarget();
-        for (int i = 0; i < arrows.size(); i++) {
-            String day = listOfDays.get(i).getText().toString();
-            int kCalRemain = target;
-            for (Map.Entry<String, UserHistory> set: ((MenuActivity) requireActivity()).userHistoryHashMap.entrySet()) {
-                String date = set.getKey();
-                if (date.endsWith(day)) {
-                    kCalRemain = target - set.getValue().getKcal();
-                }
-            }
-            if (kCalRemain == target) {
-                arrows.get(i).setImageResource(R.drawable.baseline_keyboard_double_arrow_right_24);
-            }
-            else {
-                int remainPercent = (kCalRemain * 100) / target;
-                if (remainPercent >= 25) {
-                    arrows.get(i).setImageResource(R.drawable.baseline_keyboard_double_arrow_down_24);
-                }
-                else if ( remainPercent >=0) {
-                    arrows.get(i).setImageResource(R.drawable.baseline_keyboard_double_arrow_up_24);
-                }
-                else {
-                    if (goal == 0) {
-                        arrows.get(i).setImageResource(R.drawable.baseline_keyboard_double_arrow_up_24);
-                    }
-                    else {
-                        arrows.get(i).setImageResource(R.drawable.baseline_keyboard_double_arrow_down_24);
-                    }
-                }
-            }
-
-        }
-    }
-
     private int calcTargetProtein(int goal, int targetKcal) {
         int proteins;
         if (goal == 0) {

@@ -3,7 +3,6 @@ package edu.vvk_pit_21_i_nt.countyourcalories;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,7 +20,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -43,10 +41,8 @@ public class MenuActivity extends AppCompatActivity {
 
     private MyDiaryFragment myDiaryFragment;
     private MealPlansFragment mealPlansFragment;
-    private AddFoodFragment addFoodFragment;
     private RecipesFragment recipesFragment;
-    private ProfileFragment profileFragment;
-
+    public static ProfileFragment profileFragment;
     private DatabaseFoodAdd databaseFoodAdd;
 
     @SuppressLint("NonConstantResourceId")
@@ -68,9 +64,8 @@ public class MenuActivity extends AppCompatActivity {
         FragmentManager managerOG = getSupportFragmentManager();
         myDiaryFragment = new MyDiaryFragment();
         mealPlansFragment = new MealPlansFragment();
-        addFoodFragment = new AddFoodFragment();
         recipesFragment = new RecipesFragment();
-        profileFragment = new ProfileFragment();
+//        profileFragment = new ProfileFragment();
         databaseFoodAdd = new DatabaseFoodAdd();
 
         // Show MyDiaryFragment by default
@@ -87,12 +82,16 @@ public class MenuActivity extends AppCompatActivity {
                 selectedFragment = mealPlansFragment;
 
             } else if (item.getItemId() == R.id.add_food) {
-                selectedFragment = addFoodFragment;
+                selectedFragment = databaseFoodAdd;
 
             } else if (item.getItemId() == R.id.recipes) {
                 selectedFragment = recipesFragment;
 
             } else if (item.getItemId() == R.id.profile) {
+//                if(ProfileFragment.isEditing==false){
+//                    profileFragment = new ProfileFragment();
+//                }
+                profileFragment = new ProfileFragment();
                 selectedFragment = profileFragment;
 
             }  else if (item.getItemId() == R.id.textView63){
@@ -112,7 +111,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
 
-    public void showFragment(Fragment fragment, FragmentManager fragmentManager) {
+    public static void showFragment(Fragment fragment, FragmentManager fragmentManager) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         List<Fragment> allFragments = fragmentManager.getFragments(); // Get all fragments
         for (Fragment frag : allFragments) {
@@ -192,7 +191,7 @@ public class MenuActivity extends AppCompatActivity {
             userDb.setWeight(val);
         }
         else if (Objects.equals(key, "activityLevel")) {
-            userDb.setActivityLevel(val);;
+            userDb.setActivityLevel(val);
         }
         else if (Objects.equals(key, "bmr")) {
             userDb.setBmr(val);

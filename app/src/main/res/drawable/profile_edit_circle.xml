@@ -9,7 +9,7 @@
         android:width="660dp"
         android:height="80dp" />
     <stroke
-        android:width="2dp"
+        android:width="1dp"
         android:backgroundTint="#E1F6FF"
         android:color="#000000" />
     <corners android:radius="60dp" />
