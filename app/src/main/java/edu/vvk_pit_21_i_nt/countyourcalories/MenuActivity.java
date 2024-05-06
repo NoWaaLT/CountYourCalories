@@ -59,8 +59,8 @@ public class MenuActivity extends AppCompatActivity {
         userHistoryHashMap = new HashMap<>();
         getUserData();
         getUserHistory();
-        //UserHistory uh = new UserHistory(1500, 386, 280, 410, 1750);
-       // addUserHistory("2024-04-29", uh);
+        //UserHistory uh = new UserHistory(1000, 326, 480, 270, 2500);
+        //addUserHistory("2024-05-01", uh);
         FragmentManager managerOG = getSupportFragmentManager();
         myDiaryFragment = new MyDiaryFragment();
         mealPlansFragment = new MealPlansFragment();
@@ -225,7 +225,8 @@ public class MenuActivity extends AppCompatActivity {
                     }
                 }
                 Log.d("Naudotojo istorija", "gauta");
-
+                myDiaryFragment.showHistory(myDiaryFragment.Diena7);
+                myDiaryFragment.setArrows();
             }
 
             @Override

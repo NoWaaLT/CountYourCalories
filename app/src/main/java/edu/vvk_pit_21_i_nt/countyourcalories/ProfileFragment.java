@@ -235,8 +235,9 @@ public class ProfileFragment extends Fragment {
                 }
                 userDataPut_Int("age", Integer.parseInt(content));
                 edit_profile_bmr.setText(calcNewBmr());
+                edit_profile_target.setText(calcNewTarget());
                 calcNewBmr();
-
+                calcNewTarget();
                 @SuppressLint("UseRequireInsteadOfGet") InputMethodManager mgr = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
                 mgr.hideSoftInputFromWindow(edit_profile_age.getWindowToken(), 0);
             }
@@ -259,7 +260,9 @@ public class ProfileFragment extends Fragment {
                 }
                 userDataPut_Int("height", Integer.parseInt(content));
                 edit_profile_bmr.setText(calcNewBmr());
+                edit_profile_target.setText(calcNewTarget());
                 calcNewBmr();
+                calcNewTarget();
                 @SuppressLint("UseRequireInsteadOfGet") InputMethodManager mgr = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
                 mgr.hideSoftInputFromWindow(edit_profile_height.getWindowToken(), 0);
             }
@@ -283,6 +286,10 @@ public class ProfileFragment extends Fragment {
                     edit_profile_target.setText(calcNewTarget());
                     edit_profile_bmr.setText(calcNewBmr());
                 }
+                edit_profile_bmr.setText(calcNewBmr());
+                edit_profile_target.setText(calcNewTarget());
+                calcNewBmr();
+                calcNewTarget();
                 @SuppressLint("UseRequireInsteadOfGet") InputMethodManager mgr = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
                 mgr.hideSoftInputFromWindow(edit_profile_weight.getWindowToken(), 0);
             }
@@ -630,8 +637,8 @@ public class ProfileFragment extends Fragment {
 
     private void gender_Image_Animation_start_page() {
         animationDuration = 500;
-        Animation animation_image_male_In = new TranslateAnimation(10000, -300, 0, 0);
-        Animation animation_image_female_In = new TranslateAnimation(10000, -300, 0, 0);
+        Animation animation_image_male_In = new TranslateAnimation(0, -300, -10000, 0);
+        Animation animation_image_female_In = new TranslateAnimation(0, -300, -10000, 0);
 
         if (Objects.equals(myGender, "A Man")) {
             animation_image_male_In.setDuration(1200);
