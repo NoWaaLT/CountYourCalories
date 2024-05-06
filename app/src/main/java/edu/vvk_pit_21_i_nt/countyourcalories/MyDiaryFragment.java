@@ -155,14 +155,21 @@ public class MyDiaryFragment extends Fragment {
 
         shimmerFrameLayout = view.findViewById(R.id.shimmer_view);
         datalayout = view.findViewById(R.id.data_view);
-
-        datalayout.setVisibility(View.INVISIBLE);
-        shimmerFrameLayout.startShimmer();
+        if (datalayout != null) {
+            datalayout.setVisibility(View.INVISIBLE);
+        }
+        if (shimmerFrameLayout != null) {
+            shimmerFrameLayout.startShimmer();
+        }
         Handler shimmerHandler = new Handler();
         shimmerHandler.postDelayed(()->{
-            datalayout.setVisibility(View.VISIBLE);
-            shimmerFrameLayout.stopShimmer();
-            shimmerFrameLayout.setVisibility(View.INVISIBLE);
+            if (datalayout != null) {
+                datalayout.setVisibility(View.VISIBLE);
+            }
+            if (shimmerFrameLayout != null) {
+                shimmerFrameLayout.stopShimmer();
+                shimmerFrameLayout.setVisibility(View.INVISIBLE);
+            }
         },3500);
 
 
@@ -303,7 +310,9 @@ public class MyDiaryFragment extends Fragment {
         float bottomRightCornerRadius = 0;
         float bottomLeftCornerRadius = 0;
         gradientDrawable.setCornerRadii(new float[] {topLeftCornerRadius, topLeftCornerRadius, topRightCornerRadius, topRightCornerRadius, bottomRightCornerRadius, bottomRightCornerRadius, bottomLeftCornerRadius, bottomLeftCornerRadius});
-        waterCard.setBackground(gradientDrawable);
+        if (waterCard != null) {
+            waterCard.setBackground(gradientDrawable);
+        }
 
         textView36.setOnClickListener(new View.OnClickListener() {
             @Override
