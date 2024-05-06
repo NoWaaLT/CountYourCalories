@@ -8,7 +8,7 @@
     tools:layout_editor_absoluteY="-1dp"
     android:background="@color/white"
     tools:context=".ProfileFragment">
-<!--    android:background="@drawable/gradient_background"-->
+    <!--    android:background="@drawable/gradient_background"-->
 
     <TextView
         android:id="@+id/profile_title"
