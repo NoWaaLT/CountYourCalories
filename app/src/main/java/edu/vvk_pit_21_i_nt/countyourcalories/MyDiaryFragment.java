@@ -72,6 +72,7 @@ public class MyDiaryFragment extends Fragment {
     private ProgressBar fatBar;
     private List<ImageView> waterCups;
     TextView Diena7;
+    private List<ImageView> arrows;
 
     public int setOrNot = 0;
 
@@ -179,6 +180,7 @@ public class MyDiaryFragment extends Fragment {
         waterTarget = view.findViewById(R.id.textView48);
         listOfDays = new ArrayList<>();
         waterCups = new ArrayList<>();
+        arrows = new ArrayList<>();
         addDayListeners(Diena1);
         addDayListeners(Diena2);
         addDayListeners(Diena3);
@@ -205,13 +207,19 @@ public class MyDiaryFragment extends Fragment {
         waterCups.add(cup4);
         waterCups.add(cup5);
         waterCups.add(cup6);
-        if (((MenuActivity) requireActivity()).userDb == null) {
-            Handler handler = new Handler();
-            handler.postDelayed(()->showHistory(Diena7),3000);
-        }
-        else {
-            showHistory(Diena7);
-        }
+        arrows.add(view.findViewById(R.id.imageView7));
+        arrows.add(view.findViewById(R.id.imageView8));
+        arrows.add(view.findViewById(R.id.imageView9));
+        arrows.add(view.findViewById(R.id.imageView10));
+        arrows.add(view.findViewById(R.id.imageView11));
+        arrows.add(view.findViewById(R.id.imageView12));
+        //if (((MenuActivity) requireActivity()).userDb == null) {
+            //Handler handler = new Handler();
+            //handler.postDelayed(this::showUI,3000);
+        //}
+        //else {
+            //showHistory(Diena7);
+        //}
 
         textView36.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -326,12 +334,12 @@ public class MyDiaryFragment extends Fragment {
         UserHistory uh = null;
         for (Map.Entry<String, UserHistory> set: ((MenuActivity) requireActivity()).userHistoryHashMap.entrySet()) {
             String date = set.getKey();
-            String month = date.substring(5, 7);
-            SimpleDateFormat sdf = new SimpleDateFormat("MM", Locale.UK);
-            String currentDate = sdf.format(new Date());
-            if (date.endsWith(day) && month.equals(currentDate)) {
+            //String month = date.substring(5, 7);
+            //SimpleDateFormat sdf = new SimpleDateFormat("MM", Locale.UK);
+            //String currentDate = sdf.format(new Date());
+            if (date.endsWith(day)) {
                 uh = set.getValue();
-                break;
+                //break;
             }
         }
         int target;
@@ -484,6 +492,42 @@ public class MyDiaryFragment extends Fragment {
             }
         }
     }
+    protected void setArrows() {
+        int goal = ((MenuActivity) requireActivity()).userDb.getGoal();
+        int target = ((MenuActivity) requireActivity()).userDb.getTarget();
+        for (int i = 0; i < arrows.size(); i++) {
+            String day = listOfDays.get(i).getText().toString();
+            int kCalRemain = target;
+            for (Map.Entry<String, UserHistory> set: ((MenuActivity) requireActivity()).userHistoryHashMap.entrySet()) {
+                String date = set.getKey();
+                if (date.endsWith(day)) {
+                    kCalRemain = target - set.getValue().getKcal();
+                }
+            }
+            if (kCalRemain == target) {
+                arrows.get(i).setImageResource(R.drawable.baseline_keyboard_double_arrow_right_24);
+            }
+            else {
+                int remainPercent = (kCalRemain * 100) / target;
+                if (remainPercent >= 25) {
+                    arrows.get(i).setImageResource(R.drawable.baseline_keyboard_double_arrow_down_24);
+                }
+                else if ( remainPercent >=0) {
+                    arrows.get(i).setImageResource(R.drawable.baseline_keyboard_double_arrow_up_24);
+                }
+                else {
+                    if (goal == 0) {
+                        arrows.get(i).setImageResource(R.drawable.baseline_keyboard_double_arrow_up_24);
+                    }
+                    else {
+                        arrows.get(i).setImageResource(R.drawable.baseline_keyboard_double_arrow_down_24);
+                    }
+                }
+            }
+
+        }
+    }
+
     private int calcTargetProtein(int goal, int targetKcal) {
         int proteins;
         if (goal == 0) {
