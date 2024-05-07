@@ -61,9 +61,11 @@ public class MenuActivity extends AppCompatActivity {
         getUserData();
         getUserHistory();
 
+        // Add user history for the last 7 days
         Random rand = new Random();
         for(int i = 0; i < 7; i++) {
-            int setProteins= rand.nextInt(100) + 600;
+            // Add random values for testing proteins, carbs, fat, calories, water
+            int setProteins= rand.nextInt(50) + 300;
             int setCarbs = rand.nextInt(100) + 600;
             int setFat= rand.nextInt(100) + 600;
             int setCalories = rand.nextInt(1000) + 2000;

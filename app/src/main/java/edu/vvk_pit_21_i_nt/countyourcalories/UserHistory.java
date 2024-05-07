@@ -20,7 +20,6 @@ public class UserHistory {
         this.fat = fat;
         this.protein = protein;
         this.water = water;
-
     }
     public int getKcal() {
         return kcal;
