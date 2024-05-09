@@ -1,109 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".MainActivity">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".MainActivity"
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="-1dp"
     android:background="@drawable/gradient_background">
-
-    <!-- Create dropDown List-->
-
-    <!-- Create inputField -->
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="103dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="103dp"
-        android:layout_marginBottom="116dp"
         android:text="@string/enter_your_gender"
         android:textColor="@color/white"
         android:textSize="24sp"
         app:fontFamily="sans-serif"
-        app:layout_constraintBottom_toTopOf="@+id/gender_spinner"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Spinner
-        android:id="@+id/gender_spinner"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="116dp"
-        android:background="@android:drawable/btn_dropdown"
-        android:dropDownWidth="200dp"
-        android:dropDownHorizontalOffset="23dp"
-        android:dropDownVerticalOffset="62dp"
-        android:spinnerMode="dropdown"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/signout_button" />
 
-    <EditText
-        android:id="@+id/inputText"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="116dp"
-        android:background="@android:drawable/editbox_background"
-        android:hint="@string/age"
-        android:inputType="number"
-        android:visibility="invisible"
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="80dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_next"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
 
+        <Spinner
+            android:id="@+id/gender_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:drawable/btn_dropdown"
+            android:dropDownWidth="180dp"
+            android:dropDownHorizontalOffset="50dp"
+            android:dropDownVerticalOffset="45dp"
+            android:spinnerMode="dropdown"
+            android:visibility="visible" />
 
+        <EditText
+            android:id="@+id/inputText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:drawable/editbox_background"
+            android:hint="@string/age"
+            android:inputType="number"
+            android:visibility="invisible" />
+
+    </FrameLayout>
     <Button
         android:id="@+id/button_next"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="158dp"
-        android:layout_marginTop="186dp"
         android:layout_marginEnd="159dp"
-        android:layout_marginBottom="229dp"
+        android:layout_marginBottom="140dp"
         android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.471"
+        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gender_spinner"
-        app:layout_constraintVertical_bias="0.811" />
-
-    <Button
-        android:id="@+id/signout_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sign_out_button_text"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.948"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.783" />
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/button_back"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="159dp"
+        android:layout_marginStart="158dp"
         android:layout_marginTop="26dp"
-        android:layout_marginEnd="164dp"
-        android:layout_marginBottom="155dp"
+        android:layout_marginEnd="159dp"
         android:onClick="moveBack"
         android:text="@string/back"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.446"
+        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_next"
-        app:layout_constraintVertical_bias="0.027" />
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/signout_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="21dp"
+        android:text="@string/sign_out_button_text"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.94"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewSteps"
@@ -118,10 +120,10 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.16" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -158,11 +160,12 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/entryProgressBar"
         app:layout_constraintEnd_toStartOf="@+id/textViewSteps"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.094"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.782"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/back_arrow" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
 

@@ -37,7 +37,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    static Spinner spinner;
+    Spinner spinner;
     Button buttonNext;
     Button buttonBack;
     TextView upperText;
@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
             if (userData == 1) {
                 Intent intent = new Intent(MainActivity.this, MenuActivity.class);
                 startActivity(intent);
+                // This function doesn't allow to go back to MainActivity
+                finish();
             }
         }
 
