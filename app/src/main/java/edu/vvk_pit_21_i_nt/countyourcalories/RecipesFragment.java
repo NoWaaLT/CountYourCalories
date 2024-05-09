@@ -1,5 +1,6 @@
 package edu.vvk_pit_21_i_nt.countyourcalories;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -50,7 +52,13 @@ public class RecipesFragment extends Fragment {
     AutoCompleteTextView atcvSelectItem;
     Button btnAddItem;
     Button btnCreateRecipe;
+    Button btnClear;
     TextInputEditText tietRecipeName;
+    ListView selectedItemsListView;
+    ArrayList<product> productList;
+    ArrayAdapter<product> selectedItemsAdapter;
+    ArrayList<product> selectedProductList;
+    ArrayAdapter<product> adapter;
     FirebaseAuth auth;
     FirebaseUser user;
     public RecipesFragment() {
@@ -95,16 +103,18 @@ public class RecipesFragment extends Fragment {
         atcvSelectItem = view.findViewById(R.id.RecipesFragment_actv_autoCompleteTextView);
         btnAddItem = view.findViewById(R.id.RecipesFragment_btn_addItem);
         btnCreateRecipe = view.findViewById(R.id.RecipesFragment_btn_createRecipe);
+        btnClear = view.findViewById(R.id.RecipesFragment_btn_clear);
         tietRecipeName = view.findViewById(R.id.RecipesFragment_et_recipe_name);
 
+
         // Stores the product objects in ArrayList
-        final ArrayList<product> productList = new ArrayList<>();
+        productList = new ArrayList<>();
 
         // Adapter iterates` through the ArrayList and sets the product name to the TextView
         // requireContext() returns the context of the fragment
         // r.layout.recipes_fragment_list_item is the layout of the list item
         // productList is the ArrayList of products
-        final ArrayAdapter<product> adapter = new ArrayAdapter<product>(requireContext(), R.layout.recipes_fragment_list_item, productList) {
+        adapter = new ArrayAdapter<product>(requireContext(), R.layout.recipes_fragment_list_item, productList) {
             @NonNull
             @Override
             // getView method is responsible for creating a view for each item in the list.
@@ -156,7 +166,7 @@ public class RecipesFragment extends Fragment {
             }
         });
 
-        final ArrayList<product> selectedProductList = new ArrayList<>();
+        selectedProductList = new ArrayList<>();
         btnAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,9 +179,11 @@ public class RecipesFragment extends Fragment {
                 }
             }
         });
+            // I have stopped on fixing the issue then I pressing the button "Clear", the app doesn't clear the text field and the list of selected items
 
-        final ListView selectedItemsListView = view.findViewById(R.id.RecipesFragment_lv_selectedItems);
-        final ArrayAdapter<product> selectedItemsAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, selectedProductList);
+
+        selectedItemsListView = view.findViewById(R.id.RecipesFragment_lv_selectedItems);
+        selectedItemsAdapter = new ArrayAdapter<>(requireContext(), R.layout.recipes_fragment_listview_item, selectedProductList);
         selectedItemsListView.setAdapter(selectedItemsAdapter);
 
         btnAddItem.setOnClickListener(new View.OnClickListener() {
@@ -227,6 +239,7 @@ public class RecipesFragment extends Fragment {
                                             Toast.makeText(requireContext(), "Recipe with this name already exists", Toast.LENGTH_SHORT).show();
                                         } else {
                                             createRecipe(selectedProductList, reference, user);
+                                            clearFields();
                                         }
                                     }
 
@@ -244,6 +257,7 @@ public class RecipesFragment extends Fragment {
                                 tietRecipeName.setError("Recipe name is required");
                             } else {
                               createRecipe(selectedProductList, reference, user);
+                              clearFields();
                             }
                         }
                     }
@@ -256,8 +270,29 @@ public class RecipesFragment extends Fragment {
             }
         });
 
+        btnClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearFields();
+            }
+        });
+
         return view;
     }
+
+    private void clearFields() {
+        tietRecipeName.setText("");
+        selectedProductList.clear();
+        adapter.notifyDataSetChanged();
+        atcvSelectItem.clearFocus(); // Clear the focus from the AutoCompleteTextView
+        selectedItemsAdapter.notifyDataSetChanged();
+        // Close the soft keyboard
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(atcvSelectItem.getWindowToken(), 0);
+        btnCreateRecipe.requestFocus();
+    }
+
+
 
     private void createRecipe(ArrayList<product> selectedProductList, DatabaseReference reference, FirebaseUser user) {
         String recipeName = tietRecipeName.getText().toString();
@@ -278,8 +313,8 @@ public class RecipesFragment extends Fragment {
             reference.child(user.getUid()).child(recipeName).setValue(recipeProductsList);
 
             Log.d("TAG", "RecipeProducts: " + recipeProductsList);
+
         }
     }
-
 
 }

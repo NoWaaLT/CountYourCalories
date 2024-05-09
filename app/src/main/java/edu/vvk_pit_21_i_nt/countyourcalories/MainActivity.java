@@ -86,85 +86,85 @@ public class MainActivity extends AppCompatActivity {
         signOut();
         setUpGUI(0, getResources().getStringArray(R.array.gender_list));
 
-        buttonNext.setOnClickListener(v -> {
-//            String inputString;
-            switch (preMenuStage) {
-                case 0:
-                    set_case_Zero();
-                    preMenuStage++;
-                    setUpGUI(1, getResources().getStringArray(R.array.main_goal));
-                    buttonBack.setVisibility(View.VISIBLE);
-                    break;
-                case 1:
-                    set_Case_0ne();
-                    preMenuStage++;
-                    setUpGUI(2, getResources().getStringArray(R.array.activity_desc));
-                    break;
-                case 2:
-                    set_Case_Two();
-                    preMenuStage++;
-                    setUpGUI(3, getResources().getString(R.string.age));
-                    spinner.setVisibility(View.INVISIBLE);
-                    inputText.setVisibility(View.VISIBLE);
-                    break;
-                case 3:
-                    set_Case_Tree();
-                    if(!inputString.isEmpty()) {
-                        preMenuStage++;
-                    }
-                    break;
-                case 4:
-                    set_Case_Four();
-                    if(!inputString.isEmpty()) {
-                        preMenuStage++;
-                    }
-                    break;
-                case 5:
-                    set_Case_Five();
-                    if(!inputString.isEmpty()) {
-                        addUserData();
-                    }
-                    break;
-                default:
-                    break;
-            }
-        });
-
-        buttonBack.setOnClickListener(v -> {
-            if(preMenuStage != 0) {
-                switch(preMenuStage) {
-                    case 1:
-                        preMenuStage--;
-                        setUpGUI(0, getResources().getStringArray(R.array.gender_list));
-                        buttonBack.setVisibility(View.INVISIBLE);
-                        break;
-                    case 2:
-                        preMenuStage--;
-                        setUpGUI(1, getResources().getStringArray(R.array.main_goal));
-                        break;
-                    case 3:
-                        preMenuStage--;
-                        setUpGUI(2, getResources().getStringArray(R.array.activity_desc));
-                        spinner.setVisibility(View.VISIBLE);
-                        inputText.setVisibility(View.INVISIBLE);
-                        break;
-                    case 4:
-                        preMenuStage--;
-                        setUpGUI(3, getResources().getString(R.string.age));
-                        break;
-                    case 5:
-                        preMenuStage--;
-                        setUpGUI(4, getResources().getString(R.string.height));
-                        break;
-                    case 6:
-                        preMenuStage--;
-                        setUpGUI(5, getResources().getString(R.string.weight));
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
+//        buttonNext.setOnClickListener(v -> {
+////            String inputString;
+//            switch (preMenuStage) {
+//                case 0:
+//                    set_case_Zero();
+//                    preMenuStage++;
+//                    setUpGUI(1, getResources().getStringArray(R.array.main_goal));
+//                    buttonBack.setVisibility(View.VISIBLE);
+//                    break;
+//                case 1:
+//                    set_Case_0ne();
+//                    preMenuStage++;
+//                    setUpGUI(2, getResources().getStringArray(R.array.activity_desc));
+//                    break;
+//                case 2:
+//                    set_Case_Two();
+//                    preMenuStage++;
+//                    setUpGUI(3, getResources().getString(R.string.age));
+//                    spinner.setVisibility(View.INVISIBLE);
+//                    inputText.setVisibility(View.VISIBLE);
+//                    break;
+//                case 3:
+//                    set_Case_Tree();
+//                    if(!inputString.isEmpty()) {
+//                        preMenuStage++;
+//                    }
+//                    break;
+//                case 4:
+//                    set_Case_Four();
+//                    if(!inputString.isEmpty()) {
+//                        preMenuStage++;
+//                    }
+//                    break;
+//                case 5:
+//                    set_Case_Five();
+//                    if(!inputString.isEmpty()) {
+//                        addUserData();
+//                    }
+//                    break;
+//                default:
+//                    break;
+//            }
+//        });
+//
+//        buttonBack.setOnClickListener(v -> {
+//            if(preMenuStage != 0) {
+//                switch(preMenuStage) {
+//                    case 1:
+//                        preMenuStage--;
+//                        setUpGUI(0, getResources().getStringArray(R.array.gender_list));
+//                        buttonBack.setVisibility(View.INVISIBLE);
+//                        break;
+//                    case 2:
+//                        preMenuStage--;
+//                        setUpGUI(1, getResources().getStringArray(R.array.main_goal));
+//                        break;
+//                    case 3:
+//                        preMenuStage--;
+//                        setUpGUI(2, getResources().getStringArray(R.array.activity_desc));
+//                        spinner.setVisibility(View.VISIBLE);
+//                        inputText.setVisibility(View.INVISIBLE);
+//                        break;
+//                    case 4:
+//                        preMenuStage--;
+//                        setUpGUI(3, getResources().getString(R.string.age));
+//                        break;
+//                    case 5:
+//                        preMenuStage--;
+//                        setUpGUI(4, getResources().getString(R.string.height));
+//                        break;
+//                    case 6:
+//                        preMenuStage--;
+//                        setUpGUI(5, getResources().getString(R.string.weight));
+//                        break;
+//                    default:
+//                        break;
+//                }
+//            }
+//        });
 
         buttonNext.setOnClickListener(v -> moveNext(v));
         buttonBack.setOnClickListener(v -> moveBack(v));
@@ -172,93 +172,93 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void set_Case_Five() {
-        inputString = inputText.getText().toString();
-        if(!inputString.isEmpty()) {
-            height = Integer.parseInt(inputText.getText().toString());
-            bmr = calcBmr(weight, height, age, gender);
-            targetKcal = calcTargetKcal(bmr, activityLevel, difference);
-            // Moves to the next activity
-            Intent intent = new Intent(MainActivity.this, MenuActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        else {
-            Toast.makeText(MainActivity.this, getResources().getString(R.string.emptyField), Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-    private void set_Case_Four() {
-        inputString = inputText.getText().toString();
-        if(!inputString.isEmpty()) {
-            weight = Float.parseFloat(inputText.getText().toString());
-            setUpGUI(5, getResources().getString(R.string.height));
-        }
-        else {
-            Toast.makeText(MainActivity.this, getResources().getString(R.string.emptyField), Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-
-    private void set_Case_Tree() {
-        if(!inputString.isEmpty()) {
-            age = Integer.parseInt(inputString);
-            setUpGUI(4, getResources().getString(R.string.weight));
-        }
-        else {
-            Toast.makeText(MainActivity.this, getResources().getString(R.string.emptyField), Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-    private void set_Case_Two() {
-        String activityString = spinner.getSelectedItem().toString();
-        switch (activityString) {
-            case "0-1":
-                activityLevel = 1.2f;
-                break;
-            case "2-3":
-                activityLevel = 1.375f;
-                break;
-            case "4-5":
-                activityLevel = 1.55f;
-                break;
-            case "6-7":
-                activityLevel = 1.725f;
-                break;
-            case "2 k./d.":
-                activityLevel = 1.9f;
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void set_Case_0ne() {
-        String goalString = spinner.getSelectedItem().toString();
-        switch (goalString) {
-            case "Gain weight":
-                goal = 0;
-                difference = 300;
-                break;
-            case "Lose weight":
-                goal = 1;
-                difference = -300;
-                break;
-            case "Maintain weight":
-                goal = 2;
-                difference = 0;
-                break;
-            default:
-                break;
-        }
-    }
-
-    public static void set_case_Zero() {
-        gender = spinner.getSelectedItem().toString();
-    }
+//    private void set_Case_Five() {
+//        inputString = inputText.getText().toString();
+//        if(!inputString.isEmpty()) {
+//            height = Integer.parseInt(inputText.getText().toString());
+//            bmr = calcBmr(weight, height, age, gender);
+//            targetKcal = calcTargetKcal(bmr, activityLevel, difference);
+//            // Moves to the next activity
+//            Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+//            startActivity(intent);
+//            finish();
+//        }
+//        else {
+//            Toast.makeText(MainActivity.this, getResources().getString(R.string.emptyField), Toast.LENGTH_SHORT).show();
+//        }
+//
+//    }
+//
+//    private void set_Case_Four() {
+//        inputString = inputText.getText().toString();
+//        if(!inputString.isEmpty()) {
+//            weight = Float.parseFloat(inputText.getText().toString());
+//            setUpGUI(5, getResources().getString(R.string.height));
+//        }
+//        else {
+//            Toast.makeText(MainActivity.this, getResources().getString(R.string.emptyField), Toast.LENGTH_SHORT).show();
+//        }
+//
+//    }
+//
+//
+//    private void set_Case_Tree() {
+//        if(!inputString.isEmpty()) {
+//            age = Integer.parseInt(inputString);
+//            setUpGUI(4, getResources().getString(R.string.weight));
+//        }
+//        else {
+//            Toast.makeText(MainActivity.this, getResources().getString(R.string.emptyField), Toast.LENGTH_SHORT).show();
+//        }
+//
+//    }
+//
+//    private void set_Case_Two() {
+//        String activityString = spinner.getSelectedItem().toString();
+//        switch (activityString) {
+//            case "0–1 times/week":
+//                activityLevel = 1.2f;
+//                break;
+//            case "2–3 times/week":
+//                activityLevel = 1.375f;
+//                break;
+//            case "4–5 times/week":
+//                activityLevel = 1.55f;
+//                break;
+//            case "6–7 times/week":
+//                activityLevel = 1.725f;
+//                break;
+//            case "2 times/day":
+//                activityLevel = 1.9f;
+//                break;
+//            default:
+//                break;
+//        }
+//    }
+//
+//    private void set_Case_0ne() {
+//        String goalString = spinner.getSelectedItem().toString();
+//        switch (goalString) {
+//            case "Gain weight":
+//                goal = 0;
+//                difference = 300;
+//                break;
+//            case "Lose weight":
+//                goal = 1;
+//                difference = -300;
+//                break;
+//            case "Maintain weight":
+//                goal = 2;
+//                difference = 0;
+//                break;
+//            default:
+//                break;
+//        }
+//    }
+//
+//    public static void set_case_Zero() {
+//        gender = spinner.getSelectedItem().toString();
+//    }
 
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(),
@@ -434,19 +434,19 @@ public class MainActivity extends AppCompatActivity {
                 String activityString = spinner.getSelectedItem().toString();
                 switch (activityString) {
 
-                    case "0-1":
+                    case "0–1 times/week":
                         activityLevel = 1.2f;
                         break;
-                    case "2-3":
+                    case "2–3 times/week":
                         activityLevel = 1.375f;
                         break;
-                    case "4-5":
+                    case "4–5 times/week":
                         activityLevel = 1.55f;
                         break;
-                    case "6-7":
+                    case "6–7 times/week":
                         activityLevel = 1.725f;
                         break;
-                    case "2 k./d.":
+                    case "2 times/day":
                         activityLevel = 1.9f;
                         break;
                     default:
