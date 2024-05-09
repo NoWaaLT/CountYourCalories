@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, MenuActivity.class);
                 startActivity(intent);
                 // This function doesn't allow to go back to MainActivity
-                finish();
+//                finish();
             }
         }
 

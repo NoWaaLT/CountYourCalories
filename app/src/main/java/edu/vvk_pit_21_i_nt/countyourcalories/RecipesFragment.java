@@ -179,8 +179,6 @@ public class RecipesFragment extends Fragment {
                 }
             }
         });
-            // I have stopped on fixing the issue then I pressing the button "Clear", the app doesn't clear the text field and the list of selected items
-
 
         selectedItemsListView = view.findViewById(R.id.RecipesFragment_lv_selectedItems);
         selectedItemsAdapter = new ArrayAdapter<>(requireContext(), R.layout.recipes_fragment_listview_item, selectedProductList);

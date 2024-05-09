@@ -25,7 +25,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/RecipesFragment_til_recipe_name"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/MyTextInputLayoutStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="16dp"
@@ -46,6 +46,7 @@
                     android:id="@+id/RecipesFragment_et_recipe_name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:cursorVisible="false"
                     android:textColor="@color/white" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -65,7 +66,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/RecipesFragment_til_select_items"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                style="@style/OutlinedBoxWhite"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="16dp"
@@ -89,7 +90,8 @@
                     android:layout_height="match_parent"
                     android:dropDownHeight="100dp"
                     android:inputType="text"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:cursorVisible="false"/>
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
