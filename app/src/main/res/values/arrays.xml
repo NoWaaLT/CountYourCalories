@@ -10,18 +10,18 @@
         <item>@string/goal_maintain_weight</item>
     </string-array>
     <string-array name="activity_desc">
-        <item>0-1</item>
-        <item>2-3</item>
-        <item>4-5</item>
-        <item>6-7</item>
-        <item>2 k./d.</item>
+        <item>0–1 times/week</item>
+        <item>2–3 times/week</item>
+        <item>4–5 times/week</item>
+        <item>6–7 times/week</item>
+        <item>2 times/day</item>
     </string-array>
     <string-array name="questions">
-        <item>What\'s your gender?</item>
-        <item>What\'s your goal?</item>
-        <item>What\'s your activity level?</item>
-        <item>What\'s your age?</item>
-        <item>What\'s your weight?</item>
-        <item>What\'s your height?</item>
+        <item>@string/enter_your_gender</item>
+        <item>@string/enter_your_goal</item>
+        <item>@string/enter_your_activity_level</item>
+        <item>@string/enter_your_age</item>
+        <item>@string/enter_your_weight_in_kg</item>
+        <item>@string/enter_your_height_in_cm</item>
     </string-array>
 </resources>

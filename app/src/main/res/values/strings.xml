@@ -26,13 +26,17 @@
     <string name="recipes_select_item">Select Item</string>
     <string name="recipes_add_item">Add Item</string>
     <string name="recipes_create_recipe">Create Recipe</string>
+    <string name="recipes_clear">Clear</string>
     <string name="edit_profile">edit_profile</string>
     <string name="edit_age_text">edit_age_text</string>
     <string name="value_hint" />
     <string name="value" />
     <string name="edit_eight_text" />
     <string name="edit">EDIT</string>
-    <string name="enter_your_age">Enter your age</string>
-    <string name="enter_your_height_in_cm">Enter your height in cm</string>
-    <string name="enter_your_weight_in_kg">Enter your weight in kg</string>
+    <string name="enter_your_gender">What\'s your gender?</string>
+    <string name="enter_your_goal">What\'s your goal?</string>
+    <string name="enter_your_activity_level">What\'s your activity level?</string>
+    <string name="enter_your_age">What\'s your age?</string>
+    <string name="enter_your_height_in_cm">What\'s your weight? (kg)</string>
+    <string name="enter_your_weight_in_kg">What\'s your height? (cm)</string>
 </resources>
