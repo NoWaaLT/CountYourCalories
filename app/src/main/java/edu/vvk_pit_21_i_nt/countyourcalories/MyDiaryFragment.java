@@ -436,33 +436,19 @@ public class MyDiaryFragment extends Fragment {
         UserHistory uh = null;
         for (Map.Entry<String, UserHistory> set: ((MenuActivity) requireActivity()).userHistoryHashMap.entrySet()) {
             String date = set.getKey();
-            String month = date.substring(5, 7);
-            SimpleDateFormat sdf = new SimpleDateFormat("MM", Locale.UK);
-            String currentDate = sdf.format(new Date());
-            if (date.endsWith(day) && month.equals(currentDate)) {
+            if (date.endsWith(day)) {
                 uh = set.getValue();
-                break;
             }
         }
         int target;
         int goal;
         String gender;
         int weight;
-        UserDb ud = ((MenuActivity) requireActivity()).userDb;
-        if (((MenuActivity) requireActivity()).userDb == null) {
+        target = ((MenuActivity) requireActivity()).userDb.getTarget();
+        goal = ((MenuActivity) requireActivity()).userDb.getGoal();
+        gender = ((MenuActivity) requireActivity()).userDb.getGender();
+        weight = (int) ((MenuActivity) requireActivity()).userDb.getWeight();
 
-            target = 2000;
-            goal = 1;
-            gender = "A Woman";
-            weight = 56;
-        }
-        else {
-            target = ((MenuActivity) requireActivity()).userDb.getTarget();
-            goal = ((MenuActivity) requireActivity()).userDb.getGoal();
-            gender = ((MenuActivity) requireActivity()).userDb.getGender();
-            weight = (int) ((MenuActivity) requireActivity()).userDb.getWeight();
-            Log.d("UserDb", "not null");
-        }
         int targetCarbo = calcTargetCarbs(goal, target);
         int targetProtein = calcTargetProtein(goal, target);
         int targetFat = calcTargetFat(goal, target);
