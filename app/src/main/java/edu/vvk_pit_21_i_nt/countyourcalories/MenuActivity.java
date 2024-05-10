@@ -66,7 +66,7 @@ public class MenuActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference("Users/"+ user.getUid());
         //userHistoryHashMap = menuModel.getUserHistoryHashMap();
         createRandomHistory();
-        userHistoryHashMap = new HashMap<>();
+        userHistoryHashMap = menuModel.getUserHistoryHashMap();
         getUserData();
         getUserHistory();
         //Random rand = new Random();
