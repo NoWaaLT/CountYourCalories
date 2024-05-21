@@ -72,7 +72,7 @@ public class DatabaseFoodAdd extends Fragment {
 
         TextView tOne = (TextView) view.findViewById(R.id.editTextNumber5);
         Slider sliderOne = (Slider) view.findViewById(R.id.vienas);
-        tOne.setText(Float.toString(sliderOne.getValue())+"g");
+        tOne.setText(Float.toString(sliderOne.getValue()));
 
         sliderOne.addOnChangeListener(new Slider.OnChangeListener() {
             @Override
@@ -80,13 +80,13 @@ public class DatabaseFoodAdd extends Fragment {
                 float abb = sliderOne.getValue();
                 Double abc = (double) abb;
                 abc = Double.parseDouble(df.format(abc));
-                tOne.setText(Double.toString(abc)+"g");
+                tOne.setText(Double.toString(abc));
             }
         });
 
         TextView tTwo = (TextView) view.findViewById(R.id.editTextNumber);
         Slider sliderTwo = (Slider) view.findViewById(R.id.du);
-        tTwo.setText(Float.toString(sliderTwo.getValue())+"g");
+        tTwo.setText(Float.toString(sliderTwo.getValue()));
 
         sliderTwo.addOnChangeListener(new Slider.OnChangeListener() {
             @Override
@@ -94,13 +94,13 @@ public class DatabaseFoodAdd extends Fragment {
                 float abb = sliderTwo.getValue();
                 Double abc = (double) abb;
                 abc = Double.parseDouble(df.format(abc));
-                tTwo.setText(Double.toString(abc)+"g");
+                tTwo.setText(Double.toString(abc));
             }
         });
 
         TextView tThree = (TextView) view.findViewById(R.id.editTextNumber2);
         Slider sliderThree = (Slider) view.findViewById(R.id.trys);
-        tThree.setText(Float.toString(sliderThree.getValue())+"kcal");
+        tThree.setText(Float.toString(sliderThree.getValue()));
 
         sliderThree.addOnChangeListener(new Slider.OnChangeListener() {
             @Override
@@ -108,13 +108,13 @@ public class DatabaseFoodAdd extends Fragment {
                 float abb = sliderThree.getValue();
                 Float abc = (float) abb;
                 abc = Float.parseFloat(dff.format(abc));
-                tThree.setText(Float.toString(abc)+"kcal");
+                tThree.setText(Float.toString(abc));
             }
         });
 
         TextView tFour = (TextView) view.findViewById(R.id.editTextNumber3);
         Slider sliderFour = (Slider) view.findViewById(R.id.keturi);
-        tFour.setText(Float.toString(sliderFour.getValue())+"g");
+        tFour.setText(Float.toString(sliderFour.getValue()));
 
         sliderFour.addOnChangeListener(new Slider.OnChangeListener() {
             @Override
@@ -122,14 +122,14 @@ public class DatabaseFoodAdd extends Fragment {
                 float abb = sliderFour.getValue();
                 Double abc = (double) abb;
                 abc = Double.parseDouble(df.format(abc));
-                tFour.setText(Double.toString(abc)+"g");
+                tFour.setText(Double.toString(abc));
             }
         });
 
 
         TextView tFive = (TextView) view.findViewById(R.id.editTextNumber4);
         Slider sliderFive = (Slider) view.findViewById(R.id.penki);
-        tFive.setText(Float.toString(sliderFive.getValue())+"g");
+        tFive.setText(Float.toString(sliderFive.getValue()));
 
         sliderFive.addOnChangeListener(new Slider.OnChangeListener() {
             @Override
@@ -137,7 +137,7 @@ public class DatabaseFoodAdd extends Fragment {
                 float abb = sliderFive.getValue();
                 Double abc = (double) abb;
                 abc = Double.parseDouble(df.format(abc));
-                tFive.setText(Double.toString(abc)+"g");
+                tFive.setText(Double.toString(abc));
             }
         });
 
