@@ -25,8 +25,14 @@
     <string name="recipes_title">Enter recipe name</string>
     <string name="recipes_select_item">Select Item</string>
     <string name="recipes_add_item">Add Item</string>
+    <string name="recipes_consume">Consume</string>
     <string name="recipes_create_recipe">Create Recipe</string>
     <string name="recipes_clear">Clear</string>
+    <string name="recipes_consume_pick_recipe">Select Recipe</string>
+    <string name="recipes_consume_recipe">Consume</string>
+    <string name="recipes_consume_firstProduct">Product</string>
+    <string name="recipes_consume_secondProduct">Product</string>
+    <string name="recipes_consume_thirdProduct">Product</string>
     <string name="edit_profile">edit_profile</string>
     <string name="edit_age_text">edit_age_text</string>
     <string name="value_hint" />

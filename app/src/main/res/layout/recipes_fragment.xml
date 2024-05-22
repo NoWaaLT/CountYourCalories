@@ -88,10 +88,10 @@
                     android:id="@+id/RecipesFragment_actv_autoCompleteTextView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:cursorVisible="false"
                     android:dropDownHeight="100dp"
                     android:inputType="text"
-                    android:textColor="@color/white"
-                    android:cursorVisible="false"/>
+                    android:textColor="@color/white" />
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -131,7 +131,7 @@
 
         <LinearLayout
             android:id="@+id/RecipesFragment_ll_bottom_buttons"
-            android:layout_width="220dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -145,6 +145,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/recipes_create_recipe" />
+
+            <Button
+                android:id="@+id/RecipesFragment_btn_consume"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/recipes_consume" />
         </LinearLayout>
 
 
