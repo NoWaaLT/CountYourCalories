@@ -16,10 +16,9 @@
             android:id="@+id/ConsumeFoodRecipeFragment_cl_select_items"
             android:layout_width="300dp"
             android:layout_height="100dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="-20dp"
-            app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
+            android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -48,80 +47,76 @@
             android:id="@+id/coordinatorLayout"
             android:layout_width="300dp"
             android:layout_height="400dp"
-            android:layout_marginStart="76dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="76dp"
-            android:layout_marginBottom="500dp"
+            android:layout_marginStart="55dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="56dp"
             android:gravity="center"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ConsumeFoodRecipeFragment_cl_select_items">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:gravity="center_vertical">
+                android:layout_height="350dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/ConsumeFoodRecipeFragment_tv_firstProduct"
                     android:layout_width="75dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="105dp"
+                    android:layout_marginHorizontal="115dp"
                     android:layout_marginVertical="25dp"
-                    android:visibility="invisible"
-                    android:text="@string/recipes_consume_firstProduct" />
+                    android:text="@string/recipes_consume_firstProduct"
+                    android:visibility="invisible" />
 
                 <EditText
                     android:id="@+id/ConsumeFoodRecipeFragment_ed_firstProduct"
                     android:layout_width="234dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginHorizontal="30dp"
                     android:autofillHints="0.00"
                     android:ems="10"
-                    android:visibility="invisible"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:visibility="invisible" />
 
                 <TextView
                     android:id="@+id/ConsumeFoodRecipeFragment_tv_secondProduct"
                     android:layout_width="76dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="105dp"
+                    android:layout_marginHorizontal="115dp"
                     android:layout_marginVertical="25dp"
-                    android:visibility="invisible"
-                    android:text="@string/recipes_consume_secondProduct" />
+                    android:text="@string/recipes_consume_secondProduct"
+                    android:visibility="invisible" />
 
                 <EditText
                     android:id="@+id/ConsumeFoodRecipeFragment_ed_secondProduct"
                     android:layout_width="234dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginHorizontal="30dp"
                     android:autofillHints="0.00"
                     android:ems="10"
-                    android:visibility="invisible"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:visibility="invisible" />
 
                 <TextView
                     android:id="@+id/ConsumeFoodRecipeFragment_tv_thirdProduct"
                     android:layout_width="76dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="105dp"
+                    android:layout_marginHorizontal="115dp"
                     android:layout_marginVertical="25dp"
-                    android:visibility="invisible"
-                    android:text="@string/recipes_consume_thirdProduct" />
+                    android:text="@string/recipes_consume_thirdProduct"
+                    android:visibility="invisible" />
 
                 <EditText
                     android:id="@+id/ConsumeFoodRecipeFragment_ed_thirdProduct"
                     android:layout_width="234dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginHorizontal="30dp"
                     android:autofillHints="0.00"
                     android:ems="10"
-                    android:visibility="invisible"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:visibility="invisible" />
             </LinearLayout>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -129,15 +124,14 @@
             android:id="@+id/ConsumeFoodRecipeFragment_btn_consume"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="126dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="126dp"
+            android:layout_marginStart="106dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="106dp"
             android:layout_marginBottom="428dp"
-            android:text="@string/recipes_consume_recipe"
             android:enabled="false"
+            android:text="@string/recipes_consume_recipe"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/coordinatorLayout"
             app:layout_constraintVertical_bias="0.0" />

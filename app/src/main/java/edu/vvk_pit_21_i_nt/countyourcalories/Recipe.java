@@ -92,6 +92,10 @@ public class Recipe {
         this.recipeTotalCalories = recipeTotalCalories;
     }
 
+    public ArrayList<product> getRecipeProductsList() {
+        return recipeProductsList;
+    }
+
 //    @Override
 //    public String toString() {
 //        return "Recipe{" +
