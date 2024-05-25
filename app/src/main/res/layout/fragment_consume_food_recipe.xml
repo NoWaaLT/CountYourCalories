@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@drawable/gradient_background"
+    tools:context=".ConsumeFoodRecipeFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="500dp">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/ConsumeFoodRecipeFragment_cl_select_items"
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ConsumeFoodRecipeFragment_til_select_items"
+                style="@style/OutlinedBoxWhite"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="16dp"
+                android:hint="@string/recipes_select_item"
+                android:textColorHint="@android:color/white">
+
+                <AutoCompleteTextView
+                    android:id="@+id/ConsumeFoodRecipeFragment_actv_autoCompleteTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:cursorVisible="false"
+                    android:dropDownHeight="100dp"
+                    android:inputType="text"
+                    android:textColor="@color/white" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinatorLayout"
+            android:layout_width="300dp"
+            android:layout_height="400dp"
+            android:layout_marginStart="55dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="56dp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ConsumeFoodRecipeFragment_cl_select_items">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/ConsumeFoodRecipeFragment_tv_firstProduct"
+                    android:layout_width="75dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="115dp"
+                    android:layout_marginVertical="25dp"
+                    android:text="@string/recipes_consume_firstProduct"
+                    android:visibility="invisible" />
+
+                <EditText
+                    android:id="@+id/ConsumeFoodRecipeFragment_ed_firstProduct"
+                    android:layout_width="234dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="30dp"
+                    android:autofillHints="0.00"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/ConsumeFoodRecipeFragment_tv_secondProduct"
+                    android:layout_width="76dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="115dp"
+                    android:layout_marginVertical="25dp"
+                    android:text="@string/recipes_consume_secondProduct"
+                    android:visibility="invisible" />
+
+                <EditText
+                    android:id="@+id/ConsumeFoodRecipeFragment_ed_secondProduct"
+                    android:layout_width="234dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="30dp"
+                    android:autofillHints="0.00"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/ConsumeFoodRecipeFragment_tv_thirdProduct"
+                    android:layout_width="76dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="115dp"
+                    android:layout_marginVertical="25dp"
+                    android:text="@string/recipes_consume_thirdProduct"
+                    android:visibility="invisible" />
+
+                <EditText
+                    android:id="@+id/ConsumeFoodRecipeFragment_ed_thirdProduct"
+                    android:layout_width="234dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="30dp"
+                    android:autofillHints="0.00"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:visibility="invisible" />
+            </LinearLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <Button
+            android:id="@+id/ConsumeFoodRecipeFragment_btn_consume"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="106dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="106dp"
+            android:layout_marginBottom="428dp"
+            android:enabled="false"
+            android:text="@string/recipes_consume_recipe"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/coordinatorLayout"
+            app:layout_constraintVertical_bias="0.0" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

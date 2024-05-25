@@ -41,7 +41,7 @@ public class MenuActivity extends AppCompatActivity {
     public DatabaseReference mDatabase;
 
     public DatabaseReference historyRef;
-   HashMap<String, UserHistory> userHistoryHashMap;
+    HashMap<String, UserHistory> userHistoryHashMap;
     public UserDb userDb;
     public FirebaseUser user;
     MenuViewModel menuModel;

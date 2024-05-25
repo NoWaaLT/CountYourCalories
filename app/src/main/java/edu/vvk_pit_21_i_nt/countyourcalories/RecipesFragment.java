@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -53,6 +55,7 @@ public class RecipesFragment extends Fragment {
     Button btnAddItem;
     Button btnCreateRecipe;
     Button btnClear;
+    Button btnConsume;
     TextInputEditText tietRecipeName;
     ListView selectedItemsListView;
     ArrayList<product> productList;
@@ -104,6 +107,7 @@ public class RecipesFragment extends Fragment {
         btnAddItem = view.findViewById(R.id.RecipesFragment_btn_addItem);
         btnCreateRecipe = view.findViewById(R.id.RecipesFragment_btn_createRecipe);
         btnClear = view.findViewById(R.id.RecipesFragment_btn_clear);
+        btnConsume = view.findViewById(R.id.RecipesFragment_btn_consume);
         tietRecipeName = view.findViewById(R.id.RecipesFragment_et_recipe_name);
 
 
@@ -167,19 +171,6 @@ public class RecipesFragment extends Fragment {
         });
 
         selectedProductList = new ArrayList<>();
-        btnAddItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String selectedItem = atcvSelectItem.getText().toString();
-                for (product product : productList) {
-                    if (product.getProduktas().equals(selectedItem)) {
-                        selectedProductList.add(product);
-                        break;
-                    }
-                }
-            }
-        });
-
         selectedItemsListView = view.findViewById(R.id.RecipesFragment_lv_selectedItems);
         selectedItemsAdapter = new ArrayAdapter<>(requireContext(), R.layout.recipes_fragment_listview_item, selectedProductList);
         selectedItemsListView.setAdapter(selectedItemsAdapter);
@@ -272,6 +263,18 @@ public class RecipesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 clearFields();
+            }
+        });
+
+        btnConsume.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConsumeFoodRecipeFragment consumeFoodRecipeFragment = new ConsumeFoodRecipeFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frame_layout, consumeFoodRecipeFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
 

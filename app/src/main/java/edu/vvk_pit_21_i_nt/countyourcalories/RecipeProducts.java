@@ -3,18 +3,17 @@ package edu.vvk_pit_21_i_nt.countyourcalories;
 import java.util.HashMap;
 
 public class RecipeProducts {
-
-    HashMap<String, Float> recipeProducts;
+    private HashMap<String, product> productDetails;
 
     public RecipeProducts() {
-        recipeProducts = new HashMap<String, Float>();
+        productDetails = new HashMap<>();
     }
 
-    public HashMap<String, Float> getRecipeProducts() {
-        return recipeProducts;
+    public HashMap<String, product> getProductDetails() {
+        return productDetails;
     }
 
-    public void setRecipeProducts(HashMap<String, Float> recipeProducts) {
-        this.recipeProducts = recipeProducts;
+    public void setProductDetails(HashMap<String, product> productDetails) {
+        this.productDetails = productDetails;
     }
 }
