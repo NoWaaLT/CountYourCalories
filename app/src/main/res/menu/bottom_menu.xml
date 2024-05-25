@@ -11,7 +11,7 @@
         android:icon="@drawable/meal_logo"/>
     <item
         android:id="@+id/add_food"
-        android:title="Add Meal"
+        android:title="Add Food"
         android:icon="@drawable/add_logo"/>
 
     <item

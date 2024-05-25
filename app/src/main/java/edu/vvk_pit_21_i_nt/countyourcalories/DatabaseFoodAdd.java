@@ -84,19 +84,6 @@ public class DatabaseFoodAdd extends Fragment {
             }
         });
 
-        TextView tTwo = (TextView) view.findViewById(R.id.editTextNumber);
-        Slider sliderTwo = (Slider) view.findViewById(R.id.du);
-        tTwo.setText(Float.toString(sliderTwo.getValue()));
-
-        sliderTwo.addOnChangeListener(new Slider.OnChangeListener() {
-            @Override
-            public void onValueChange(@NonNull Slider slider, float v, boolean b) {
-                float abb = sliderTwo.getValue();
-                Double abc = (double) abb;
-                abc = Double.parseDouble(df.format(abc));
-                tTwo.setText(Double.toString(abc));
-            }
-        });
 
         TextView tThree = (TextView) view.findViewById(R.id.editTextNumber2);
         Slider sliderThree = (Slider) view.findViewById(R.id.trys);
