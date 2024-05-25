@@ -1,7 +1,10 @@
 package edu.vvk_pit_21_i_nt.countyourcalories;
 
 import android.annotation.SuppressLint;
+import android.content.SearchRecentSuggestionsProvider;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -9,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,6 +24,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +44,8 @@ public class MenuActivity extends AppCompatActivity {
     HashMap<String, UserHistory> userHistoryHashMap;
     public UserDb userDb;
     public FirebaseUser user;
-
+    MenuViewModel menuModel;
+    int fragmentId;
     private MyDiaryFragment myDiaryFragment;
     private MealPlansFragment mealPlansFragment;
     private RecipesFragment recipesFragment;
@@ -54,26 +60,26 @@ public class MenuActivity extends AppCompatActivity {
         binding = ActivityMenuBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         user = FirebaseAuth.getInstance().getCurrentUser();
-
+        menuModel = new ViewModelProvider(this).get(MenuViewModel.class);
+        userDb = menuModel.getUserDb();
         historyRef = FirebaseDatabase.getInstance().getReference("History/" + user.getUid());
         mDatabase = FirebaseDatabase.getInstance().getReference("Users/"+ user.getUid());
-        userHistoryHashMap = new HashMap<>();
+        //userHistoryHashMap = menuModel.getUserHistoryHashMap();
+        createRandomHistory();
+        userHistoryHashMap = menuModel.getUserHistoryHashMap();
         getUserData();
         getUserHistory();
-
-        // Add user history for the last 7 days
-        Random rand = new Random();
-        for(int i = 0; i < 7; i++) {
-            // Add random values for testing proteins, carbs, fat, calories, water
-            int setProteins= rand.nextInt(50) + 300;
-            int setCarbs = rand.nextInt(100) + 600;
-            int setFat= rand.nextInt(100) + 600;
-            int setCalories = rand.nextInt(1000) + 2000;
-            int setWater = rand.nextInt(1000) + 3000;
-            UserHistory uh = new UserHistory(setCalories, setProteins, setCarbs, setFat, setWater);
-            String day = "2024-05-0" + (i + 1);
-            addUserHistory(day, uh);
-        }
+        //Random rand = new Random();
+        //for(int i = 0; i < 7; i++) {
+            //int setProteins= rand.nextInt(100) + 600;
+            //int setCarbs = rand.nextInt(100) + 600;
+            //int setFat= rand.nextInt(100) + 600;
+            //int setCalories = rand.nextInt(1000) + 2000;
+            //int setWater = rand.nextInt(1000) + 3000;
+            //UserHistory uh = new UserHistory(setCalories, setProteins, setCarbs, setFat, setWater);
+            //String day = "2024-05-0" + (i + 1);
+            //addUserHistory(day, uh);
+        //}
 
         FragmentManager managerOG = getSupportFragmentManager();
         myDiaryFragment = new MyDiaryFragment();
@@ -81,14 +87,13 @@ public class MenuActivity extends AppCompatActivity {
         recipesFragment = new RecipesFragment();
 //        profileFragment = new ProfileFragment();
         databaseFoodAdd = new DatabaseFoodAdd();
-
+        fragmentId = myDiaryFragment.getId();
         // Show MyDiaryFragment by default
         showFragment(myDiaryFragment,managerOG);
 
         // Bottom navigation view listener
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment selectedFragment;
-
             if (item.getItemId() == R.id.diary) {
                 selectedFragment = myDiaryFragment;
 
@@ -114,11 +119,27 @@ public class MenuActivity extends AppCompatActivity {
             else {
                 return false;
             }
+
             showFragment(selectedFragment,managerOG);
             return true;
         });
 
+    }
+
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (userDb != null) {
+            menuModel.setUserDb(userDb);
         }
+        menuModel.setUserHistoryHashMap(userHistoryHashMap);
+        super.onDestroy();
+    }
 
     public void selectMenuItem(int itemId) {
         binding.bottomNavigationView.setSelectedItemId(itemId);
@@ -228,6 +249,9 @@ public class MenuActivity extends AppCompatActivity {
         mDatabase.child(key).setValue(val);
     }
     protected void getUserHistory() {
+        if (userHistoryHashMap == null) {
+            userHistoryHashMap = new HashMap<>();
+        }
         Query userHistoryQuery = historyRef.limitToLast(7);
         userHistoryQuery.addValueEventListener(new ValueEventListener() {
             @Override
@@ -239,6 +263,7 @@ public class MenuActivity extends AppCompatActivity {
                     }
                 }
                 Log.d("Naudotojo istorija", "gauta");
+
                 myDiaryFragment.showHistory(myDiaryFragment.Diena7);
                 myDiaryFragment.setArrows();
             }
@@ -254,6 +279,7 @@ public class MenuActivity extends AppCompatActivity {
         String currentDate = sdf.format(new Date());
         UserHistory uh = new UserHistory();
         historyRef.child(currentDate).setValue(uh);
+        historyRef.child(currentDate).getKey();
     }
     protected void addUserHistory(UserHistory uh) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
@@ -266,6 +292,24 @@ public class MenuActivity extends AppCompatActivity {
     }
     protected void addUserHistory(String date, UserHistory uh) {
         historyRef.child(date).setValue(uh);
+    }
+    protected void createRandomHistory() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd ", Locale.UK);
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_YEAR, -7);
+
+        Random rand = new Random();
+        for(int i = 0; i < 7; i++) {
+            cal.add(Calendar.DAY_OF_YEAR, 1);
+            int setProteins= rand.nextInt(100) + 300;
+            int setCarbs = rand.nextInt(100) + 400;
+            int setFat= rand.nextInt(100) + 200;
+            int setCalories = rand.nextInt(1000) + 1500;
+            int setWater = rand.nextInt(1000) + 1000;
+            UserHistory uh = new UserHistory(setCalories, setProteins, setCarbs, setFat, setWater);
+            String day = sdf.format(cal.getTime());
+            addUserHistory(day.trim(), uh);
+        }
     }
 
     private int calcTargetProtein(int goal, int targetKcal) {
