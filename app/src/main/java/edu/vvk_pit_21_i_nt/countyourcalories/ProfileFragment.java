@@ -60,7 +60,7 @@ public class ProfileFragment extends Fragment {
     static int animationDuration = 500;
     private View genderIconMaleEdit;
     private View genderIconFemaleEdit;
-    private final String btnTextBack = "OK";
+    private final String btnTextBack = "BACK";
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -484,8 +484,6 @@ public class ProfileFragment extends Fragment {
                 startActivity(new Intent(getActivity(), MenuActivity.class));
             }, 1500);
             isEditing = false;
-//            startActivity(new Intent(getActivity(), ProfileFragment.class));
-//            startActivity(new Intent(getActivity(), MenuActivity.class));
         });
     }
 
