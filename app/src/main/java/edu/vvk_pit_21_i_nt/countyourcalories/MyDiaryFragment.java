@@ -478,9 +478,9 @@ public class MyDiaryFragment extends Fragment {
         String waterTargetText = String.format(Locale.UK, " /%d ml", targetWater);
         waterTarget.setText(waterTargetText);
         if (uh != null) {
-            String carboText = String.format(Locale.UK,"%d/%d g", uh.getCarbo(), targetCarbo);
-            String proteinText = String.format(Locale.UK, "%d/%d g", uh.getProtein(), targetProtein);
-            String fatText = String.format(Locale.UK, "%d/%d g", uh.getFat(), targetFat);
+            String carboText = String.format(Locale.UK,"%d/%d g", (uh.getCarbo() / 4), (targetCarbo / 4));
+            String proteinText = String.format(Locale.UK, "%d/%d g", (uh.getProtein() / 4), (targetProtein / 4));
+            String fatText = String.format(Locale.UK, "%d/%d g", (uh.getFat() / 9), (targetFat / 9));
             caloriesConsumed.setText(String.valueOf(uh.getKcal()));
             carbsConsumed.setText(carboText);
             proteinsConsumed.setText(proteinText);
