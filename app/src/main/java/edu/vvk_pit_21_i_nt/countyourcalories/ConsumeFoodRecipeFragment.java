@@ -183,7 +183,7 @@ public class ConsumeFoodRecipeFragment extends Fragment {
                             existingHistory.setFat((int) totalFats);
                             existingHistory.setKcal((int) totalKcal);
                             existingHistory.setProtein((int) totalProteins);
-                            existingHistory.setWater(0); // Set water to 0 or replace with actual consumed water value
+//                            existingHistory.setWater(0); // Set water to 0 or replace with actual consumed water value
                         } else {
                             // If there is an existing entry for the current date, add the consumed values to the existing values
                             existingHistory.setCarbo(existingHistory.getCarbo() + (int) totalCarbs);

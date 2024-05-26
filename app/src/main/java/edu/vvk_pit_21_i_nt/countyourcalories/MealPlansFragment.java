@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,8 +35,11 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -201,6 +205,51 @@ public class MealPlansFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
+            }
+        });
+
+        imgbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Get the current user's UID
+                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                // Get the current date
+                String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
+                // Create a new DatabaseReference
+                DatabaseReference historyRef = FirebaseDatabase.getInstance().getReference("History/" + uid + "/" + currentDate);
+
+                // Retrieve the existing UserHistory object for the current date
+                historyRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        UserHistory existingHistory = dataSnapshot.getValue(UserHistory.class);
+                        if (existingHistory == null) {
+                            // If there is no existing entry for the current date, create a new UserHistory object
+                            existingHistory = new UserHistory();
+                            existingHistory.setCarbo((int) Float.parseFloat(carbs.getText().toString()));
+                            existingHistory.setFat((int) Float.parseFloat(fats.getText().toString()));
+                            existingHistory.setKcal((int) Float.parseFloat(calories.getText().toString()));
+                            existingHistory.setProtein((int) Float.parseFloat(protein.getText().toString()));
+                            existingHistory.setWater(0); // Set water to 0 or replace with actual consumed water value
+                        } else {
+                            // If there is an existing entry for the current date, add the consumed values to the existing values
+                            existingHistory.setCarbo(existingHistory.getCarbo() + (int) Float.parseFloat(carbs.getText().toString()));
+                            existingHistory.setFat(existingHistory.getFat() + (int) Float.parseFloat(fats.getText().toString()));
+                            existingHistory.setKcal(existingHistory.getKcal() + (int) Float.parseFloat(calories.getText().toString()));
+                            existingHistory.setProtein(existingHistory.getProtein() + (int) Float.parseFloat(protein.getText().toString()));
+                        }
+
+                        // Write the UserHistory object back to the Firebase database
+                        historyRef.setValue(existingHistory);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.e("Firebase", "Error fetching data", databaseError.toException());
+                    }
+                });
             }
         });
 
