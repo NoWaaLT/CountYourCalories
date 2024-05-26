@@ -126,10 +126,10 @@ public class MenuActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-    }
+    //@Override
+    //public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        //super.onConfigurationChanged(newConfig);
+    //}
 
     @Override
     protected void onDestroy() {
