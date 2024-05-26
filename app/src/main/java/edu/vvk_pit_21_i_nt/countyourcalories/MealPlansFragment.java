@@ -1,17 +1,14 @@
 package edu.vvk_pit_21_i_nt.countyourcalories;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,7 +24,6 @@ import com.firebase.ui.auth.data.model.User;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,27 +44,17 @@ import java.util.Locale;
  * create an instance of this fragment.
  */
 public class MealPlansFragment extends Fragment {
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     Activity activity = getActivity();
-
-
-
-
-
     public MealPlansFragment() {
         // Required empty public constructor
     }
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -84,28 +70,20 @@ public class MealPlansFragment extends Fragment {
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
-
         return fragment;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
-
-
             mParam1 = getArguments().getString(ARG_PARAM1);
-
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_meal_plans, container, false);
-
         SearchView searchView = view.findViewById(R.id.searchView);
         searchView.setIconified(false);
         TextView title = (TextView) view.findViewById(R.id.textView49);
@@ -127,20 +105,15 @@ public class MealPlansFragment extends Fragment {
         ImageButton imgbtn = (ImageButton) view.findViewById(R.id.imageButton5);
         ImageView imgvw = (ImageView) view.findViewById(R.id.imageView13);
         CardView cardView4 = (CardView)view.findViewById(R.id.cardView4);
-
-
         dovile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((MenuActivity) getActivity()).selectMenuItem(R.id.add_food);
             }
         });
-
-
         GradientDrawable gradientDrawable = new GradientDrawable(
-        GradientDrawable.Orientation.TOP_BOTTOM,
+                GradientDrawable.Orientation.TOP_BOTTOM,
                 new int[] {0xFFE1F6FF,0xFFFFFFFF});
-
         gradientDrawable.setShape(GradientDrawable.RECTANGLE);
         float topLeftCornerRadius = getResources().getDisplayMetrics().density * 20; // Convert 20% to pixels
         float topRightCornerRadius = getResources().getDisplayMetrics().density * 20; // Convert 20% to pixels
@@ -148,19 +121,10 @@ public class MealPlansFragment extends Fragment {
         float bottomLeftCornerRadius = 0;
         gradientDrawable.setCornerRadii(new float[] {topLeftCornerRadius, topLeftCornerRadius, topRightCornerRadius, topRightCornerRadius, bottomRightCornerRadius, bottomRightCornerRadius, bottomLeftCornerRadius, bottomLeftCornerRadius});
         cardView4.setBackground(gradientDrawable);
-
-
-
-
         ScrollView scrollView = view.findViewById(R.id.scrview);
-
-
         Slider slider = view.findViewById(R.id.sliderOG);
         slider.setValue(100);
         int bit = 0;
-
-
-
         slider.addOnChangeListener(new Slider.OnChangeListener() {
             @Override
             public void onValueChange(Slider slider, float value, boolean fromUser) {
@@ -181,99 +145,71 @@ public class MealPlansFragment extends Fragment {
                     calcp = Double.parseDouble(df.format(calcp));
                     calcf = Double.parseDouble(df.format(calcf));
                     int updated = (int)calcc;
-
                     calories.setText(Integer.toString(inted));
                     carbs.setText(Integer.toString(updated));
                     protein.setText(Double.toString(calcp));
                     fats.setText(Double.toString(calcf));
-
                 }
             }
         });
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchFood(query,title,calories,carbs,protein,fats,temp,tempCarb,tempProt,tempFat,scrollView);
                 searchView.setQuery("", false);
-               // searchView.onActionViewCollapsed();
-                slider.setValue(100); //
-
-
+                // searchView.onActionViewCollapsed();
+                slider.setValue(100);
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
             }
         });
-
         imgbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Get the current user's UID
-                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-                // Get the current date
-                String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-
-                // Create a new DatabaseReference
-                DatabaseReference historyRef = FirebaseDatabase.getInstance().getReference("History/" + uid + "/" + currentDate);
-
-                // Retrieve the existing UserHistory object for the current date
-                historyRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        UserHistory existingHistory = dataSnapshot.getValue(UserHistory.class);
-                        if (existingHistory == null) {
-                            // If there is no existing entry for the current date, create a new UserHistory object
-                            existingHistory = new UserHistory();
-                            existingHistory.setCarbo((int) Float.parseFloat(carbs.getText().toString()));
-                            existingHistory.setFat((int) Float.parseFloat(fats.getText().toString()));
-                            existingHistory.setKcal((int) Float.parseFloat(calories.getText().toString()));
-                            existingHistory.setProtein((int) Float.parseFloat(protein.getText().toString()));
-                            existingHistory.setWater(0); // Set water to 0 or replace with actual consumed water value
-                        } else {
-                            // If there is an existing entry for the current date, add the consumed values to the existing values
-                            existingHistory.setCarbo(existingHistory.getCarbo() + (int) Float.parseFloat(carbs.getText().toString()));
-                            existingHistory.setFat(existingHistory.getFat() + (int) Float.parseFloat(fats.getText().toString()));
-                            existingHistory.setKcal(existingHistory.getKcal() + (int) Float.parseFloat(calories.getText().toString()));
-                            existingHistory.setProtein(existingHistory.getProtein() + (int) Float.parseFloat(protein.getText().toString()));
+                //float wei = Float.parseFloat(weight.getText().toString()) / 100;
+                float kcal = Float.parseFloat(calories.getText().toString());
+                float prot = Float.parseFloat(protein.getText().toString());
+                float fat = Float.parseFloat(fats.getText().toString());
+                float carb = Float.parseFloat(carbs.getText().toString());
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
+                String currentDate = sdf.format(new Date());
+                if (kcal != 0) {
+                    if (((MenuActivity) requireActivity()).userHistoryHashMap.containsKey(currentDate)) {
+                        UserHistory uh = ((MenuActivity) requireActivity()).userHistoryHashMap.get(currentDate);
+                        if (uh != null) {
+                            kcal += uh.getKcal();
+                            prot += uh.getProtein();
+                            fat += uh.getFat();
+                            carb += uh.getCarbo();
+                            ((MenuActivity) requireActivity()).updateUserHistory(currentDate, "kcal", (int) kcal);
+                            ((MenuActivity) requireActivity()).updateUserHistory(currentDate, "carbo", (int) carb);
+                            ((MenuActivity) requireActivity()).updateUserHistory(currentDate, "fat", (int) fat);
+                            ((MenuActivity) requireActivity()).updateUserHistory(currentDate, "protein", (int) prot);
                         }
-
-                        // Write the UserHistory object back to the Firebase database
-                        historyRef.setValue(existingHistory);
                     }
+                    else {
+                        UserHistory uh = new UserHistory((int) kcal, (int) carb, (int) fat, (int) prot, 0);
+                        ((MenuActivity) requireActivity()).addUserHistory(uh);
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.e("Firebase", "Error fetching data", databaseError.toException());
                     }
-                });
+                }
+
             }
         });
 
-
-
-
         return view;
     }
-
-
-
-
     private void navigateToNewFragment() {
         if (getActivity() instanceof MenuActivity) {
             ((MenuActivity) getActivity()).showFragment(new MealPlansFragment(), ((MenuActivity) getActivity()).getSupportFragmentManager());
         }
     }
-
-
     private void searchFood(String data, TextView title,TextView calories,TextView carbs,TextView protein, TextView fats,TextView temp,TextView temp2,TextView temp3, TextView temp4, ScrollView scrollView){
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Products/Sheet1");
         Query firebaseQuery = databaseRef.orderByChild("Produktas").startAt(data).endAt(data + "\uf8ff");
-
         firebaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -282,53 +218,37 @@ public class MealPlansFragment extends Fragment {
                     // Assuming each child node contains a "Produktas" field
                     product productName = data.getValue(product.class);
                     searchResults.add(productName);
-
-
                     String ttl = searchResults.get(0).getProduktas();
                     float  var1 = searchResults.get(0).getKilokalorijos();
                     float var2 = searchResults.get(0).getBaltymai();
                     float var3 = searchResults.get(0).getAngliavandeniai();
                     float var4 = searchResults.get(0).getRiebalai();
-
                     int first = (int)var1;
                     double bitcarb = (double)var3 / 100;
                     double bitprot = (double)var2 / 100;
                     double bitfat = (double)var4 /100;
-
                     temp2.setText(Double.toString(bitcarb));
                     temp3.setText(Double.toString(bitprot));
                     temp4.setText(Double.toString(bitfat));
-
-
                     double bit = (double)first / 100;
                     temp.setText(Double.toString(bit));
-
                     title.setText(ttl);
                     calories.setText(Integer.toString(first));
                     protein.setText(Float.toString(var2));
                     carbs.setText(Float.toString(var3));
                     fats.setText(Float.toString(var4));
                 }
-
                 if (searchResults.isEmpty()){
                     Snackbar.make(scrollView,"There is no such food in database!", BaseTransientBottomBar.LENGTH_SHORT).setAction("RETRY", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
                         }
                     }).show();
-
-
                 }
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
-
         });
-
     }
 }
