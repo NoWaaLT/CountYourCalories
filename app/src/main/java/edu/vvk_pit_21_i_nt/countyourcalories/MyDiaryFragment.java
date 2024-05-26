@@ -93,7 +93,7 @@ public class MyDiaryFragment extends Fragment {
     private boolean timerRunning;
 
     public int cupNumber = 0;
-
+    ImageButton cup0;
     private KonfettiView konfettiView = null;
 
     public int buttonOne = 0;
@@ -240,7 +240,7 @@ public class MyDiaryFragment extends Fragment {
         listOfDays.add(Diena5);
         listOfDays.add(Diena6);
         listOfDays.add(Diena7);
-        ImageButton cup0 = view.findViewById(R.id.imageButton4);
+        cup0 = view.findViewById(R.id.imageButton4);
         ImageView cup1 = view.findViewById(R.id.imageView);
         ImageView cup2 = view.findViewById(R.id.imageView2);
         ImageView cup3 = view.findViewById(R.id.imageView3);
@@ -293,10 +293,26 @@ public class MyDiaryFragment extends Fragment {
         cup0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String gender = ((MenuActivity) requireActivity()).userDb.getGender();
+                int weight = (int) ((MenuActivity) requireActivity()).userDb.getWeight();
+                int targetWater = calcTargetWater(gender, weight);
+                int oneCup = targetWater / 7;
+                int consumedWater = Integer.parseInt(waterConsumed.getText().toString());
+                consumedWater += oneCup;
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
+                String currentDate = sdf.format(new Date());
+                if (((MenuActivity) requireActivity()).userHistoryHashMap.containsKey(currentDate)) {
+                    ((MenuActivity) requireActivity()).updateUserHistory(currentDate, "water", consumedWater);
+                }
+                else {
+                    ((MenuActivity) requireActivity()).addUserHistory();
+                    ((MenuActivity) requireActivity()).updateUserHistory(currentDate, "water", consumedWater);
+                }
+                //waterConsumed.setText(String.valueOf(consumedWater));
                 if(cupNumber <= 6){
-                waterCups.get(cupNumber).setImageResource(R.drawable.water_cup_blue);
-                cupNumber++;}
+                   waterCups.get(cupNumber).setImageResource(R.drawable.water_cup_blue);
+                   cupNumber++;
+                }
             }
         });
 
@@ -432,6 +448,12 @@ public class MyDiaryFragment extends Fragment {
 
     protected void showHistory(TextView txt) {
         String day = (String) txt.getText();
+        if (txt.equals(Diena7)) {
+            cup0.setEnabled(true);
+        }
+        else {
+            cup0.setEnabled(false);
+        }
         Log.d("Show history", "called");
         UserHistory uh = null;
         for (Map.Entry<String, UserHistory> set: ((MenuActivity) requireActivity()).userHistoryHashMap.entrySet()) {
@@ -448,7 +470,7 @@ public class MyDiaryFragment extends Fragment {
         goal = ((MenuActivity) requireActivity()).userDb.getGoal();
         gender = ((MenuActivity) requireActivity()).userDb.getGender();
         weight = (int) ((MenuActivity) requireActivity()).userDb.getWeight();
-
+        cupNumber = 0;
         int targetCarbo = calcTargetCarbs(goal, target);
         int targetProtein = calcTargetProtein(goal, target);
         int targetFat = calcTargetFat(goal, target);
@@ -501,23 +523,33 @@ public class MyDiaryFragment extends Fragment {
             else {
                 fatBar.setProgress(100);
             }
-            if (waterPercent >= 14 && waterPercent < 28) {
+            if (waterPercent >= 12 && waterPercent < 25) {
                paintCups(0);
+               cupNumber = 0;
             }
-            else if (waterPercent >= 28 && waterPercent <= 42) {
+            else if (waterPercent >= 25 && waterPercent <= 38) {
                paintCups(1);
+                cupNumber = 1;
             }
-            else if (waterPercent > 42 && waterPercent <= 56) {
+            else if (waterPercent > 38 && waterPercent <= 50) {
                 paintCups(2);
-            } else if (waterPercent > 56 && waterPercent <= 70) {
+                cupNumber = 2;
+            } else if (waterPercent > 50 && waterPercent <= 62) {
                 paintCups(3);
-            } else if (waterPercent > 70 && waterPercent <= 84) {
+                cupNumber = 3;
+            } else if (waterPercent > 62 && waterPercent <= 75) {
                 paintCups(4);
+                cupNumber = 4;
             }
-            else if (waterPercent > 84) {
+            else if (waterPercent > 75 && waterPercent <= 87) {
+                paintCups(5);
+                cupNumber = 5;
+            }
+            else if (waterPercent > 87) {
               for (ImageView cup : waterCups) {
                   cup.setImageResource(R.drawable.water_cup_blue);
               }
+              cupNumber = 6;
             }
             else {
                 for (ImageView cup : waterCups) {
