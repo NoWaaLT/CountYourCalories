@@ -197,7 +197,7 @@ public class MealPlansFragment extends Fragment {
                 searchFood(query,title,calories,carbs,protein,fats,temp,tempCarb,tempProt,tempFat,scrollView);
                 searchView.setQuery("", false);
                // searchView.onActionViewCollapsed();
-                slider.setValue(100);
+                slider.setValue(100); //
 
 
                 return false;
