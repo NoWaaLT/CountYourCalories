@@ -23,6 +23,7 @@ import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.firebase.ui.auth.data.model.User;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -34,8 +35,11 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -203,7 +207,39 @@ public class MealPlansFragment extends Fragment {
                 return false;
             }
         });
+        imgbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //float wei = Float.parseFloat(weight.getText().toString()) / 100;
+                float kcal = Float.parseFloat(calories.getText().toString());
+                float prot = Float.parseFloat(protein.getText().toString());
+                float fat = Float.parseFloat(fats.getText().toString());
+                float carb = Float.parseFloat(carbs.getText().toString());
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
+                String currentDate = sdf.format(new Date());
+                if (kcal != 0) {
+                    if (((MenuActivity) requireActivity()).userHistoryHashMap.containsKey(currentDate)) {
+                        UserHistory uh = ((MenuActivity) requireActivity()).userHistoryHashMap.get(currentDate);
+                        if (uh != null) {
+                            kcal += uh.getKcal();
+                            prot += uh.getProtein();
+                            fat += uh.getFat();
+                            carb += uh.getCarbo();
+                            ((MenuActivity) requireActivity()).updateUserHistory(currentDate, "kcal", (int) kcal);
+                            ((MenuActivity) requireActivity()).updateUserHistory(currentDate, "carbo", (int) carb);
+                            ((MenuActivity) requireActivity()).updateUserHistory(currentDate, "fat", (int) fat);
+                            ((MenuActivity) requireActivity()).updateUserHistory(currentDate, "protein", (int) prot);
+                        }
+                    }
+                    else {
+                        UserHistory uh = new UserHistory((int) kcal, (int) carb, (int) fat, (int) prot, 0);
+                        ((MenuActivity) requireActivity()).addUserHistory(uh);
 
+                    }
+                }
+
+            }
+        });
 
 
 
