@@ -3,8 +3,10 @@ package edu.vvk_pit_21_i_nt.countyourcalories;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
@@ -89,6 +93,12 @@ public class DatabaseFoodAdd extends Fragment {
         // Singing the database
         FirebaseDatabase database = FirebaseDatabase.getInstance(); //
 
+        // Get a reference to the products in the database
+        DatabaseReference productsRef = database.getReference("Products/Sheet1");
+
+        // Get a reference to the ProductsCount in the database
+        DatabaseReference productsCountRef = database.getReference("Products/ProductsCount");
+
         databaseFoodAddFragmentBtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,49 +123,31 @@ public class DatabaseFoodAdd extends Fragment {
                 product.setBaltymai(proteins);
                 product.setKilokalorijos(kcal);
 
-                // Get a reference to the products in the database
-                DatabaseReference productsRef = database.getReference("Products/Sheet1");
-
-                // Get a reference to the ProductsCount in the database
-                DatabaseReference productsCountRef = database.getReference("Products/ProductsCount");
-
-                // Retrieve the last used index
-                productsCountRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                // Run a transaction on the ProductsCount
+                productsCountRef.runTransaction(new Transaction.Handler() {
+                    @NonNull
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        long index;
-                        if (dataSnapshot.exists()) {
-                            index = (long) dataSnapshot.getValue();
+                    public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                        Long count = mutableData.getValue(Long.class);
+                        if (count == null) {
+                            mutableData.setValue(1);
                         } else {
-                            index = 0; // Default value if "ProductsCount" node does not exist
+                            mutableData.setValue(count + 1);
                         }
 
-                        // Check if there is a product with the same name in the database
-                        productsRef.orderByChild("Produktas").equalTo(name).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.exists()) {
-                                    // Show an error message
-                                    Toast.makeText(getActivity(), "A product with this name already exists", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    // Save the product to the database
-                                    productsRef.child(String.valueOf(index + 1)).setValue(product);
-
-                                    // Update the ProductsCount in the database
-                                    productsCountRef.setValue(index + 1);
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                                // Handle possible errors.
-                            }
-                        });
+                        return Transaction.success(mutableData);
                     }
 
                     @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        // Handle possible errors.
+                    public void onComplete(@Nullable DatabaseError databaseError, boolean committed, @Nullable DataSnapshot dataSnapshot) {
+                        if (committed) {
+                            // The transaction was successful, now we can add the product
+                            long index = (long) dataSnapshot.getValue();
+                            productsRef.child(String.valueOf(index)).setValue(product);
+                        } else {
+                            // The transaction failed
+                            Log.e("Firebase", "Transaction failed", databaseError.toException());
+                        }
                     }
                 });
             }
