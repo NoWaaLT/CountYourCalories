@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +37,7 @@ public class DatabaseFoodAdd extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    ImageView databaseFoodAddFragment_btn_add;
+    TextView databaseFoodAddFragmentBtnAdd;
 
     public DatabaseFoodAdd() {
         // Required empty public constructor
@@ -85,19 +84,19 @@ public class DatabaseFoodAdd extends Fragment {
         tOne.setText(Float.toString(sliderOne.getValue()));
 
         // Add new food to database button
-        databaseFoodAddFragment_btn_add = view.findViewById(R.id.databaseFoodAddFragment_add);
+        databaseFoodAddFragmentBtnAdd = view.findViewById(R.id.textView75);
 
         // Singing the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        databaseFoodAddFragment_btn_add.setOnClickListener(new View.OnClickListener() {
+        databaseFoodAddFragmentBtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String name = ((EditText) view.findViewById(R.id.editTextText2)).getText().toString();
-                float carbs = ((Slider) view.findViewById(R.id.vienas)).getValue();
-                float fats = ((Slider) view.findViewById(R.id.du)).getValue();
-                float proteins = ((Slider) view.findViewById(R.id.trys)).getValue();
-                float kcal = ((Slider) view.findViewById(R.id.keturi)).getValue();
+                float carbs = ((Slider) view.findViewById(R.id.keturi)).getValue();
+                float fats = ((Slider) view.findViewById(R.id.vienas)).getValue();
+                float proteins = ((Slider) view.findViewById(R.id.penki)).getValue();
+                float kcal = ((Slider) view.findViewById(R.id.trys)).getValue();
 
                 // Check if all fields are set
                 if (name.isEmpty() || carbs == 0 || fats == 0 || proteins == 0 || kcal == 0) {
@@ -171,19 +170,6 @@ public class DatabaseFoodAdd extends Fragment {
             }
         });
 
-        TextView tTwo = (TextView) view.findViewById(R.id.editTextNumber);
-        Slider sliderTwo = (Slider) view.findViewById(R.id.du);
-        tTwo.setText(Float.toString(sliderTwo.getValue()));
-
-        sliderTwo.addOnChangeListener(new Slider.OnChangeListener() {
-            @Override
-            public void onValueChange(@NonNull Slider slider, float v, boolean b) {
-                float abb = sliderTwo.getValue();
-                Double abc = (double) abb;
-                abc = Double.parseDouble(df.format(abc));
-                tTwo.setText(Double.toString(abc));
-            }
-        });
 
         TextView tThree = (TextView) view.findViewById(R.id.editTextNumber2);
         Slider sliderThree = (Slider) view.findViewById(R.id.trys);

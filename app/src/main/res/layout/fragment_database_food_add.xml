@@ -9,32 +9,6 @@
 
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView6"
-        android:layout_width="200dp"
-        android:layout_height="100dp"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-
-        <TextView
-            android:id="@+id/textView74"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="40dp"
-            android:text="Create New Food"
-            android:textAlignment="textStart"
-            android:textColor="#521C98"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
         android:id="@+id/cardView8"
         android:layout_width="match_parent"
         android:layout_height="70dp"
@@ -42,31 +16,32 @@
         app:cardCornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView6"
-        app:layout_constraintVertical_bias="0.036" >
-
-        <TextView
-            android:id="@+id/textView75"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
-            android:text="Name:"
-            android:textSize="30sp"
-            android:textStyle="bold"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.219">
 
         <EditText
             android:id="@+id/editTextText2"
-            android:layout_width="247dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
-            android:ems="10"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:hint="Enter Here"
             android:inputType="text"
-            android:text="add name"
-            android:textSize="24sp" />
+            android:layout_marginLeft="50dp"
+            android:textColorHint="@color/lavander"
+            android:textSize="30dp" />
+
+        <TextView
+            android:id="@+id/textView76"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="-115dp"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:text="Name:" />
 
     </androidx.cardview.widget.CardView>
 
@@ -87,8 +62,8 @@
             android:id="@+id/keturi"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="105dp"
-            android:layout_marginTop="180dp"
+            android:layout_marginLeft="115dp"
+            android:layout_marginTop="140dp"
             android:value="1"
             android:valueFrom="0"
             android:valueTo="100">
@@ -99,28 +74,30 @@
             android:id="@+id/textView70"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="30dp"
-            android:text="Unit"
-            android:textSize="24sp"
-            android:textStyle="bold"/>
+            android:layout_gravity="center"
+            android:layout_marginTop="120dp"
+            android:fontFamily="@font/kalamregular"
+            android:textColor="@color/UI_dark"
+            android:text="*per 100 grams of product"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textView71"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="85dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="35dp"
             android:text="Calories"
             android:textSize="24sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textView72"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="185dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="145dp"
             android:text="Carbs"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -129,8 +106,8 @@
             android:id="@+id/textView69"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="130dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="90dp"
             android:text="Fat"
             android:textSize="24sp"
             android:textStyle="bold"/>
@@ -139,8 +116,8 @@
             android:id="@+id/textView73"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="235dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="200dp"
             android:text="Protein"
             android:textSize="24sp"
             android:textStyle="bold"/>
@@ -149,23 +126,11 @@
             android:id="@+id/vienas"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="105dp"
-            android:layout_marginTop="125dp"
+            android:layout_marginLeft="115dp"
+            android:layout_marginTop="85dp"
             android:value="1"
             android:valueFrom="0"
             android:valueTo="50">
-
-        </com.google.android.material.slider.Slider>
-
-        <com.google.android.material.slider.Slider
-            android:id="@+id/du"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="105dp"
-            android:layout_marginTop="25dp"
-            android:value="1"
-            android:valueFrom="0"
-            android:valueTo="100">
 
         </com.google.android.material.slider.Slider>
 
@@ -173,11 +138,11 @@
             android:id="@+id/trys"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="105dp"
-            android:layout_marginTop="80dp"
+            android:layout_marginLeft="115dp"
+            android:layout_marginTop="30dp"
             android:value="1"
             android:valueFrom="0"
-            android:valueTo="500">
+            android:valueTo="999">
 
         </com.google.android.material.slider.Slider>
 
@@ -185,8 +150,8 @@
             android:id="@+id/penki"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="105dp"
-            android:layout_marginTop="233dp"
+            android:layout_marginLeft="115dp"
+            android:layout_marginTop="195dp"
             android:value="1"
             android:valueFrom="0"
             android:valueTo="50">
@@ -194,23 +159,13 @@
         </com.google.android.material.slider.Slider>
 
         <EditText
-            android:id="@+id/editTextNumber"
-            android:layout_width="67dp"
-            android:layout_height="52dp"
-            android:layout_marginLeft="265dp"
-            android:layout_marginTop="20dp"
-            android:ems="10"
-            android:inputType="number"
-            android:text="0"
-            android:textAlignment="textEnd"
-            android:textSize="24sp" />
-
-        <EditText
             android:id="@+id/editTextNumber2"
             android:layout_width="67dp"
             android:layout_height="52dp"
             android:layout_marginLeft="265dp"
-            android:layout_marginTop="70dp"
+            android:textStyle="bold"
+            android:background="@null"
+            android:layout_marginTop="30dp"
             android:ems="10"
             android:inputType="number"
             android:text="0"
@@ -222,7 +177,9 @@
             android:layout_width="67dp"
             android:layout_height="52dp"
             android:layout_marginLeft="265dp"
-            android:layout_marginTop="177dp"
+            android:background="@null"
+            android:textStyle="bold"
+            android:layout_marginTop="140dp"
             android:ems="10"
             android:inputType="number"
             android:text="0"
@@ -234,8 +191,10 @@
             android:layout_width="67dp"
             android:layout_height="52dp"
             android:layout_marginLeft="265dp"
-            android:layout_marginTop="228dp"
+            android:layout_marginTop="195dp"
             android:ems="10"
+            android:background="@null"
+            android:textStyle="bold"
             android:inputType="number"
             android:text="0"
             android:textAlignment="textEnd"
@@ -246,7 +205,9 @@
             android:layout_width="67dp"
             android:layout_height="52dp"
             android:layout_marginLeft="265dp"
-            android:layout_marginTop="123dp"
+            android:textStyle="bold"
+            android:background="@null"
+            android:layout_marginTop="85dp"
             android:ems="10"
             android:inputType="number"
             android:text="0"
@@ -257,19 +218,9 @@
             android:id="@+id/textView45"
             android:layout_width="57dp"
             android:layout_height="46dp"
-            android:layout_marginLeft="335dp"
-            android:layout_marginTop="85dp"
+            android:layout_marginLeft="325dp"
+            android:layout_marginTop="45dp"
             android:text="kcal"
-            android:textAlignment="textStart"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/textView76"
-            android:layout_width="57dp"
-            android:layout_height="46dp"
-            android:layout_marginLeft="335dp"
-            android:layout_marginTop="40dp"
-            android:text="g"
             android:textAlignment="center"
             android:textSize="20sp" />
 
@@ -277,8 +228,8 @@
             android:id="@+id/textView77"
             android:layout_width="57dp"
             android:layout_height="46dp"
-            android:layout_marginLeft="335dp"
-            android:layout_marginTop="140dp"
+            android:layout_marginLeft="315dp"
+            android:layout_marginTop="100dp"
             android:text="g"
             android:textAlignment="center"
             android:textSize="20sp" />
@@ -287,8 +238,8 @@
             android:id="@+id/textView78"
             android:layout_width="57dp"
             android:layout_height="46dp"
-            android:layout_marginLeft="335dp"
-            android:layout_marginTop="195dp"
+            android:layout_marginLeft="315dp"
+            android:layout_marginTop="155dp"
             android:text="g"
             android:textAlignment="center"
             android:textSize="20sp" />
@@ -297,48 +248,97 @@
             android:id="@+id/textView79"
             android:layout_width="57dp"
             android:layout_height="46dp"
-            android:layout_marginLeft="335dp"
-            android:layout_marginTop="245dp"
+            android:layout_marginLeft="315dp"
+            android:layout_marginTop="210dp"
             android:text="g"
             android:textAlignment="center"
             android:textSize="20sp" />
 
     </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="200dp"
+    <TextView
+        android:id="@+id/textView74"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:cardBackgroundColor="#E1F6FF"
-        app:cardCornerRadius="20dp"
+        android:text="Add"
+        android:textColor="@color/UI_dark"
+        android:textSize="60sp"
+
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/cardView8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.052"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.693" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        app:cardBackgroundColor="#FCBB32"
+        app:cardCornerRadius="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.924"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView7"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/cardView7" >
 
-        <ImageView
-            android:id="@+id/databaseFoodAddFragment_add"
-            android:layout_width="76dp"
-            android:layout_height="55dp"
-            android:layout_marginLeft="110dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:src="@drawable/adddov" />
+        <TextView
+            android:id="@+id/textView75"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:drawableStart="@drawable/baseline_verified_24"
+            android:drawablePadding="10dp"
+            android:textColor="@color/black"
+            android:text="Add Into Database" />
     </androidx.cardview.widget.CardView>
 
     <ImageView
-        android:id="@+id/imageView19"
-        android:layout_width="208dp"
-        android:layout_height="173dp"
-        android:src="@drawable/smaller"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/imageView21"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:alpha="0.9"
+        android:src="@drawable/newer"
+        app:layout_constraintBottom_toTopOf="@+id/cardView8"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.921"
+        app:layout_constraintHorizontal_bias="1.474"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.014" />
+        app:layout_constraintVertical_bias="0.484" />
+
+    <TextView
+        android:id="@+id/textView80"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="New Food"
+        android:textColor="@color/lavander"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/cardView8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.449"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.194" />
+
+    <TextView
+        android:id="@+id/textView81"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Into Database"
+        android:textColor="@color/lavander"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/cardView8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.535"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.551" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
