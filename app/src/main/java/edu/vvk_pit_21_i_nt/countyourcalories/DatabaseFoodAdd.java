@@ -8,9 +8,17 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.slider.Slider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
 
@@ -29,6 +37,8 @@ public class DatabaseFoodAdd extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    ImageView databaseFoodAddFragment_btn_add;
 
     public DatabaseFoodAdd() {
         // Required empty public constructor
@@ -74,6 +84,83 @@ public class DatabaseFoodAdd extends Fragment {
         Slider sliderOne = (Slider) view.findViewById(R.id.vienas);
         tOne.setText(Float.toString(sliderOne.getValue()));
 
+        // Add new food to database button
+        databaseFoodAddFragment_btn_add = view.findViewById(R.id.databaseFoodAddFragment_add);
+
+        // Singing the database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        databaseFoodAddFragment_btn_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = ((EditText) view.findViewById(R.id.editTextText2)).getText().toString();
+                float carbs = ((Slider) view.findViewById(R.id.vienas)).getValue();
+                float fats = ((Slider) view.findViewById(R.id.du)).getValue();
+                float proteins = ((Slider) view.findViewById(R.id.trys)).getValue();
+                float kcal = ((Slider) view.findViewById(R.id.keturi)).getValue();
+
+                // Check if all fields are set
+                if (name.isEmpty() || carbs == 0 || fats == 0 || proteins == 0 || kcal == 0) {
+                    // Show an error message
+                    Toast.makeText(getActivity(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // Create a new Product object
+                ProductForDbInsertion product = new ProductForDbInsertion();
+                product.setProduktas(name);
+                product.setAngliavandeniai(carbs);
+                product.setRiebalai(fats);
+                product.setBaltymai(proteins);
+                product.setKilokalorijos(kcal);
+
+                // Get a reference to the products in the database
+                DatabaseReference productsRef = database.getReference("Products/Sheet1");
+
+                // Get a reference to the ProductsCount in the database
+                DatabaseReference productsCountRef = database.getReference("Products/ProductsCount");
+
+                // Retrieve the last used index
+                productsCountRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        long index;
+                        if (dataSnapshot.exists()) {
+                            index = (long) dataSnapshot.getValue();
+                        } else {
+                            index = 0; // Default value if "ProductsCount" node does not exist
+                        }
+
+                        // Check if there is a product with the same name in the database
+                        productsRef.orderByChild("Produktas").equalTo(name).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    // Show an error message
+                                    Toast.makeText(getActivity(), "A product with this name already exists", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    // Save the product to the database
+                                    productsRef.child(String.valueOf(index + 1)).setValue(product);
+
+                                    // Update the ProductsCount in the database
+                                    productsCountRef.setValue(index + 1);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                // Handle possible errors.
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        // Handle possible errors.
+                    }
+                });
+            }
+        });
         sliderOne.addOnChangeListener(new Slider.OnChangeListener() {
             @Override
             public void onValueChange(@NonNull Slider slider, float v, boolean b) {
