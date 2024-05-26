@@ -87,7 +87,7 @@ public class DatabaseFoodAdd extends Fragment {
         databaseFoodAddFragmentBtnAdd = view.findViewById(R.id.textView75);
 
         // Singing the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance(); //
 
         databaseFoodAddFragmentBtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
