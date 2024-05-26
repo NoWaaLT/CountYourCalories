@@ -64,8 +64,7 @@ public class MenuActivity extends AppCompatActivity {
         userDb = menuModel.getUserDb();
         historyRef = FirebaseDatabase.getInstance().getReference("History/" + user.getUid());
         mDatabase = FirebaseDatabase.getInstance().getReference("Users/"+ user.getUid());
-        //userHistoryHashMap = menuModel.getUserHistoryHashMap();
-        createRandomHistory();
+        //createRandomHistory();
         userHistoryHashMap = menuModel.getUserHistoryHashMap();
         getUserData();
         getUserHistory();
@@ -127,10 +126,10 @@ public class MenuActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-    }
+    //@Override
+    //public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        //super.onConfigurationChanged(newConfig);
+    //}
 
     @Override
     protected void onDestroy() {
