@@ -27,6 +27,7 @@ import com.firebase.ui.auth.data.model.User;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -196,7 +197,7 @@ public class MealPlansFragment extends Fragment {
                 searchFood(query,title,calories,carbs,protein,fats,temp,tempCarb,tempProt,tempFat,scrollView);
                 searchView.setQuery("", false);
                // searchView.onActionViewCollapsed();
-                slider.setValue(100);
+                slider.setValue(100); //
 
 
                 return false;
@@ -207,39 +208,52 @@ public class MealPlansFragment extends Fragment {
                 return false;
             }
         });
+
         imgbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //float wei = Float.parseFloat(weight.getText().toString()) / 100;
-                float kcal = Float.parseFloat(calories.getText().toString());
-                float prot = Float.parseFloat(protein.getText().toString());
-                float fat = Float.parseFloat(fats.getText().toString());
-                float carb = Float.parseFloat(carbs.getText().toString());
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
-                String currentDate = sdf.format(new Date());
-                if (kcal != 0) {
-                    if (((MenuActivity) requireActivity()).userHistoryHashMap.containsKey(currentDate)) {
-                        UserHistory uh = ((MenuActivity) requireActivity()).userHistoryHashMap.get(currentDate);
-                        if (uh != null) {
-                            kcal += uh.getKcal();
-                            prot += uh.getProtein();
-                            fat += uh.getFat();
-                            carb += uh.getCarbo();
-                            ((MenuActivity) requireActivity()).updateUserHistory(currentDate, "kcal", (int) kcal);
-                            ((MenuActivity) requireActivity()).updateUserHistory(currentDate, "carbo", (int) carb);
-                            ((MenuActivity) requireActivity()).updateUserHistory(currentDate, "fat", (int) fat);
-                            ((MenuActivity) requireActivity()).updateUserHistory(currentDate, "protein", (int) prot);
+                // Get the current user's UID
+                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                // Get the current date
+                String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
+                // Create a new DatabaseReference
+                DatabaseReference historyRef = FirebaseDatabase.getInstance().getReference("History/" + uid + "/" + currentDate);
+
+                // Retrieve the existing UserHistory object for the current date
+                historyRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        UserHistory existingHistory = dataSnapshot.getValue(UserHistory.class);
+                        if (existingHistory == null) {
+                            // If there is no existing entry for the current date, create a new UserHistory object
+                            existingHistory = new UserHistory();
+                            existingHistory.setCarbo((int) Float.parseFloat(carbs.getText().toString()));
+                            existingHistory.setFat((int) Float.parseFloat(fats.getText().toString()));
+                            existingHistory.setKcal((int) Float.parseFloat(calories.getText().toString()));
+                            existingHistory.setProtein((int) Float.parseFloat(protein.getText().toString()));
+                            existingHistory.setWater(0); // Set water to 0 or replace with actual consumed water value
+                        } else {
+                            // If there is an existing entry for the current date, add the consumed values to the existing values
+                            existingHistory.setCarbo(existingHistory.getCarbo() + (int) Float.parseFloat(carbs.getText().toString()));
+                            existingHistory.setFat(existingHistory.getFat() + (int) Float.parseFloat(fats.getText().toString()));
+                            existingHistory.setKcal(existingHistory.getKcal() + (int) Float.parseFloat(calories.getText().toString()));
+                            existingHistory.setProtein(existingHistory.getProtein() + (int) Float.parseFloat(protein.getText().toString()));
                         }
-                    }
-                    else {
-                        UserHistory uh = new UserHistory((int) kcal, (int) carb, (int) fat, (int) prot, 0);
-                        ((MenuActivity) requireActivity()).addUserHistory(uh);
 
+                        // Write the UserHistory object back to the Firebase database
+                        historyRef.setValue(existingHistory);
                     }
-                }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.e("Firebase", "Error fetching data", databaseError.toException());
+                    }
+                });
             }
         });
+
 
 
 
