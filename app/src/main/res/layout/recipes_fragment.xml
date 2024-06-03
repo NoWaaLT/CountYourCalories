@@ -4,25 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background"
+    android:background="@color/white"
     tools:context=".RecipesFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/RecipesFragment_cl_recipe_name"
-            android:layout_width="300dp"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/RecipesFragment_cv_recipe_name"
+            android:layout_width="350dp"
             android:layout_height="100dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="1dp"
-            app:layout_constraintBottom_toTopOf="@+id/RecipesFragment_cl_select_items"
+            app:cardBackgroundColor="#E1F6FF"
+            app:cardCornerRadius="20dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.468"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/RecipesFragment_cl_recipe_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/RecipesFragment_til_recipe_name"
                 style="@style/MyTextInputLayoutStyle"
@@ -34,7 +37,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="456dp"
                 android:hint="@string/recipes_title"
-                android:textColorHint="@android:color/white"
+                android:textColorHint="@android:color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -47,68 +50,77 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:cursorVisible="false"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
-
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/RecipesFragment_cl_select_items"
-            android:layout_width="300dp"
+    </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/RecipesFragment_cv_select_items"
+            android:layout_width="350dp"
             android:layout_height="100dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="1dp"
-            app:layout_constraintBottom_toTopOf="@+id/RecipesFragment_ll_top_buttons"
+            app:cardBackgroundColor="#E1F6FF"
+            app:cardCornerRadius="20dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.468"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/RecipesFragment_cl_recipe_name">
+            app:layout_constraintTop_toBottomOf="@+id/RecipesFragment_cv_recipe_name">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/RecipesFragment_til_select_items"
-                style="@style/OutlinedBoxWhite"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/RecipesFragment_cl_select_items"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/RecipesFragment_til_select_items"
+            style="@style/OutlinedBoxWhite"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="62dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="456dp"
+            android:hint="@string/recipes_select_item"
+            android:textColorHint="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardViewRecipeTitle"
+            app:layout_constraintVertical_bias="0.393">
+
+
+            <AutoCompleteTextView
+                android:id="@+id/RecipesFragment_actv_autoCompleteTextView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="62dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="456dp"
-                android:hint="@string/recipes_select_item"
-                android:textColorHint="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardViewRecipeTitle"
-                app:layout_constraintVertical_bias="0.393">
+                android:cursorVisible="false"
+                android:dropDownHeight="100dp"
+                android:inputType="text"
+                android:textColor="@color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+        </androidx.cardview.widget.CardView>
 
-                <AutoCompleteTextView
-                    android:id="@+id/RecipesFragment_actv_autoCompleteTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:cursorVisible="false"
-                    android:dropDownHeight="100dp"
-                    android:inputType="text"
-                    android:textColor="@color/white" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <LinearLayout
             android:id="@+id/RecipesFragment_ll_top_buttons"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/RecipesFragment_cl_select_items">
+            app:layout_constraintEnd_toEndOf="@+id/RecipesFragment_cv_select_items"
+            app:layout_constraintStart_toStartOf="@+id/RecipesFragment_cv_select_items"
+            app:layout_constraintTop_toBottomOf="@+id/RecipesFragment_cv_select_items">
 
             <Button
                 android:id="@+id/RecipesFragment_btn_addItem"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginRight="25dp"
                 android:text="@string/recipes_add_item" />
 
             <Button
@@ -120,30 +132,41 @@
 
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/RecipesFragment_lv_selectedItems"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/RecipesFragment_ll_top_buttons" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:cardBackgroundColor="@color/UI_light"
+            app:layout_constraintEnd_toEndOf="@+id/RecipesFragment_cv_select_items"
+            app:layout_constraintStart_toStartOf="@+id/RecipesFragment_cv_select_items"
+            app:layout_constraintTop_toBottomOf="@+id/RecipesFragment_ll_top_buttons">
+
+            <ListView
+                android:id="@+id/RecipesFragment_lv_selectedItems"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginTop="10dp" />
+
+        </androidx.cardview.widget.CardView>
 
         <LinearLayout
             android:id="@+id/RecipesFragment_ll_bottom_buttons"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/RecipesFragment_lv_selectedItems">
+            app:layout_constraintEnd_toEndOf="@+id/RecipesFragment_cv_select_items"
+            app:layout_constraintStart_toStartOf="@+id/RecipesFragment_cv_select_items"
+            app:layout_constraintTop_toBottomOf="@+id/cardView6">
 
             <Button
                 android:id="@+id/RecipesFragment_btn_createRecipe"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginRight="25dp"
                 android:text="@string/recipes_create_recipe" />
 
             <Button
